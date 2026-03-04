@@ -73,10 +73,13 @@
         }
 
         .focus-hint {
+            color: #999;
+            font-size: 8px;
+            text-shadow: 0 0 2px rgba(0, 0, 0, 0.9);
+        }
+
+        .focus-hint.active {
             color: #ff4444;
-            font-size: 10px;
-            font-weight: bold;
-            margin-bottom: 5px;
         }
 
         .flash-green {
@@ -85,11 +88,51 @@
             transition: all 0.2s;
         }
 
+        .status-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
         .step-counter {
             color: #888;
             font-size: 9px;
-            text-align: right;
-            margin-bottom: 2px;
+            margin-left: auto;
+        }
+
+        .help-icon {
+            color: #555;
+            font-size: 9px;
+            margin-left: 5px;
+            cursor: default;
+            position: relative;
+            user-select: none;
+        }
+
+        .help-icon .help-tooltip {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 14px;
+            background: rgba(15, 15, 15, 0.95);
+            border: 1px solid #5d4a2d;
+            border-radius: 3px;
+            padding: 6px 8px;
+            white-space: nowrap;
+            font-size: 9px;
+            color: #ccc;
+            line-height: 1.6;
+            z-index: 100;
+        }
+
+        .help-icon:hover .help-tooltip {
+            display: block;
+        }
+
+        .help-tooltip kbd {
+            color: #ffb833;
+            font-family: monospace;
+            font-size: 9px;
         }
 
         /* --- Collapsible sections --- */
@@ -116,6 +159,10 @@
             display: none;
         }
 
+        .collapse-arrow.always-visible {
+            display: inline;
+        }
+
         .section-header.interactive .collapse-arrow {
             display: inline;
         }
@@ -130,6 +177,14 @@
             border-left: 3px solid #9966cc;
             padding: 5px;
             margin-bottom: 8px;
+        }
+
+        #gems-header {
+            cursor: pointer;
+        }
+
+        #gems-header:hover {
+            opacity: 0.8;
         }
 
         .gem-select {
@@ -237,8 +292,20 @@
     </div>
 
     <div id="play-screen" style="display:none; flex-direction: column;">
-        <div id="step-counter" class="step-counter"></div>
-        <div id="focus-msg" class="focus-hint" style="display:none;">INTERACTIVE MODE (Ctrl+Shift+F to exit)</div>
+        <div class="status-bar">
+            <span id="focus-msg" class="focus-hint">Ctrl+Shift+F to interact</span>
+            <span id="step-counter" class="step-counter"></span>
+            <span class="help-icon">?<span class="help-tooltip">
+                <kbd>Ctrl+Shift+F</kbd> Interactive mode<br>
+                <kbd>Ctrl+Shift+H</kbd> Hide / show overlay<br>
+                <kbd>Alt+Shift+&rarr;</kbd> Next step<br>
+                <kbd>Alt+Shift+&larr;</kbd> Prev step<br>
+                <kbd>Ctrl+Shift+T</kbd> Toggle tree<br>
+                <kbd>Shift+Scroll</kbd> Zoom tree<br>
+                <kbd>Shift+Drag</kbd> Pan tree<br>
+                <kbd>Escape</kbd> Close tree
+            </span></span>
+        </div>
 
         <div id="weapon-ui" style="display:none;">
             <div class="section-header" id="weapon-header"
@@ -255,7 +322,7 @@
         <div id="gems-ui" style="display:none;">
             <div class="section-header" id="gems-header">
                 <strong style="color: #9966cc; font-size: 9px;">SKILL GEMS</strong>
-                <span class="collapse-arrow" id="gems-arrow">&#9660;</span>
+                <span class="collapse-arrow always-visible" id="gems-arrow">&#9660;</span>
             </div>
             <div class="section-body" id="gems-body">
                 <select id="gem-set-select" class="gem-select" style="margin: 4px 0;"></select>
@@ -268,9 +335,19 @@
             <li>Waiting for you to enter a zone...</li>
         </ul>
 
-        <div id="regex-ui" style="display:none;" class="regex-container">
-            <span id="regex-text"></span>
-            <button id="copy-btn" class="action-btn">Copy</button>
+        <div id="regex-ui" style="display:none;">
+            <div style="display: flex; align-items: center; margin-bottom: 4px;">
+                <span style="font-size: 9px; color: #888; text-transform: uppercase; margin-right: 6px;">REGEX</span>
+                <select id="regex-preset-select" class="gem-select" style="flex: 1; font-size: 10px;"></select>
+            </div>
+            <div id="regex-custom-row" style="display:none; margin-bottom: 4px;">
+                <input id="regex-custom-input" type="text" placeholder="Enter custom regex..."
+                    style="width: 100%; background: #1a1a1a; color: #44ff44; border: 1px solid #444; padding: 3px 5px; font-family: monospace; font-size: 11px; border-radius: 2px; box-sizing: border-box;">
+            </div>
+            <div class="regex-container">
+                <span id="regex-text"></span>
+                <button id="copy-btn" class="action-btn">Copy</button>
+            </div>
         </div>
     </div>
 
@@ -281,6 +358,10 @@
         let weaponCollapsed = false;
         let gemsCollapsed = false;
         let allSkillSets = [];
+        let regexPresets = [];
+        let selectedRegexIndex = -1; // -1 = none, 0+ = preset index, 'custom' for custom
+        let customRegex = '';
+        let isInTown = false;
 
         // --- STARTUP LOGIC ---
 
@@ -442,7 +523,14 @@
         // --- INTERACTIVE / FOCUS MODE ---
         ipcRenderer.on('focus-mode', (event, active) => {
             interactiveMode = active;
-            document.getElementById('focus-msg').style.display = active ? 'block' : 'none';
+            const msg = document.getElementById('focus-msg');
+            if (active) {
+                msg.textContent = 'INTERACTIVE — Ctrl+Shift+F to exit';
+                msg.classList.add('active');
+            } else {
+                msg.textContent = 'Ctrl+Shift+F to interact';
+                msg.classList.remove('active');
+            }
 
             // Toggle interactive class on section headers
             document.querySelectorAll('.section-header').forEach(h => {
@@ -460,7 +548,6 @@
         });
 
         document.getElementById('gems-header').addEventListener('click', () => {
-            if (!interactiveMode) return;
             gemsCollapsed = !gemsCollapsed;
             document.getElementById('gems-body').classList.toggle('collapsed', gemsCollapsed);
             document.getElementById('gems-arrow').innerHTML = gemsCollapsed ? '&#9654;' : '&#9660;';
@@ -525,6 +612,90 @@
             }).join('');
         }
 
+        // --- REGEX PRESETS ---
+        ipcRenderer.on('regex-presets', (event, presets) => {
+            regexPresets = presets;
+            const select = document.getElementById('regex-preset-select');
+            select.innerHTML = '<option value="none">-- No regex --</option>';
+            presets.forEach((p, idx) => {
+                const opt = document.createElement('option');
+                opt.value = idx;
+                opt.text = p.name;
+                select.appendChild(opt);
+            });
+            const customOpt = document.createElement('option');
+            customOpt.value = 'custom';
+            customOpt.text = 'Custom...';
+            select.appendChild(customOpt);
+
+            // Restore saved selection
+            const saved = localStorage.getItem('regex-selection');
+            const savedCustom = localStorage.getItem('regex-custom');
+            if (savedCustom) customRegex = savedCustom;
+            if (saved !== null) {
+                select.value = saved;
+                selectedRegexIndex = saved;
+                if (saved === 'custom') {
+                    document.getElementById('regex-custom-row').style.display = 'block';
+                    document.getElementById('regex-custom-input').value = customRegex;
+                }
+            }
+            updateRegexDisplay();
+        });
+
+        document.getElementById('regex-preset-select').addEventListener('change', (e) => {
+            selectedRegexIndex = e.target.value;
+            localStorage.setItem('regex-selection', selectedRegexIndex);
+            document.getElementById('regex-custom-row').style.display = selectedRegexIndex === 'custom' ? 'block' : 'none';
+            updateRegexDisplay();
+        });
+
+        document.getElementById('regex-custom-input').addEventListener('input', (e) => {
+            customRegex = e.target.value;
+            localStorage.setItem('regex-custom', customRegex);
+            updateRegexDisplay();
+        });
+
+        function getActiveRegex() {
+            if (selectedRegexIndex === 'none' || selectedRegexIndex === -1) return null;
+            if (selectedRegexIndex === 'custom') return customRegex || null;
+            const idx = parseInt(selectedRegexIndex, 10);
+            if (regexPresets[idx]) return regexPresets[idx].regex;
+            return null;
+        }
+
+        function updateRegexDisplay() {
+            const regexUI = document.getElementById('regex-ui');
+            const regexText = document.getElementById('regex-text');
+
+            // Step-specific regex (from build overlay) takes priority
+            if (currentStepRegex) {
+                regexUI.style.display = 'block';
+                regexText.innerText = currentStepRegex;
+                document.querySelector('.regex-container').style.display = 'flex';
+                // Hide preset selector when showing step-specific regex
+                document.getElementById('regex-preset-select').parentElement.style.display = 'none';
+                document.getElementById('regex-custom-row').style.display = 'none';
+                return;
+            }
+
+            // In town: show preset regex selector
+            if (isInTown) {
+                regexUI.style.display = 'block';
+                document.getElementById('regex-preset-select').parentElement.style.display = 'flex';
+                document.getElementById('regex-custom-row').style.display = selectedRegexIndex === 'custom' ? 'block' : 'none';
+                const regex = getActiveRegex();
+                regexText.innerText = regex || '';
+                document.querySelector('.regex-container').style.display = regex ? 'flex' : 'none';
+                return;
+            }
+
+            // Not in town & no step regex: hide
+            regexUI.style.display = 'none';
+        }
+
+        let currentStepRegex = null; // Step-specific regex from build overlay
+
         // --- ZONE CHANGE HANDLER ---
         ipcRenderer.on('zone-change', (event, payload) => {
             const currentZone = payload.zone;
@@ -538,13 +709,10 @@
             document.getElementById('zone-name').innerText = currentZone;
             document.getElementById('task-list').innerHTML = currentData.tasks.map(t => `<li>${t}</li>`).join('');
 
-            const regexUI = document.getElementById('regex-ui');
-            if (currentData.regex) {
-                regexUI.style.display = 'flex';
-                document.getElementById('regex-text').innerText = currentData.regex;
-            } else {
-                regexUI.style.display = 'none';
-            }
+            // Track town state and step-specific regex
+            isInTown = !!currentData.isTown;
+            currentStepRegex = currentData.regex || null;
+            updateRegexDisplay();
 
             // Weapon Target: sticky, only updates when a new one is set
             const weaponUI = document.getElementById('weapon-ui');

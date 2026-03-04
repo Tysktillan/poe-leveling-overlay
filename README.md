@@ -33,7 +33,7 @@ Import any build from **Path of Building** and the overlay shows your gem links 
 | **Skill gem tracker** | Gem links organized by phase (Act 1, Act 3, Maps, etc.) with main/support coloring |
 | **Passive tree overlay** | Visual tree with allocated, next-to-pick (green), and future nodes |
 | **Smart tree ordering** | Notables are prioritized, earlier-spec nodes come first, travel nodes fill in via shortest path |
-| **Item filter regex** | Copy-ready regex for finding weapon upgrades |
+| **Leveling regex** | Preset or custom regex shown in towns — copy to clipboard for vendor/stash searches |
 | **Progress persistence** | Saves per character — close and resume anytime |
 | **Click-through** | Overlay never blocks your game; toggle interactive mode only when needed |
 
@@ -79,8 +79,6 @@ If your install is elsewhere, click **Browse** next to "Game Log" on the startup
 On the startup screen you have two options:
 
 - **Path of Building XML** — browse your PoB Builds folder and click any `.xml` file. The overlay detects the class automatically and loads all skill sets and tree specs.
-- **Custom builds** — pre-configured builds (like Duelist Sunder) that include route data and build-specific overlays.
-
 The PoB Builds folder defaults to `Documents\Path of Building\Builds` but can be changed with the **Change** button.
 
 ### Step 3 — Link Your Character
@@ -105,9 +103,8 @@ The overlay now runs automatically:
 |---|---|
 | `Ctrl+Shift+F` | Toggle interactive mode (click the overlay) |
 | `Ctrl+Shift+H` | Hide / show the overlay |
-| `Ctrl+Shift+R` | Reset guide progress |
-| `Ctrl+Shift+Right` | Skip to next step |
-| `Ctrl+Shift+Left` | Go back one step |
+| `Alt+Shift+Right` | Skip to next step |
+| `Alt+Shift+Left` | Go back one step |
 
 ### Passive Tree
 
@@ -193,8 +190,7 @@ tree.html                Passive tree overlay window
 treeRenderer.js          Canvas-based tree rendering with pan/zoom
 poe_tree.json            Path of Exile passive tree data
 route.json               Generic zone-by-zone leveling route
-guide-duelist.json       Class guide (Duelist) for direct PoB mode
-build-duelist-sunder.json   Example build overlay with route merge
+zone-guide.json          Zone guide with leveling regex presets
 ```
 
 ---
@@ -203,8 +199,8 @@ build-duelist-sunder.json   Example build overlay with route merge
 
 Contributions are welcome. Some ideas:
 
-- **Leveling guides for other classes** — add a `guide-<class>.json` following the existing format
 - **Build configs** — create `build-*.json` files for popular builds
+- **Leveling regex presets** — add new regex presets to `zone-guide.json` for different build archetypes
 - **UI improvements** — the overlay is plain HTML/CSS, easy to modify
 
 ---

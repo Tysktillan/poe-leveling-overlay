@@ -138,6 +138,7 @@ let currentLevel = 1;      // Detected from game log
 let totalPassives = 0;     // Computed from level + quests
 let currentBuildConfig = null; // The loaded build overlay (for PoB XML path etc.)
 let parsedSkillSets = [];      // Gem link data parsed from PoB XML
+let levelingRegexPresets = [];  // Regex presets from zone-guide.json
 
 // ---------------------------------------------------------------------------
 // Route + Build merging
@@ -437,9 +438,12 @@ function createWindow() {
     // Direct PoB XML selection (no build-*.json overlay)
     ipcMain.on('pob-build-selected', (event, pobXmlPath) => {
         try {
-            // Load the generic guide directly
-            const guidePath = path.join(__dirname, 'guide-duelist.json');
-            guideData = JSON.parse(fs.readFileSync(guidePath, 'utf8'));
+            // Load the generic zone guide
+            const guidePath = path.join(__dirname, 'zone-guide.json');
+            const guideFile = JSON.parse(fs.readFileSync(guidePath, 'utf8'));
+            guideData = guideFile.steps || guideFile; // support object format or legacy array
+            levelingRegexPresets = guideFile.leveling_regex || [];
+            mainWindow.webContents.send('regex-presets', levelingRegexPresets);
 
             // Parse class info from the PoB XML
             const classInfo = parseClassFromXml(pobXmlPath);
@@ -494,6 +498,13 @@ function createWindow() {
 
             // Merge route + build overlay
             guideData = mergeGuide(route, currentBuildConfig);
+
+            // Load regex presets from zone-guide.json
+            try {
+                const zoneGuide = JSON.parse(fs.readFileSync(path.join(__dirname, 'zone-guide.json'), 'utf8'));
+                levelingRegexPresets = zoneGuide.leveling_regex || [];
+                mainWindow.webContents.send('regex-presets', levelingRegexPresets);
+            } catch (e) { /* zone-guide.json not found, no presets */ }
 
             currentCharacter = '';
             currentStep = 0;
@@ -596,22 +607,8 @@ function createWindow() {
         mainWindow.setOpacity(overlayHidden ? 0 : 1);
     });
 
-    // Reset Progress Hotkey
-    globalShortcut.register('CommandOrControl+Shift+R', () => {
-        currentStep = 0;
-        lastShownStep = -1;
-        saveProgress();
-        console.log('Progress reset to step 0');
-        mainWindow.webContents.send('zone-change', {
-            zone: 'Progress Reset',
-            data: { tasks: ['Guide reset to step 1. Enter a zone to begin.'] },
-            step: 0,
-            totalSteps: guideData.length
-        });
-    });
-
     // Manual Step Forward/Backward Hotkeys
-    globalShortcut.register('CommandOrControl+Shift+Right', () => {
+    globalShortcut.register('Alt+Shift+Right', () => {
         if (!guideData.length) return;
         if (currentStep < guideData.length) {
             lastShownStep = currentStep;
@@ -620,7 +617,7 @@ function createWindow() {
             sendZoneData(guideData[lastShownStep].zone, guideData[lastShownStep], lastShownStep);
         }
     });
-    globalShortcut.register('CommandOrControl+Shift+Left', () => {
+    globalShortcut.register('Alt+Shift+Left', () => {
         if (!guideData.length) return;
         if (currentStep > 1) {
             currentStep = currentStep - 1;
@@ -682,6 +679,7 @@ function sendZoneData(zone, stepData, stepIndex) {
     if (activeMilestone) enrichedData.tree_milestone = activeMilestone;
     if (activeWeapon) enrichedData.weapon_target = activeWeapon;
     enrichedData.totalPassives = totalPassives;
+    if (stepData.isTown) enrichedData.isTown = true;
 
     mainWindow.webContents.send('zone-change', {
         zone: zone,
