@@ -1,0 +1,288 @@
+{
+  "name": "Duelist Sunder Champion",
+  "pob_xml": "duelist lvling.xml",
+  "class": "Duelist",
+  "steps": {
+    "act1_the_twilight_strand": {
+      "tasks": [
+        "Drop: Pick up 'Double Strike'",
+        "Chest: Pick up 'Chance to Bleed'"
+      ],
+      "weapon_target": "Corroded Blade / Stone Axe / Driftwood Maul (any 2H upgrade)"
+    },
+    "act1_lioneye_s_watch": {
+      "tasks": [
+        "REWARD: Take 'Splitting Steel' from Tarkleigh",
+        "BUY: 'Spectral Throw' (Optional)",
+        "BUY: Corroded Blade 2H weapon (Optional, big damage upgrade)",
+        "LINK: Splitting Steel - Chance to Bleed"
+      ],
+      "weapon_target": "Longsword / Tribal Maul / Jade Chopper (check vendor for 1 Transmute)",
+      "tree_milestone": "ACT 1 EARLY: Grab Art of the Gladiator, Bravery.",
+      "regex": "-\\w-.-|r-r-|-r-r|r-.-r|g-g-|-g-g|g-.-g|Runn|rint"
+    },
+    "act1_lioneye_s_watch_2": {
+      "tasks": [
+        "REWARD: Take 'Quicksilver Flask' from Nessa",
+        "BUY: 'Volley' or 'Momentum', 'Dash', 'Blood and Sand' (Do NOT Enable B&S yet)",
+        "LINK: Splitting Steel - Chance to Bleed - Volley or Momentum",
+        "CHECK: Vendor for Iron Rings & a Rustic Sash",
+        "CHECK: Vendor for a GR or GGR Linked Item (for Leap Slam later)"
+      ],
+      "regex": "-\\\\w-.-|r-r-|-r-r|r-.-r|g-g-|-g-g|g-.-g|Runn|rint"
+    },
+    "act1_prisoner_s_gate": {
+      "tree_milestone": "ACT 1 MID: Continue to Master of the Arena, then Destroyer."
+    },
+    "act1_lioneye_s_watch_3": {
+      "tasks": [
+        "REWARD: Take 'Added Fire Damage'",
+        "REWARD: Take 'Leap Slam'",
+        "BUY: 'Faster Attacks', 'Frostblink' (Remove Dash)",
+        "BUY: Lapis Amulet (not always in stock)",
+        "LINK: Leap Slam - Faster Attacks - Momentum"
+      ],
+      "regex": "-\\\\w-.-|r-r-|-r-r|r-.-r|g-g-|-g-g|g-.-g|Runn|rint"
+    },
+    "act1_lioneye_s_watch_4": {
+      "tasks": [
+        "BUY: 'Ruthless', 'War Banner', 'Precision', 'Intimidating Cry'",
+        "LINKS: Splitting Steel - Chance to Bleed - Ruthless (or Momentum)",
+        "LINKS: Leap Slam - Faster Attacks - Momentum",
+        "AURAS: Blood and Sand, War Banner, Precision"
+      ],
+      "weapon_target": "Mallet / Woodsplitter (2H Mace or Axe — Sunder cannot use Swords!)",
+      "regex": "-\\\\w-.-|r-r-|-r-r|r-.-r|g-g-|-g-g|g-.-g|Runn|rint"
+    },
+    "act1_the_ship_graveyard_3": {
+      "tree_milestone": "ACT 1 LATE: Finish Destroyer cluster. (Mana flows if you need mana)."
+    },
+    "act1_the_cavern_of_anger": {
+      "tasks": [
+        "This completes 'The Siren's Cadence' and unlocks Sunder!"
+      ]
+    },
+    "act2_the_forest_encampment": {
+      "tasks": [
+        "SUNDER PIVOT: Buy 'Sunder' from Nessa (now unlocked after Merveil!)",
+        "OPTIONAL: Buy a Heavy Belt if you need STR for Axes",
+        "WEAPON: Switch to a 2H Mace or 2H Axe (Sunder cannot use Swords!)"
+      ],
+      "weapon_target": "Poleaxe (2H Axe). Use Vendor Recipe: Weapon + Rustic Sash + Whetstone = %IPD",
+      "tree_milestone": "ACT 2: Path toward Marauder/Scion. Grab Golem's Blood and Champion of the Cause.",
+      "regex": "-\\w-.-|r-r-|-r-r|r-.-r|g-g-|-g-g|g-.-g|Runn|rint"
+    },
+    "act2_lioneye_s_watch": {
+      "tasks": [
+        "BUY: 'Sunder' from Nessa",
+        "LINKS: Sunder - Chance to Bleed - Ruthless (or Momentum)"
+      ],
+      "weapon_target": "Mallet / Woodsplitter (2H Mace or Axe — Sunder cannot use Swords!)",
+      "regex": "-\\\\w-.-|r-r-|-r-r|r-.-r|g-g-|-g-g|g-.-g|Runn|rint"
+    },
+    "act2_the_forest_encampment_2": {
+      "weapon_target": "Poleaxe (2H Axe). Use Vendor Recipe: Weapon + Rustic Sash + Whetstone = %IPD",
+      "regex": "-\\w-.-|r-r-|-r-r|r-.-r|g-g-|-g-g|g-.-g|Runn|rint"
+    },
+    "act2_the_forest_encampment_3": {
+      "tasks": [
+        "REWARD: Add 'Herald of Ash'",
+        "BUY: 'Blood Rage' & 'Poacher's Mark' (Optional)"
+      ],
+      "regex": "-\\\\w-.-|r-r-|-r-r|r-.-r|g-g-|-g-g|g-.-g|Runn|rint"
+    },
+    "act2_the_western_forest": {
+      "tasks": [
+        "Bandits: HELP ALIRA (15% All Res & Mana Regen)"
+      ]
+    },
+    "act2_the_forest_encampment_4": {
+      "tasks": [
+        "REWARD: Take 'Melee Phys' OR 'Close Combat' (Buy the other!)",
+        "LINK: Sunder - Melee Phys - Close Combat (Use Ruthless if 3 Red)"
+      ],
+      "regex": "-\\\\w-.-|r-r-|-r-r|r-.-r|g-g-|-g-g|g-.-g|Runn|rint"
+    },
+    "act2_lioneye_s_watch_2": {
+      "tree_milestone": "ACT 3: Grab Wrecking Ball, Hatchet Master. Start Axe/Two-Hand Masteries.",
+      "regex": "-\\\\w-.-|r-r-|-r-r|r-.-r|g-g-|-g-g|g-.-g|Runn|rint"
+    },
+    "act2_the_forest_encampment_5": {
+      "regex": "-\\\\w-.-|r-r-|-r-r|r-.-r|g-g-|-g-g|g-.-g|Runn|rint"
+    },
+    "act2_the_broken_bridge": {
+      "tasks": [
+        "TIP: Search for and defeat the 3 Exiles beside the waypoint for extra items."
+      ]
+    },
+    "act2_the_forest_encampment_6": {
+      "regex": "-\\\\w-.-|r-r-|-r-r|r-.-r|g-g-|-g-g|g-.-g|Runn|rint"
+    },
+    "act2_the_western_forest_2": {
+      "tasks": [
+        "Bandits: HELP ALIRA (15% All Res & Mana Regen)"
+      ]
+    },
+    "act2_the_forest_encampment_7": {
+      "regex": "-\\\\w-.-|r-r-|-r-r|r-.-r|g-g-|-g-g|g-.-g|Runn|rint"
+    },
+    "act3_the_sarn_encampment": {
+      "tasks": [
+        "Ensure Sunder links are set."
+      ],
+      "weapon_target": "Double Axe / Gilded Axe (craft with Rare Rustic Sash for 50-64% IPD)",
+      "regex": "-\\\\w-.-|r-r-|-r-r|r-.-r|g-g-|-g-g|g-.-g|Runn|rint"
+    },
+    "act3_the_sarn_encampment_2": {
+      "tasks": [
+        "BUY: 'Vulnerability' (Remove Poacher's Mark), 'Haste'",
+        "REWARD: Free 'Pride' (Swap to Pride on Bosses, Haste while travelling)"
+      ],
+      "regex": "-\\\\w-.-|r-r-|-r-r|r-.-r|g-g-|-g-g|g-.-g|Runn|rint"
+    },
+    "act3_the_sewers": {
+      "tasks": [
+        "CRITICAL: After opening Undying Blockage, grab the Physical Damage Craft in the passage to Ebony Barracks!"
+      ]
+    },
+    "act3_the_sewers_2": {
+      "tasks": [
+        "CRITICAL: Grab the Physical Damage Craft in the passage to Ebony Barracks!"
+      ]
+    },
+    "act3_the_ebony_barracks": {
+      "tree_milestone": "ACT 4: Finish Two Hand Mastery, and Axe Mastery."
+    },
+    "act3_the_sarn_encampment_3": {
+      "tasks": [
+        "CRAFT: A Gilded Axe if necessary (use Vendor Recipe: Weapon + Magic Rustic Sash + Whetstone = %IPD)",
+        "CHECK LINKS: Sunder - Melee Phys - Close Combat (or Ruthless)"
+      ],
+      "regex": "-\\\\w-.-|r-r-|-r-r|r-.-r|g-g-|-g-g|g-.-g|Runn|rint"
+    },
+    "act4_highgate": {
+      "tasks": [
+        "TIP: Get to Level 32 before entering Kaom's Stronghold to avoid XP penalties."
+      ],
+      "regex": "-\\w-.-|r-r-|-r-r|r-.-r|g-g-|-g-g|g-.-g|Runn|rint"
+    },
+    "act4_the_sarn_encampment": {
+      "regex": "-\\\\w-.-|r-r-|-r-r|r-.-r|g-g-|-g-g|g-.-g|Runn|rint"
+    },
+    "act4_highgate_2": {
+      "regex": "-\\w-.-|r-r-|-r-r|r-.-r|g-g-|-g-g|g-.-g|Runn|rint"
+    },
+    "act4_the_dried_lake": {
+      "weapon_target": "Shadow Axe / Dagger Axe / Timber Axe / Headsman Axe"
+    },
+    "act4_highgate_3": {
+      "regex": "-\\w-.-|r-r-|-r-r|r-.-r|g-g-|-g-g|g-.-g|Runn|rint"
+    },
+    "act4_kaom_s_dream": {
+      "tree_milestone": "ACT 5: Push toward Ranger. Grab Acuity, Weathered Hunter. RUSH PRECISE TECHNIQUE (Acc > Life!)."
+    },
+    "act4_the_harvest": {
+      "tasks": [
+        "REWARD: Free 'Fist of War' from Dialla (Add to Sunder 4-Link!)",
+        "REWARD: Free Golem of your choosing from Oyun",
+        "BUY: 'Cast when Damage Taken' (1 Alchemy) for Immortal Call later."
+      ]
+    },
+    "act5_overseer_s_tower": {
+      "tasks": [
+        "REWARD (Key to Freedom): Free Granite Flask from Lani",
+        "REWARD (Death to Purity): Free Rare Viridian Jewel (Look for % Phys Attack Damage Leeched as Mana!)"
+      ],
+      "regex": "-\\\\w-.-|r-r-|-r-r|r-.-r|g-g-|-g-g|g-.-g|Runn|rint"
+    },
+    "act5_the_chamber_of_innocence": {
+      "tasks": [
+        "TIP: This zone has many guaranteed Magic Monster packs — farm them for extra XP!"
+      ]
+    },
+    "act5_the_ossuary": {
+      "tasks": [
+        "CRITICAL: Click the Lever above the Sign to access the next Physical Damage Craft!"
+      ]
+    },
+    "act5_the_reliquary": {
+      "tasks": [
+        "TIP: Place a portal outside the Cathedral Rooftop entrance before entering!"
+      ]
+    },
+    "act6_lioneye_s_watch": {
+      "tasks": [
+        "LILLY ROTH: Clear Twilight Strand so she sells all gems.",
+        "BUY: 'Urgent Orders', 'Lifetap', 'Immortal Call'",
+        "LINK: CWDT - Immortal Call",
+        "LINK: Frostblink - Intimidating Cry - Urgent Orders - Lifetap",
+        "FULL SETUP: Sunder - Melee Phys - Close Combat - Ruthless",
+        "AURAS: Blood and Sand, War Banner, Herald of Ash, Blood Rage",
+        "SWAP AURA: Haste/Determination (travel) | Pride + Vulnerability (bosses)",
+        "PANTHEON: Set to Brine King (Major) & Ryslatha (Minor)"
+      ],
+      "regex": "-\\\\w-.-|r-r-|-r-r|r-.-r|g-g-|-g-g|g-.-g|Runn|rint"
+    },
+    "act6_the_twilight_strand": {
+      "weapon_target": "Labrys / Noble Axe / Abyssal Axe / Karui Chopper"
+    },
+    "act6_shavronne_s_tower": {
+      "tree_milestone": "ACT 6-7: Grab Expert Hunter, Herbalism, Thick Skin for Life/Defense."
+    },
+    "act6_the_beacon": {
+      "tasks": [
+        "TIP: Place a Safety Portal — the fuel pylon enemies can be very dangerous!"
+      ]
+    },
+    "act7_the_bridge_encampment": {
+      "tasks": [
+        "REWARD (Silver Locket): Grab another Granite Flask if needed."
+      ],
+      "regex": "-\\\\w-.-|r-r-|-r-r|r-.-r|g-g-|-g-g|g-.-g|Runn|rint"
+    },
+    "act7_the_chamber_of_sins_level_2": {
+      "tree_milestone": "ACT 8+: Finish Intuition, Cloth and Chain. Grab Accuracy/Mark Masteries."
+    },
+    "act7_the_northern_forest": {
+      "tasks": [
+        "TIP: Place a portal near the Dread Thicket entrance if you see it."
+      ]
+    },
+    "act8_the_sarn_encampment": {
+      "regex": "-\\\\w-.-|r-r-|-r-r|r-.-r|g-g-|-g-g|g-.-g|Runn|rint"
+    },
+    "act8_the_harbour_bridge": {
+      "tasks": [
+        "TIP: Ctrl+Click the entrance to reset the zone for more XP on your way out."
+      ]
+    },
+    "act9_highgate": {
+      "regex": "-\\\\w-.-|r-r-|-r-r|r-.-r|g-g-|-g-g|g-.-g|Runn|rint"
+    },
+    "act9_the_descent": {
+      "weapon_target": "Sundering Axe / Ezomyte Axe / Vaal Axe / Despot Axe"
+    },
+    "act9_the_quarry": {
+      "tasks": [
+        "CRITICAL: Acquire the highest tier Physical Damage craft near the Waypoint."
+      ]
+    },
+    "act9_the_belly_of_the_beast": {
+      "tasks": [
+        "TIP: Consider rolling a Bleed Removal Flask for this zone."
+      ]
+    },
+    "act10_oriath_docks": {
+      "tasks": [
+        "REWARD (Safe Passage): Choose Silver Flask or Quartz Flask.",
+        "REWARD (Death and Rebirth): Choose Rare Gladiator Plate or General's Brigandine."
+      ],
+      "regex": "-\\\\w-.-|r-r-|-r-r|r-.-r|g-g-|-g-g|g-.-g|Runn|rint"
+    },
+    "act10_the_ravaged_square": {
+      "tasks": [
+        "TIP: Place a portal near the entrance, WP to town, then take portal south to find The Control Blocks."
+      ]
+    }
+  }
+}

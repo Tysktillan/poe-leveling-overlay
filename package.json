@@ -1,0 +1,47 @@
+{
+  "name": "poe-leveling-overlay",
+  "version": "1.0.0",
+  "description": "A transparent in-game overlay for Path of Exile that guides you through leveling with zone-by-zone tasks, skill gem links from Path of Building, and a passive skill tree tracker.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win portable"
+  },
+  "keywords": ["path-of-exile", "poe", "overlay", "leveling", "guide"],
+  "author": "jtill",
+  "license": "MIT",
+  "type": "commonjs",
+  "dependencies": {
+    "koffi": "^2.15.1",
+    "tail": "^2.2.6",
+    "tail-file": "^1.4.16"
+  },
+  "devDependencies": {
+    "electron": "^40.6.1",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.poe-leveling-overlay",
+    "productName": "PoE Leveling Overlay",
+    "win": {
+      "target": "portable",
+      "icon": null
+    },
+    "portable": {
+      "artifactName": "PoE-Leveling-Overlay.exe"
+    },
+    "files": [
+      "main.js",
+      "index.html",
+      "tree.html",
+      "treeRenderer.js",
+      "poe_tree.json",
+      "route.json",
+      "guide-duelist.json",
+      "build-duelist-sunder.json",
+      "duelist lvling.xml",
+      "package.json"
+    ],
+    "extraResources": []
+  }
+}

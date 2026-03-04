@@ -1,0 +1,19 @@
+node_modules/
+dist/
+build/
+
+# Runtime-generated files
+progress*.json
+debug_tree.txt
+settings.json
+
+# Claude Code
+.claude/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/

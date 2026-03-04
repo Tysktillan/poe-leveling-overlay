@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            color: #e0d1b1;
+            background: rgba(20, 20, 20, 0.85);
+            border: 1px solid rgba(93, 74, 45, 0.8);
+            margin: 0;
+            padding: 12px;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: 14px;
+            color: #ffb833;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .guide-btn {
+            background: #2a2a2a;
+            color: #e0d1b1;
+            border: 1px solid #5d4a2d;
+            padding: 8px;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            margin-bottom: 5px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+
+        .guide-btn:hover {
+            background: #5d4a2d;
+        }
+
+        ul {
+            padding-left: 18px;
+            margin: 8px 0;
+            font-size: 13px;
+            line-height: 1.3;
+        }
+
+        .regex-container {
+            display: flex;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 5px;
+            border-radius: 3px;
+            margin-top: 5px;
+            border: 1px solid #444;
+        }
+
+        #regex-text {
+            font-family: monospace;
+            font-size: 11px;
+            color: #44ff44;
+            flex-grow: 1;
+        }
+
+        .action-btn {
+            background: #5d4a2d;
+            color: white;
+            border: none;
+            padding: 2px 8px;
+            font-size: 10px;
+            cursor: pointer;
+            border-radius: 2px;
+        }
+
+        .focus-hint {
+            color: #ff4444;
+            font-size: 10px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .flash-green {
+            border-color: #44ff44 !important;
+            box-shadow: 0 0 10px #44ff44;
+            transition: all 0.2s;
+        }
+
+        .step-counter {
+            color: #888;
+            font-size: 9px;
+            text-align: right;
+            margin-bottom: 2px;
+        }
+
+        /* --- Collapsible sections --- */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: default;
+            user-select: none;
+        }
+
+        .section-header.interactive {
+            cursor: pointer;
+        }
+
+        .section-header.interactive:hover {
+            opacity: 0.8;
+        }
+
+        .collapse-arrow {
+            font-size: 9px;
+            color: #888;
+            margin-left: 6px;
+            display: none;
+        }
+
+        .section-header.interactive .collapse-arrow {
+            display: inline;
+        }
+
+        .section-body.collapsed {
+            display: none !important;
+        }
+
+        /* --- Gems UI --- */
+        #gems-ui {
+            background: rgba(30, 30, 50, 0.85);
+            border-left: 3px solid #9966cc;
+            padding: 5px;
+            margin-bottom: 8px;
+        }
+
+        .gem-select {
+            background: #2a2a2a;
+            color: #e0d1b1;
+            border: 1px solid #5d4a2d;
+            padding: 2px 4px;
+            font-size: 10px;
+            border-radius: 2px;
+            outline: none;
+            max-width: 180px;
+        }
+
+        .gem-link-group {
+            font-size: 11px;
+            margin: 3px 0;
+            padding: 2px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .gem-link-group:last-child {
+            border-bottom: none;
+        }
+
+        .gem-main {
+            color: #e0d1b1;
+            font-weight: bold;
+        }
+
+        .gem-support {
+            color: #8888bb;
+            font-size: 10px;
+        }
+
+        .gem-disabled {
+            opacity: 0.4;
+            text-decoration: line-through;
+        }
+
+        .gem-label {
+            color: #aa8855;
+            font-size: 9px;
+            font-style: italic;
+            display: block;
+            margin-top: 1px;
+        }
+
+        /* --- PoB Build Browser --- */
+        .pob-folder-header {
+            font-size: 9px;
+            color: #cc8833;
+            margin: 6px 0 2px 0;
+            text-transform: uppercase;
+            padding-left: 2px;
+        }
+
+        #pob-builds-list::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        #pob-builds-list::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        #pob-builds-list::-webkit-scrollbar-thumb {
+            background: #5d4a2d;
+            border-radius: 2px;
+        }
+
+        .pob-no-builds {
+            font-size: 11px;
+            color: #666;
+            padding: 4px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="startup-screen">
+        <div id="log-path-section" style="margin-bottom: 10px;">
+            <div style="display: flex; align-items: center;">
+                <span style="font-size: 9px; color: #888; text-transform: uppercase; margin-right: 6px;">Game Log</span>
+                <span id="log-path" style="font-size: 9px; color: #666; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title=""></span>
+                <button class="action-btn" id="change-log-btn" style="margin-left: 6px; font-size: 9px;">Browse</button>
+            </div>
+            <div id="log-path-status" style="font-size: 10px; margin-top: 3px;"></div>
+        </div>
+
+        <h2>Select a Build</h2>
+
+        <div id="pob-section">
+            <div style="display: flex; align-items: center; margin-bottom: 6px;">
+                <span style="font-size: 9px; color: #888; text-transform: uppercase; margin-right: 6px;">PoB Builds</span>
+                <span id="pob-path" style="font-size: 9px; color: #666; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title=""></span>
+                <button class="action-btn" id="change-pob-btn" style="margin-left: 6px; font-size: 9px;">Change</button>
+            </div>
+            <div id="pob-builds-list" style="max-height: 300px; overflow-y: auto;">Scanning...</div>
+        </div>
+
+        <div id="custom-builds-section" style="margin-top: 10px; display: none;">
+            <div style="font-size: 9px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Custom Builds</div>
+            <div id="build-list"></div>
+        </div>
+    </div>
+
+    <div id="play-screen" style="display:none; flex-direction: column;">
+        <div id="step-counter" class="step-counter"></div>
+        <div id="focus-msg" class="focus-hint" style="display:none;">INTERACTIVE MODE (Ctrl+Shift+F to exit)</div>
+
+        <div id="weapon-ui" style="display:none;">
+            <div class="section-header" id="weapon-header"
+                style="background: rgba(40, 30, 20, 0.85); border-left: 3px solid #cc8833; padding: 5px; margin-bottom: 0;">
+                <strong style="color: #cc8833; font-size: 9px;">WEAPON TARGET</strong>
+                <span class="collapse-arrow" id="weapon-arrow">&#9660;</span>
+            </div>
+            <div class="section-body" id="weapon-body"
+                style="background: rgba(40, 30, 20, 0.85); border-left: 3px solid #cc8833; padding: 0 5px 5px 5px; margin-bottom: 8px;">
+                <div id="weapon-text" style="font-size: 11px; margin-top: 2px; color: #e0d1b1;"></div>
+            </div>
+        </div>
+
+        <div id="gems-ui" style="display:none;">
+            <div class="section-header" id="gems-header">
+                <strong style="color: #9966cc; font-size: 9px;">SKILL GEMS</strong>
+                <span class="collapse-arrow" id="gems-arrow">&#9660;</span>
+            </div>
+            <div class="section-body" id="gems-body">
+                <select id="gem-set-select" class="gem-select" style="margin: 4px 0;"></select>
+                <div id="gem-links"></div>
+            </div>
+        </div>
+
+        <h2 id="zone-name">Awaiting Zone...</h2>
+        <ul id="task-list">
+            <li>Waiting for you to enter a zone...</li>
+        </ul>
+
+        <div id="regex-ui" style="display:none;" class="regex-container">
+            <span id="regex-text"></span>
+            <button id="copy-btn" class="action-btn">Copy</button>
+        </div>
+    </div>
+
+    <script>
+        const { ipcRenderer, clipboard } = require('electron');
+
+        let interactiveMode = false;
+        let weaponCollapsed = false;
+        let gemsCollapsed = false;
+        let allSkillSets = [];
+
+        // --- STARTUP LOGIC ---
+
+        // PoB builds browser
+        async function loadPobBuilds() {
+            const result = await ipcRenderer.invoke('get-pob-builds');
+            renderPobBuilds(result.pobPath, result.builds);
+        }
+
+        function renderPobBuilds(pobPath, builds) {
+            document.getElementById('pob-path').innerText = pobPath;
+            document.getElementById('pob-path').title = pobPath;
+
+            const container = document.getElementById('pob-builds-list');
+            if (builds.length === 0) {
+                container.innerHTML = '<p class="pob-no-builds">No .xml builds found in this folder.</p>';
+                resizeStartup();
+                return;
+            }
+
+            // Group by folder
+            const groups = {};
+            builds.forEach(b => {
+                const key = b.folder || '';
+                if (!groups[key]) groups[key] = [];
+                groups[key].push(b);
+            });
+
+            // Sort: root files first, then subfolders alphabetically
+            const sortedKeys = Object.keys(groups).sort((a, b) => {
+                if (!a) return -1;
+                if (!b) return 1;
+                return a.localeCompare(b);
+            });
+
+            let html = '';
+            for (const folder of sortedKeys) {
+                if (folder) {
+                    html += `<div class="pob-folder-header">${folder}/</div>`;
+                }
+                for (const build of groups[folder]) {
+                    html += `<button class="guide-btn pob-btn" data-path="${build.fullPath.replace(/"/g, '&quot;')}">${build.name}</button>`;
+                }
+            }
+
+            container.innerHTML = html;
+            resizeStartup();
+        }
+
+        document.getElementById('pob-builds-list').addEventListener('click', (e) => {
+            const btn = e.target.closest('.pob-btn');
+            if (btn) {
+                selectPobBuild(btn.dataset.path);
+            }
+        });
+
+        document.getElementById('change-pob-btn').addEventListener('click', async () => {
+            const result = await ipcRenderer.invoke('change-pob-folder');
+            if (result) {
+                renderPobBuilds(result.pobPath, result.builds);
+            }
+        });
+
+        function selectPobBuild(fullPath) {
+            document.getElementById('startup-screen').style.display = 'none';
+            document.getElementById('play-screen').style.display = 'flex';
+            ipcRenderer.send('pob-build-selected', fullPath);
+
+            const height = document.getElementById('play-screen').offsetHeight;
+            ipcRenderer.send('resize-window', height + 24);
+        }
+
+        // Custom builds (build-*.json)
+        ipcRenderer.on('available-builds', (event, files) => {
+            const section = document.getElementById('custom-builds-section');
+            const list = document.getElementById('build-list');
+            if (files.length === 0) {
+                section.style.display = 'none';
+                return;
+            }
+            section.style.display = 'block';
+            const fs = require('fs');
+            const path = require('path');
+            list.innerHTML = files.map(f => {
+                let label = f;
+                try {
+                    const cfg = JSON.parse(fs.readFileSync(path.join(__dirname, f), 'utf8'));
+                    label = cfg.name || f;
+                } catch (e) { /* use filename */ }
+                return `<button class="guide-btn" onclick="selectBuild('${f}')">${label}</button>`;
+            }).join('');
+
+            resizeStartup();
+        });
+
+        function selectBuild(filename) {
+            document.getElementById('startup-screen').style.display = 'none';
+            document.getElementById('play-screen').style.display = 'flex';
+            ipcRenderer.send('build-selected', filename);
+
+            const height = document.getElementById('play-screen').offsetHeight;
+            ipcRenderer.send('resize-window', height + 24);
+        }
+
+        function resizeStartup() {
+            if (document.getElementById('startup-screen').style.display !== 'none') {
+                const height = document.getElementById('startup-screen').offsetHeight;
+                ipcRenderer.send('resize-window', height + 24);
+            }
+        }
+
+        // Log path display
+        async function loadLogPath() {
+            const result = await ipcRenderer.invoke('get-log-path');
+            const pathEl = document.getElementById('log-path');
+            const statusEl = document.getElementById('log-path-status');
+            if (result.detected && result.logPath) {
+                pathEl.innerText = result.logPath;
+                pathEl.title = result.logPath;
+                statusEl.innerHTML = '<span style="color: #44ff44;">&#10003; Detected</span>';
+            } else {
+                pathEl.innerText = 'Not found';
+                statusEl.innerHTML = '<span style="color: #ff4444;">Client.txt not found &mdash; click Browse to set it manually</span>';
+            }
+            resizeStartup();
+        }
+
+        document.getElementById('change-log-btn').addEventListener('click', async () => {
+            const result = await ipcRenderer.invoke('change-log-path');
+            if (result) {
+                document.getElementById('log-path').innerText = result.logPath;
+                document.getElementById('log-path').title = result.logPath;
+                document.getElementById('log-path-status').innerHTML = '<span style="color: #44ff44;">&#10003; Set</span>';
+                resizeStartup();
+            }
+        });
+
+        // Kick off log path check + PoB scanning on load
+        loadLogPath();
+        loadPobBuilds();
+
+        // --- PLAY OVERLAY LOGIC ---
+        const resizeObserver = new ResizeObserver(entries => {
+            if (document.getElementById('play-screen').style.display !== 'none') {
+                const height = document.getElementById('play-screen').offsetHeight;
+                ipcRenderer.send('resize-window', height + 24);
+            }
+        });
+        resizeObserver.observe(document.getElementById('play-screen'));
+
+        // --- COPY BUTTON ---
+        document.getElementById('copy-btn').addEventListener('click', () => {
+            const text = document.getElementById('regex-text').innerText;
+            clipboard.writeText(text);
+            document.body.classList.add('flash-green');
+            setTimeout(() => document.body.classList.remove('flash-green'), 500);
+        });
+
+        // --- INTERACTIVE / FOCUS MODE ---
+        ipcRenderer.on('focus-mode', (event, active) => {
+            interactiveMode = active;
+            document.getElementById('focus-msg').style.display = active ? 'block' : 'none';
+
+            // Toggle interactive class on section headers
+            document.querySelectorAll('.section-header').forEach(h => {
+                if (active) h.classList.add('interactive');
+                else h.classList.remove('interactive');
+            });
+        });
+
+        // --- COLLAPSIBLE SECTIONS ---
+        document.getElementById('weapon-header').addEventListener('click', () => {
+            if (!interactiveMode) return;
+            weaponCollapsed = !weaponCollapsed;
+            document.getElementById('weapon-body').classList.toggle('collapsed', weaponCollapsed);
+            document.getElementById('weapon-arrow').innerHTML = weaponCollapsed ? '&#9654;' : '&#9660;';
+        });
+
+        document.getElementById('gems-header').addEventListener('click', () => {
+            if (!interactiveMode) return;
+            gemsCollapsed = !gemsCollapsed;
+            document.getElementById('gems-body').classList.toggle('collapsed', gemsCollapsed);
+            document.getElementById('gems-arrow').innerHTML = gemsCollapsed ? '&#9654;' : '&#9660;';
+        });
+
+        // --- GEM DATA FROM MAIN PROCESS ---
+        ipcRenderer.on('gem-data', (event, skillSets) => {
+            allSkillSets = skillSets;
+            if (skillSets.length === 0) return;
+
+            document.getElementById('gems-ui').style.display = 'block';
+
+            const select = document.getElementById('gem-set-select');
+            select.innerHTML = '';
+            skillSets.forEach((ss, idx) => {
+                const opt = document.createElement('option');
+                opt.value = idx;
+                opt.text = ss.title;
+                select.appendChild(opt);
+            });
+
+            select.addEventListener('change', (e) => {
+                renderGemSet(parseInt(e.target.value, 10));
+            });
+
+            renderGemSet(0);
+        });
+
+        function renderGemSet(index) {
+            const container = document.getElementById('gem-links');
+            const ss = allSkillSets[index];
+            if (!ss) { container.innerHTML = ''; return; }
+
+            container.innerHTML = ss.skills.map(skill => {
+                const mainGems = skill.gems.filter(g => !g.isSupport);
+                const supportGems = skill.gems.filter(g => g.isSupport);
+
+                let html = '<div class="gem-link-group">';
+
+                // Main gem(s)
+                const mainParts = mainGems.map(g => {
+                    const cls = g.enabled ? 'gem-main' : 'gem-main gem-disabled';
+                    return `<span class="${cls}">${g.name}</span>`;
+                });
+
+                // Support gems
+                const supportParts = supportGems.map(g => {
+                    const cls = g.enabled ? 'gem-support' : 'gem-support gem-disabled';
+                    return `<span class="${cls}">${g.name}</span>`;
+                });
+
+                const allParts = [...mainParts, ...supportParts];
+                html += allParts.join(' <span style="color:#555;font-size:9px;">+</span> ');
+
+                // Skill label (author note)
+                if (skill.label) {
+                    html += `<span class="gem-label">${skill.label}</span>`;
+                }
+
+                html += '</div>';
+                return html;
+            }).join('');
+        }
+
+        // --- ZONE CHANGE HANDLER ---
+        ipcRenderer.on('zone-change', (event, payload) => {
+            const currentZone = payload.zone;
+            const currentData = payload.data;
+
+            // Step counter
+            if (payload.step && payload.totalSteps) {
+                document.getElementById('step-counter').innerText = `Step ${payload.step} / ${payload.totalSteps}`;
+            }
+
+            document.getElementById('zone-name').innerText = currentZone;
+            document.getElementById('task-list').innerHTML = currentData.tasks.map(t => `<li>${t}</li>`).join('');
+
+            const regexUI = document.getElementById('regex-ui');
+            if (currentData.regex) {
+                regexUI.style.display = 'flex';
+                document.getElementById('regex-text').innerText = currentData.regex;
+            } else {
+                regexUI.style.display = 'none';
+            }
+
+            // Weapon Target: sticky, only updates when a new one is set
+            const weaponUI = document.getElementById('weapon-ui');
+            if (currentData.weapon_target) {
+                weaponUI.style.display = 'block';
+                document.getElementById('weapon-text').innerText = currentData.weapon_target;
+            }
+        });
+    </script>
+</body>
+
+</html>

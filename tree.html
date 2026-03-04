@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.40);
+            color: white;
+            font-family: sans-serif;
+        }
+
+        canvas {
+            display: block;
+            cursor: grab;
+        }
+
+        canvas:active {
+            cursor: grabbing;
+        }
+
+        #close {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            cursor: pointer;
+            font-size: 24px;
+            z-index: 10;
+            padding: 10px;
+        }
+
+        #controls {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            z-index: 10;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="close">X</div>
+    <div id="controls">
+        <select id="specSelect"
+            style="margin-bottom: 5px; background: #333; color: white; border: 1px solid #555; padding: 4px; width: 100%; font-size: 14px; outline: none; cursor: pointer;"></select>
+        <p style="margin: 0; font-size: 12px; opacity: 0.8; text-align: center;">Ctrl+Drag to Pan | Shift+Scroll to Zoom</p>
+    </div>
+    <canvas id="treeCanvas"></canvas>
+
+    <script>
+        // We'll read the local file using Node.js integration
+        const fs = require('fs');
+        const path = require('path');
+        const { ipcRenderer } = require('electron');
+
+        document.getElementById('close').addEventListener('click', () => {
+            ipcRenderer.send('hide-tree');
+        });
+
+        // Manage mouse focus for UI controls (Handled dynamically in treeRenderer.js)
+        const controls = document.getElementById('controls');
+        const closeBtn = document.getElementById('close');
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                ipcRenderer.send('hide-tree');
+            }
+        });
+    </script>
+    <script src="treeRenderer.js"></script>
+</body>
+
+</html>
