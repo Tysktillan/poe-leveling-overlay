@@ -490,14 +490,19 @@ function draw() {
 
     ctx.restore();
 
-    // Debug: show totalPassives and draw counts on canvas
+    // Passive point info overlay
     ctx.save();
+    const infoText = `passives: ${totalPassives} / path: ${nodePathOrder.length}`;
+    const hintText = `type /passives in chat to sync`;
+    ctx.font = '13px monospace';
+    const infoWidth = Math.max(ctx.measureText(infoText).width, ctx.measureText(hintText).width) + 16;
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
-    ctx.fillRect(canvas.width - 320, 10, 310, 50);
+    ctx.fillRect(canvas.width - infoWidth - 5, 10, infoWidth, 42);
     ctx.fillStyle = '#0f0';
-    ctx.font = '14px monospace';
-    ctx.fillText(`passives: ${totalPassives} / path: ${nodePathOrder.length}`, canvas.width - 315, 28);
-    ctx.fillText(`drawn: ${debugActive} active + ${debugGreen} green + ${debugInactive} gray`, canvas.width - 315, 48);
+    ctx.fillText(infoText, canvas.width - infoWidth, 28);
+    ctx.fillStyle = '#888';
+    ctx.font = '11px monospace';
+    ctx.fillText(hintText, canvas.width - infoWidth, 45);
     ctx.restore();
 }
 
