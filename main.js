@@ -1,4 +1,4 @@
-const { app, BrowserWindow, globalShortcut, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, globalShortcut, ipcMain, dialog, Tray, Menu } = require('electron');
 const { Tail } = require('tail');
 const fs = require('fs');
 const path = require('path');
@@ -127,6 +127,8 @@ function parseClassFromXml(xmlPath) {
 let mainWindow;
 let treeWindow;
 let notesWindow;
+let tray = null;
+let isQuitting = false;
 let parsedNotes = '';      // Raw notes text from PoB XML
 let guideData = [];       // Merged step array (route + build overlay)
 let tailInstance = null;
@@ -528,6 +530,38 @@ function findSavedLevelInLog(charName) {
 // Window creation & event wiring
 // ---------------------------------------------------------------------------
 
+function showMainWindow() {
+    if (!mainWindow || mainWindow.isDestroyed()) return;
+    mainWindow.show();
+    mainWindow.focus();
+}
+
+function hideOverlaysToTray() {
+    if (treeWindow && !treeWindow.isDestroyed()) treeWindow.hide();
+    if (notesWindow && !notesWindow.isDestroyed()) notesWindow.hide();
+    if (mainWindow && !mainWindow.isDestroyed()) mainWindow.hide();
+}
+
+function createTray() {
+    if (tray) return;
+
+    const iconPath = path.join(__dirname, 'build', 'icon.ico');
+    tray = new Tray(iconPath);
+    tray.setToolTip('PoE Leveling Overlay');
+    tray.setContextMenu(Menu.buildFromTemplate([
+        { label: 'Show Overlay', click: () => showMainWindow() },
+        { type: 'separator' },
+        {
+            label: 'Quit',
+            click: () => {
+                isQuitting = true;
+                app.quit();
+            }
+        }
+    ]));
+    tray.on('double-click', () => showMainWindow());
+}
+
 function createWindow() {
     loadQuestGemData();
 
@@ -535,6 +569,15 @@ function createWindow() {
         width: 350, height: 250, x: 30, y: 30,
         frame: false, transparent: true, alwaysOnTop: true,
         webPreferences: { nodeIntegration: true, contextIsolation: false }
+    });
+
+    createTray();
+
+    // Closing the main window hides to tray; use tray menu to quit.
+    mainWindow.on('close', (event) => {
+        if (isQuitting) return;
+        event.preventDefault();
+        hideOverlaysToTray();
     });
 
     treeWindow = new BrowserWindow({
@@ -1171,4 +1214,21 @@ function startTailing() {
 }
 
 app.whenReady().then(createWindow);
-app.on('will-quit', () => { globalShortcut.unregisterAll(); });
+
+app.on('before-quit', () => {
+    isQuitting = true;
+});
+
+app.on('activate', () => {
+    if (mainWindow && !mainWindow.isDestroyed() && !mainWindow.isVisible()) {
+        showMainWindow();
+    }
+});
+
+app.on('will-quit', () => {
+    globalShortcut.unregisterAll();
+    if (tray) {
+        tray.destroy();
+        tray = null;
+    }
+});
