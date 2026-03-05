@@ -126,6 +126,8 @@ function parseClassFromXml(xmlPath) {
 
 let mainWindow;
 let treeWindow;
+let notesWindow;
+let parsedNotes = '';      // Raw notes text from PoB XML
 let guideData = [];       // Merged step array (route + build overlay)
 let tailInstance = null;
 let currentStep = 0;      // Progression pointer
@@ -139,6 +141,173 @@ let totalPassives = 0;     // Computed from level + quests
 let currentBuildConfig = null; // The loaded build overlay (for PoB XML path etc.)
 let parsedSkillSets = [];      // Gem link data parsed from PoB XML
 let levelingRegexPresets = [];  // Regex presets from zone-guide.json
+
+// ---------------------------------------------------------------------------
+// Quest Gem Rewards
+// ---------------------------------------------------------------------------
+
+let questGemData = [];     // Loaded from quest-gem-rewards.json
+let buildQuestGems = [];   // Computed for current build + class
+let buildLillyRothGems = []; // Gems to buy from Lilly Roth (not covered by quest rewards)
+let gemPickupMap = {};     // step_id ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ [{gem, npc, quest}] for task injection
+
+let vendorUnlocks = []; // Loaded from quest-gem-rewards.json vendor_unlocks
+
+// Maps each quest to the route step_id where its rewards should be picked up.
+// The step_id corresponds to the town visit (or zone) right after quest completion.
+const QUEST_STEP_MAP = {
+    'Enemy at the Gate': 'act1_lioneye_s_watch',
+    'Mercy Mission': 'act1_lioneye_s_watch_2',
+    'Breaking Some Eggs': 'act1_the_fetid_pool',
+    'The Caged Brute': 'act1_lioneye_s_watch_3',
+    "The Siren's Cadence": 'act2_lioneye_s_watch',
+    'Intruders in Black': 'act2_the_forest_encampment_3',
+    'Sharp and Cruel': 'act2_the_forest_encampment_4',
+    'Lost in Love': 'act3_the_sarn_encampment_2',
+    'Sever the Right Hand': 'act3_the_sarn_encampment_3',
+    'A Fixture of Fate': 'act3_the_library',
+    'Breaking the Seal': 'act4_the_crystal_veins',
+    'The Eternal Nightmare': 'act6_lioneye_s_watch',
+};
+
+const LILLY_ROTH_STEP = 'act6_the_twilight_strand';
+
+// Steps where the NPC is NOT in the current zone ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â extra instructions needed
+const PICKUP_INSTRUCTIONS = {
+    'act1_the_fetid_pool': 'DO NOT SKIP! Complete zone, WP to town',
+    'act3_the_library': 'DO NOT SKIP! Complete quest',
+    'act4_the_crystal_veins': 'WP to Highgate',
+    'act6_lioneye_s_watch': 'WP to Overseer\'s Tower',
+};
+
+function loadQuestGemData() {
+    try {
+        const filePath = path.join(__dirname, 'quest-gem-rewards.json');
+        const raw = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        // Support both old array format and new object format
+        if (Array.isArray(raw)) {
+            questGemData = raw;
+            vendorUnlocks = [];
+        } else {
+            questGemData = raw.quest_gem_rewards || [];
+            vendorUnlocks = raw.vendor_unlocks || [];
+        }
+        console.log(`Loaded ${questGemData.length} quest reward entries, ${vendorUnlocks.length} vendor unlocks`);
+    } catch (e) {
+        console.warn('quest-gem-rewards.json not found:', e.message);
+        questGemData = [];
+        vendorUnlocks = [];
+    }
+}
+
+function normalizeGemName(name) {
+    return String(name || '').trim().replace(/^Vaal\\s+/i, '').toLowerCase();
+}
+
+function hasBuildGem(buildGemNames, gemName) {
+    if (buildGemNames.has(gemName)) return true;
+    const target = normalizeGemName(gemName);
+    for (const buildGem of buildGemNames) {
+        if (normalizeGemName(buildGem) === target) return true;
+    }
+    return false;
+}
+
+function computeBuildQuestGems(skillSets, playerClass) {
+    if (!playerClass || !questGemData.length || !skillSets.length) return { questGems: [], lillyRothGems: [] };
+
+    // Collect all unique gem names from all skill sets in the build
+    const buildGemNames = new Set();
+    for (const ss of skillSets) {
+        for (const skill of ss.skills) {
+            for (const gem of skill.gems) {
+                buildGemNames.add(gem.name);
+            }
+        }
+    }
+
+    // For each quest, find which build gems are rewards for this class
+    const questGems = [];
+    const coveredByQuest = new Set();
+    const seen = new Set();
+    for (const questEntry of questGemData) {
+        const classGems = questEntry.rewards[playerClass] || [];
+        for (const gemName of classGems) {
+            const normGem = normalizeGemName(gemName);
+            if (hasBuildGem(buildGemNames, gemName) && !seen.has(normGem)) {
+                seen.add(normGem);
+                questGems.push({
+                    gem: gemName,
+                    quest: questEntry.quest,
+                    act: questEntry.act,
+                    npc: questEntry.npc || '',
+                    optional: questEntry.optional || false
+                });
+                coveredByQuest.add(normGem);
+            }
+        }
+    }
+
+    // Gems in the build that are NOT covered by any quest reward for this class
+    // ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ available from Lilly Roth after Act 6 "Fallen from Grace"
+    const lillyRothGems = [];
+    for (const gemName of buildGemNames) {
+        if (!coveredByQuest.has(normalizeGemName(gemName))) {
+            lillyRothGems.push(gemName);
+        }
+    }
+    lillyRothGems.sort();
+
+    // Sort quest gems by act, then gem name
+    questGems.sort((a, b) => a.act - b.act || a.gem.localeCompare(b.gem));
+
+    return { questGems, lillyRothGems };
+}
+
+// Build a map from step_id ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ gem pickups for task injection in sendZoneData
+function buildGemPickupMapFromQuests(questGems, guideSteps) {
+    const map = {};
+
+    // Primary mapping source: route step metadata (quest_reward -> step_id)
+    const routeQuestStepMap = {};
+    for (const step of (guideSteps || [])) {
+        if (step && step.quest_reward && step.step_id && !routeQuestStepMap[step.quest_reward]) {
+            routeQuestStepMap[step.quest_reward] = step.step_id;
+        }
+    }
+
+    for (const qg of questGems) {
+        // Fallback keeps support for quests not explicitly tagged in route data
+        const stepId = routeQuestStepMap[qg.quest] || QUEST_STEP_MAP[qg.quest];
+        if (!stepId) continue;
+        if (!map[stepId]) map[stepId] = [];
+        map[stepId].push({ gem: qg.gem, npc: qg.npc, quest: qg.quest });
+    }
+    return map;
+}
+
+function buildQuestGemClaimsForStep(stepData, tasks) {
+    if (!stepData || !stepData.quest_reward) return [];
+
+    const questMatches = buildQuestGems.filter(qg => qg.quest === stepData.quest_reward);
+    if (questMatches.length === 0) return [];
+
+    const gems = questMatches.map(qg => qg.gem).sort((a, b) => a.localeCompare(b));
+    const fallbackNpc = questMatches[0].npc || '';
+
+    let npcFromTask = '';
+    for (const task of (tasks || [])) {
+        if (!/claim.*quest.*gem|claim.*gem.*reward/i.test(task)) continue;
+        const m = String(task).match(/\bfrom\s+(.+)$/i);
+        if (m) {
+            npcFromTask = m[1].trim();
+            break;
+        }
+    }
+
+    const npc = npcFromTask || fallbackNpc || 'Quest NPC';
+    return [`Claim ${gems.join(', ')} from ${npc}`];
+}
 
 // ---------------------------------------------------------------------------
 // Route + Build merging
@@ -264,6 +433,29 @@ function parseGemsFromXml(xmlFileOrPath) {
 }
 
 // ---------------------------------------------------------------------------
+// PoB Notes Parsing
+// ---------------------------------------------------------------------------
+
+function parseNotesFromXml(xmlPath) {
+    try {
+        const xmlData = fs.readFileSync(xmlPath, 'utf8');
+        const match = xmlData.match(/<Notes>([\s\S]*?)<\/Notes>/);
+        if (match) {
+            return match[1]
+                .replace(/&amp;/g, '&')
+                .replace(/&lt;/g, '<')
+                .replace(/&gt;/g, '>')
+                .replace(/&apos;/g, "'")
+                .replace(/&quot;/g, '"')
+                .trim();
+        }
+    } catch (e) {
+        console.error('Failed to parse notes from XML:', e.message);
+    }
+    return '';
+}
+
+// ---------------------------------------------------------------------------
 // Progress persistence
 // ---------------------------------------------------------------------------
 
@@ -337,6 +529,8 @@ function findSavedLevelInLog(charName) {
 // ---------------------------------------------------------------------------
 
 function createWindow() {
+    loadQuestGemData();
+
     mainWindow = new BrowserWindow({
         width: 350, height: 250, x: 30, y: 30,
         frame: false, transparent: true, alwaysOnTop: true,
@@ -350,6 +544,33 @@ function createWindow() {
         webPreferences: { nodeIntegration: true, contextIsolation: false }
     });
     treeWindow.loadFile('tree.html');
+
+    // Notes overlay window (hidden by default, toggled with Ctrl+Shift+D)
+    notesWindow = new BrowserWindow({
+        width: 750, height: 550, show: false,
+        frame: false, transparent: true, alwaysOnTop: true,
+        focusable: false,
+        webPreferences: { nodeIntegration: true, contextIsolation: false }
+    });
+    notesWindow.loadFile('notes.html');
+    notesWindow.setIgnoreMouseEvents(true, { forward: true });
+
+    // Notes window mouse focus: enable when hovering over content
+    ipcMain.on('notes-ignore-mouse', (event, ignore, options) => {
+        if (notesWindow) notesWindow.setIgnoreMouseEvents(ignore, options);
+    });
+
+    ipcMain.on('hide-notes', () => {
+        notesWindow.hide();
+    });
+
+    ipcMain.on('resize-notes', (event, contentHeight) => {
+        if (!notesWindow) return;
+        const width = 700;
+        const height = Math.min(Math.max(contentHeight + 2, 80), 600); // clamp 80ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“600
+        notesWindow.setSize(width, height);
+        notesWindow.center();
+    });
 
     // Ignore all mouse events by default (click-through to game)
     // but forward them to renderer so it can listen for Right-Clicks
@@ -438,11 +659,15 @@ function createWindow() {
     // Direct PoB XML selection (no build-*.json overlay)
     ipcMain.on('pob-build-selected', (event, pobXmlPath) => {
         try {
-            // Load the generic zone guide
-            const guidePath = path.join(__dirname, 'zone-guide.json');
-            const guideFile = JSON.parse(fs.readFileSync(guidePath, 'utf8'));
-            guideData = guideFile.steps || guideFile; // support object format or legacy array
-            levelingRegexPresets = guideFile.leveling_regex || [];
+            // Load route.json for steps (has step_ids needed for quest gem task injection)
+            const routePath = path.join(__dirname, 'route.json');
+            const routeFile = JSON.parse(fs.readFileSync(routePath, 'utf8'));
+            guideData = routeFile.steps || routeFile;
+            // Load regex presets from zone-guide.json separately
+            try {
+                const zoneGuide = JSON.parse(fs.readFileSync(path.join(__dirname, 'zone-guide.json'), 'utf8'));
+                levelingRegexPresets = zoneGuide.leveling_regex || [];
+            } catch (e) { levelingRegexPresets = []; }
             mainWindow.webContents.send('regex-presets', levelingRegexPresets);
 
             // Parse class info from the PoB XML
@@ -466,8 +691,20 @@ function createWindow() {
             parsedSkillSets = parseGemsFromXml(pobXmlPath);
             mainWindow.webContents.send('gem-data', parsedSkillSets);
 
+            // Compute and send quest gem reminders for this class
+            const questResult = computeBuildQuestGems(parsedSkillSets, classInfo.className);
+            buildQuestGems = questResult.questGems;
+            buildLillyRothGems = questResult.lillyRothGems;
+            gemPickupMap = buildGemPickupMapFromQuests(buildQuestGems, guideData);
+            mainWindow.webContents.send('quest-gem-data', buildQuestGems, questResult.lillyRothGems, 'pob:' + pobXmlPath);
+            console.log(`Quest gem reminders: ${buildQuestGems.length} quest gems, ${questResult.lillyRothGems.length} Lilly Roth gems for ${classInfo.className}`);
+
             // Send PoB to tree window
             treeWindow.webContents.send('load-pob', pobXmlPath, classInfo.className);
+
+            // Parse and send notes to notes overlay
+            parsedNotes = parseNotesFromXml(pobXmlPath);
+            notesWindow.webContents.send('load-notes', parsedNotes, currentBuildConfig.name);
 
             mainWindow.setIgnoreMouseEvents(true);
             startTailing();
@@ -495,9 +732,10 @@ function createWindow() {
             const routeFile = currentBuildConfig.route || 'route.json';
             const routePath = path.join(__dirname, routeFile);
             const route = JSON.parse(fs.readFileSync(routePath, 'utf8'));
+            const routeSteps = route.steps || route;
 
             // Merge route + build overlay
-            guideData = mergeGuide(route, currentBuildConfig);
+            guideData = mergeGuide(routeSteps, currentBuildConfig);
 
             // Load regex presets from zone-guide.json
             try {
@@ -518,6 +756,19 @@ function createWindow() {
                 treeWindow.webContents.send('load-pob', currentBuildConfig.pob_xml, currentBuildConfig.class || 'Duelist');
                 parsedSkillSets = parseGemsFromXml(currentBuildConfig.pob_xml);
                 mainWindow.webContents.send('gem-data', parsedSkillSets);
+
+                // Compute and send quest gem reminders
+                const buildClass = currentBuildConfig.class || '';
+                const questResult2 = computeBuildQuestGems(parsedSkillSets, buildClass);
+                buildQuestGems = questResult2.questGems;
+                buildLillyRothGems = questResult2.lillyRothGems;
+                gemPickupMap = buildGemPickupMapFromQuests(buildQuestGems, guideData);
+                mainWindow.webContents.send('quest-gem-data', buildQuestGems, questResult2.lillyRothGems, buildFilename);
+                console.log(`Quest gem reminders: ${buildQuestGems.length} quest gems, ${questResult2.lillyRothGems.length} Lilly Roth gems for ${buildClass}`);
+
+                // Parse and send notes to notes overlay
+                parsedNotes = parseNotesFromXml(currentBuildConfig.pob_xml);
+                notesWindow.webContents.send('load-notes', parsedNotes, currentBuildConfig.name);
             }
 
             mainWindow.setIgnoreMouseEvents(true);
@@ -546,6 +797,9 @@ function createWindow() {
             currentStep = 0;
             currentLevel = 1;
             lastShownStep = -1;
+            gemPickupMap = {};
+            buildLillyRothGems = [];
+            buildQuestGems = [];
             console.log('Loaded legacy guide ' + filename + ' (' + guideData.length + ' steps)');
 
             mainWindow.setIgnoreMouseEvents(true);
@@ -589,7 +843,7 @@ function createWindow() {
                     if (guideData[i] && guideData[i].passive_reward) qp += guideData[i].passive_reward;
                 }
                 totalPassives = Math.max(0, currentLevel - 1) + qp;
-                console.log(`[Passives] Tree opened — recalc: level=${currentLevel}, fromLevel=${currentLevel - 1}, fromQuests=${qp}, total=${totalPassives}`);
+                console.log(`[Passives] Tree opened ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â recalc: level=${currentLevel}, fromLevel=${currentLevel - 1}, fromQuests=${qp}, total=${totalPassives}`);
             }
             treeWindow.webContents.send('update-passives', totalPassives);
             globalShortcut.register('Escape', () => {
@@ -598,7 +852,57 @@ function createWindow() {
             });
         }
     });
-    if (!treeShortcutOk) console.warn('WARNING: Ctrl+Shift+T shortcut registration FAILED — another app may be using it');
+    if (!treeShortcutOk) console.warn('WARNING: Ctrl+Shift+T shortcut registration FAILED ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â another app may be using it');
+
+    // Notes Overlay Hotkey
+    globalShortcut.register('CommandOrControl+Shift+D', () => {
+        if (notesWindow.isVisible()) {
+            notesWindow.hide();
+        } else {
+            notesWindow.setAlwaysOnTop(true, 'screen-saver');
+            notesWindow.center();
+            notesWindow.showInactive();
+            // Enable mouse interaction so user can scroll and click links
+            notesWindow.setIgnoreMouseEvents(false);
+        }
+    });
+
+    // Reset to Build Selection Hotkey
+    globalShortcut.register('CommandOrControl+Shift+R', () => {
+        // Stop tailing
+        if (tailInstance) {
+            tailInstance.unwatch();
+            tailInstance = null;
+        }
+        // Reset main process state
+        guideData = [];
+        currentBuildConfig = null;
+        currentBuildFile = '';
+        currentCharacter = '';
+        currentStep = 0;
+        lastShownStep = -1;
+        currentLevel = 1;
+        parsedSkillSets = [];
+        buildQuestGems = [];
+        buildLillyRothGems = [];
+        gemPickupMap = {};
+        parsedNotes = '';
+        activeMilestone = '';
+        activeWeapon = '';
+        totalPassives = 0;
+        // Exit focus mode if active
+        if (focusMode) {
+            focusMode = false;
+            mainWindow.setIgnoreMouseEvents(true);
+            mainWindow.webContents.send('focus-mode', false);
+        }
+        // Hide other overlays
+        if (treeWindow && treeWindow.isVisible()) treeWindow.hide();
+        if (notesWindow && notesWindow.isVisible()) notesWindow.hide();
+        // Enable mouse for build selection
+        mainWindow.setIgnoreMouseEvents(false);
+        mainWindow.webContents.send('reset-to-build-select');
+    });
 
     // Hide/Show Toggle Hotkey
     let overlayHidden = false;
@@ -631,7 +935,7 @@ function createWindow() {
         }
     });
 
-    // Copy completion — flash repaint (no longer exits focus mode)
+    // Copy completion ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â flash repaint (no longer exits focus mode)
     ipcMain.on('copy-done', () => {
         if (mainWindow) {
             mainWindow.setOpacity(0.99);
@@ -679,7 +983,61 @@ function sendZoneData(zone, stepData, stepIndex) {
     if (activeMilestone) enrichedData.tree_milestone = activeMilestone;
     if (activeWeapon) enrichedData.weapon_target = activeWeapon;
     enrichedData.totalPassives = totalPassives;
+    enrichedData.currentAct = stepData.act || 1;
     if (stepData.isTown) enrichedData.isTown = true;
+
+    // Replace generic quest reward lines with build-specific gem names when possible
+    if (Array.isArray(enrichedData.tasks) && enrichedData.tasks.length > 0) {
+        const claimTasks = buildQuestGemClaimsForStep(stepData, enrichedData.tasks);
+        if (claimTasks.length > 0) {
+            let replaced = false;
+            enrichedData.tasks = enrichedData.tasks.map(task => {
+                if (!replaced && /claim.*quest.*gem|claim.*gem.*reward/i.test(task)) {
+                    replaced = true;
+                    return claimTasks[0];
+                }
+                return task;
+            });
+
+            // If route text did not contain a generic claim line, add specific claim at top
+            if (!replaced) {
+                enrichedData.tasks = [...claimTasks, ...enrichedData.tasks];
+            }
+        }
+    }
+
+    // Inject quest gem pickup tasks at steps that do not already represent this quest turn-in
+    if (stepData.step_id && Object.keys(gemPickupMap).length > 0) {
+        const gemTasks = [];
+
+        // Skip pickups for the current quest if this step already has quest_reward mapping
+        const pickups = (gemPickupMap[stepData.step_id] || []).filter(p => p.quest !== stepData.quest_reward);
+        if (pickups.length > 0) {
+            const prefix = PICKUP_INSTRUCTIONS[stepData.step_id] || '';
+            const byNpc = {};
+            for (const p of pickups) {
+                if (!byNpc[p.npc]) byNpc[p.npc] = [];
+                byNpc[p.npc].push(p.gem);
+            }
+            for (const [npc, gems] of Object.entries(byNpc)) {
+                const gemList = gems.join(', ');
+                if (prefix) {
+                    gemTasks.push(`- ${prefix} - Pick up ${gemList} from ${npc}`);
+                } else {
+                    gemTasks.push(`- Pick up ${gemList} from ${npc}`);
+                }
+            }
+        }
+
+        // Lilly Roth gem purchases at this step
+        if (stepData.step_id === LILLY_ROTH_STEP && buildLillyRothGems.length > 0) {
+            gemTasks.push(`- After clearing: Buy ${buildLillyRothGems.join(', ')} from Lilly Roth`);
+        }
+
+        if (gemTasks.length > 0) {
+            enrichedData.tasks = [...gemTasks, ...(enrichedData.tasks || [])];
+        }
+    }
 
     mainWindow.webContents.send('zone-change', {
         zone: zone,
@@ -801,7 +1159,7 @@ function startTailing() {
                 }
             }
 
-            // 3. No match — show zone name without advancing
+            // 3. No match ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â show zone name without advancing
             mainWindow.webContents.send('zone-change', {
                 zone: zone,
                 data: { tasks: ["Proceed to next objective."] },

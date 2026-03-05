@@ -259,6 +259,112 @@
             color: #666;
             padding: 4px 0;
         }
+
+        /* --- Quest Gems UI --- */
+        #quest-gems-ui {
+            background: rgba(20, 35, 20, 0.9);
+            border-left: 3px solid #44cc44;
+            padding: 5px;
+            margin-bottom: 8px;
+        }
+
+        #quest-gems-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        #quest-gems-list::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        #quest-gems-list::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        #quest-gems-list::-webkit-scrollbar-thumb {
+            background: #2a6b2a;
+            border-radius: 2px;
+        }
+
+        #quest-gems-header {
+            cursor: pointer;
+        }
+
+        #quest-gems-header:hover {
+            opacity: 0.8;
+        }
+
+        .quest-gem-item {
+            display: flex;
+            align-items: center;
+            font-size: 11px;
+            margin: 2px 0;
+            padding: 2px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            cursor: default;
+            gap: 5px;
+        }
+
+        .quest-gem-item:last-child {
+            border-bottom: none;
+        }
+
+        .quest-gem-item.interactive-item {
+            cursor: pointer;
+        }
+
+        .quest-gem-item.interactive-item:hover {
+            background: rgba(68, 204, 68, 0.08);
+        }
+
+        .quest-gem-check {
+            color: #44cc44;
+            font-size: 10px;
+            width: 12px;
+            flex-shrink: 0;
+        }
+
+        .quest-gem-name {
+            color: #c8e8c8;
+            font-weight: bold;
+            flex: 1;
+        }
+
+        .quest-gem-source {
+            color: #779977;
+            font-size: 9px;
+            text-align: right;
+        }
+
+        .quest-gem-act-badge {
+            background: rgba(68, 204, 68, 0.18);
+            color: #44cc44;
+            font-size: 8px;
+            padding: 0 3px;
+            border-radius: 2px;
+            border: 1px solid rgba(68, 204, 68, 0.3);
+            flex-shrink: 0;
+        }
+
+        .quest-gem-optional {
+            color: #887766;
+            font-size: 8px;
+            font-style: italic;
+        }
+
+        /* Act badge on SKILL GEMS section */
+        .gem-quest-badge {
+            display: inline-block;
+            background: rgba(68, 204, 68, 0.15);
+            color: #44cc44;
+            font-size: 8px;
+            padding: 0 3px;
+            border-radius: 2px;
+            border: 1px solid rgba(68, 204, 68, 0.25);
+            margin-left: 3px;
+            vertical-align: middle;
+            cursor: help;
+        }
     </style>
 </head>
 
@@ -301,9 +407,12 @@
                 <kbd>Alt+Shift+&rarr;</kbd> Next step<br>
                 <kbd>Alt+Shift+&larr;</kbd> Prev step<br>
                 <kbd>Ctrl+Shift+T</kbd> Toggle tree<br>
+                <kbd>Ctrl+Shift+D</kbd> Build notes<br>
                 <kbd>Shift+Scroll</kbd> Zoom tree<br>
                 <kbd>Shift+Drag</kbd> Pan tree<br>
-                <kbd>Escape</kbd> Close tree
+                <kbd>Ctrl+Shift+R</kbd> Change build<br>
+                <kbd>Escape</kbd> Close overlay<br>
+                Click gem to mark collected
             </span></span>
         </div>
 
@@ -322,11 +431,21 @@
         <div id="gems-ui" style="display:none;">
             <div class="section-header" id="gems-header">
                 <strong style="color: #9966cc; font-size: 9px;">SKILL GEMS</strong>
-                <span class="collapse-arrow always-visible" id="gems-arrow">&#9660;</span>
+                <span class="collapse-arrow always-visible" id="gems-arrow">&#9654;</span>
             </div>
-            <div class="section-body" id="gems-body">
+            <div class="section-body collapsed" id="gems-body">
                 <select id="gem-set-select" class="gem-select" style="margin: 4px 0;"></select>
                 <div id="gem-links"></div>
+            </div>
+        </div>
+
+        <div id="quest-gems-ui" style="display:none;">
+            <div class="section-header" id="quest-gems-header">
+                <strong style="color: #44cc44; font-size: 9px;">QUEST GEMS</strong>
+                <span class="collapse-arrow always-visible" id="quest-gems-arrow">&#9654;</span>
+            </div>
+            <div class="section-body collapsed" id="quest-gems-body">
+                <div id="quest-gems-list"></div>
             </div>
         </div>
 
@@ -356,7 +475,7 @@
 
         let interactiveMode = false;
         let weaponCollapsed = false;
-        let gemsCollapsed = false;
+        let gemsCollapsed = true;
         let allSkillSets = [];
         let regexPresets = [];
         let selectedRegexIndex = -1; // -1 = none, 0+ = preset index, 'custom' for custom
@@ -503,6 +622,28 @@
         loadLogPath();
         loadPobBuilds();
 
+        // Reset to build selection
+        ipcRenderer.on('reset-to-build-select', () => {
+            document.getElementById('play-screen').style.display = 'none';
+            document.getElementById('startup-screen').style.display = 'block';
+            // Clear play-mode state
+            document.getElementById('gems-ui').style.display = 'none';
+            document.getElementById('quest-gems-ui').style.display = 'none';
+            document.getElementById('weapon-ui').style.display = 'none';
+            document.getElementById('regex-ui').style.display = 'none';
+            document.getElementById('zone-name').innerText = 'Awaiting Zone...';
+            document.getElementById('task-list').innerHTML = '<li>Waiting for you to enter a zone...</li>';
+            document.getElementById('step-counter').innerText = '';
+            allSkillSets = [];
+            questGemReminders = [];
+            lillyRothGems = [];
+            collectedGems.clear();
+            currentAct = 1;
+            // Refresh PoB builds list in case new ones were added
+            loadPobBuilds();
+            resizeStartup();
+        });
+
         // --- PLAY OVERLAY LOGIC ---
         const resizeObserver = new ResizeObserver(entries => {
             if (document.getElementById('play-screen').style.display !== 'none') {
@@ -537,6 +678,9 @@
                 if (active) h.classList.add('interactive');
                 else h.classList.remove('interactive');
             });
+
+            // Refresh quest gem items to show/hide click-to-collect affordance
+            if (questGemReminders.length > 0) updateQuestGemsUI();
         });
 
         // --- COLLAPSIBLE SECTIONS ---
@@ -610,6 +754,9 @@
                 html += '</div>';
                 return html;
             }).join('');
+
+            // Apply quest gem badges now that DOM is updated
+            updateGemBadges();
         }
 
         // --- REGEX PRESETS ---
@@ -696,6 +843,162 @@
 
         let currentStepRegex = null; // Step-specific regex from build overlay
 
+        // --- QUEST GEM REMINDERS ---
+        let questGemReminders = [];   // [{gem, quest, act, npc, optional}] for this build+class
+        let lillyRothGems = [];       // Gem names not covered by any class quest reward
+        let collectedGems = new Set(); // Gem names the player has already picked up
+        let currentBuildKey = '';      // Unique key for localStorage scoping
+        let questGemsCollapsed = true;
+        let currentAct = 1;           // Updated per zone-change
+        const LILLY_ROTH_ACT = 6;     // Lilly Roth unlocks after "Fallen from Grace" in Act 6
+
+        ipcRenderer.on('quest-gem-data', (event, gems, lillyGems, buildKey) => {
+            questGemReminders = gems || [];
+            lillyRothGems = lillyGems || [];
+            currentBuildKey = buildKey || '';
+            loadCollectedGems();
+            // Don't show the panel yet — will appear when entering a town
+        });
+
+        function loadCollectedGems() {
+            try {
+                const stored = localStorage.getItem('quest-collected:' + currentBuildKey);
+                collectedGems = stored ? new Set(JSON.parse(stored)) : new Set();
+            } catch (e) { collectedGems = new Set(); }
+        }
+
+        function saveCollectedGems() {
+            try {
+                localStorage.setItem('quest-collected:' + currentBuildKey, JSON.stringify([...collectedGems]));
+            } catch (e) {}
+        }
+
+        function markGemCollected(gemName) {
+            collectedGems.add(gemName);
+            saveCollectedGems();
+            updateQuestGemsUI();
+            updateGemBadges();
+        }
+
+        function unmarkGemCollected(gemName) {
+            collectedGems.delete(gemName);
+            saveCollectedGems();
+            updateQuestGemsUI();
+            updateGemBadges();
+        }
+
+        document.getElementById('quest-gems-header').addEventListener('click', () => {
+            questGemsCollapsed = !questGemsCollapsed;
+            document.getElementById('quest-gems-body').classList.toggle('collapsed', questGemsCollapsed);
+            document.getElementById('quest-gems-arrow').innerHTML = questGemsCollapsed ? '&#9654;' : '&#9660;';
+        });
+
+        function updateQuestGemsUI() {
+            const ui = document.getElementById('quest-gems-ui');
+            const list = document.getElementById('quest-gems-list');
+
+            // Only show uncollected gems available in the current act
+            const available = questGemReminders.filter(g => !collectedGems.has(g.gem) && g.act <= currentAct);
+            const lillyAvailable = currentAct >= LILLY_ROTH_ACT ? lillyRothGems.filter(g => !collectedGems.has(g)) : [];
+
+            if (!available.length && !lillyAvailable.length) {
+                ui.style.display = 'none';
+                return;
+            }
+
+            ui.style.display = 'block';
+            let html = '';
+
+            // Quest reward gems available now (current act or earlier)
+            if (available.length > 0) {
+                html += available.map(g => {
+                    const optionalNote = g.optional ? ' <span class="quest-gem-optional">(optional)</span>' : '';
+                    return `<div class="quest-gem-item interactive-item" data-gem="${escHtml(g.gem)}" title="Click to mark collected">
+                        <span class="quest-gem-check">&#9723;</span>
+                        <span class="quest-gem-name">${escHtml(g.gem)}</span>
+                        <span class="quest-gem-act-badge">A${g.act}</span>
+                        <span class="quest-gem-source">${escHtml(g.npc)}${optionalNote}</span>
+                    </div>`;
+                }).join('');
+            }
+
+            // Lilly Roth gems (only shown once in Act 6+)
+            if (lillyAvailable.length > 0) {
+                html += lillyAvailable.map(g => {
+                    return `<div class="quest-gem-item interactive-item" data-gem="${escHtml(g)}" title="Buy from Lilly Roth">
+                        <span class="quest-gem-check" style="color:#44aa88;">&#9723;</span>
+                        <span class="quest-gem-name" style="color:#a8dcc8;">${escHtml(g)}</span>
+                        <span class="quest-gem-act-badge" style="background:rgba(68,170,136,0.12);border-color:rgba(68,170,136,0.25);color:#44aa88;">LR</span>
+                        <span class="quest-gem-source" style="color:#44aa88;">Lilly Roth</span>
+                    </div>`;
+                }).join('');
+            }
+
+            list.innerHTML = html;
+
+            // Click to collect (interactive mode only)
+            list.querySelectorAll('.quest-gem-item.interactive-item').forEach(el => {
+                el.addEventListener('click', () => {
+                    if (!interactiveMode) return;
+                    const gem = el.dataset.gem;
+                    if (collectedGems.has(gem)) unmarkGemCollected(gem);
+                    else markGemCollected(gem);
+                });
+            });
+        }
+
+        function hideQuestGemsUI() {
+            document.getElementById('quest-gems-ui').style.display = 'none';
+        }
+
+        function escHtml(str) {
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        // Add act badges to gems in the SKILL GEMS section
+        function updateGemBadges() {
+            if (!questGemReminders.length && !lillyRothGems.length) return;
+            // Build lookup: gemName -> quest info (or null for Lilly Roth only gems)
+            const questMap = {};
+            for (const q of questGemReminders) {
+                if (!questMap[q.gem]) questMap[q.gem] = q;
+            }
+            const lillySet = new Set(lillyRothGems);
+
+            document.querySelectorAll('.gem-main, .gem-support').forEach(el => {
+                // Use only the first text node so the badge text itself isn't included
+                const name = (el.firstChild && el.firstChild.nodeType === 3
+                    ? el.firstChild.textContent
+                    : el.textContent).trim();
+                // Remove existing badge
+                const existing = el.querySelector('.gem-quest-badge');
+                if (existing) existing.remove();
+
+                const info = questMap[name];
+                const isLilly = !info && lillySet.has(name);
+                if (info) {
+                    const collected = collectedGems.has(name);
+                    const badge = document.createElement('span');
+                    badge.className = 'gem-quest-badge';
+                    badge.title = `Quest reward: ${info.quest} (Act ${info.act}, ${info.npc})`;
+                    badge.textContent = collected ? '\u2713Q' + info.act : 'Q' + info.act;
+                    badge.style.opacity = collected ? '0.4' : '1';
+                    el.appendChild(badge);
+                } else if (isLilly) {
+                    const collected = collectedGems.has(name);
+                    const badge = document.createElement('span');
+                    badge.className = 'gem-quest-badge';
+                    badge.style.background = 'rgba(68,170,136,0.15)';
+                    badge.style.borderColor = 'rgba(68,170,136,0.3)';
+                    badge.style.color = '#44aa88';
+                    badge.title = 'Buy from Lilly Roth after Act 6 "Fallen from Grace"';
+                    badge.textContent = collected ? '\u2713LR' : 'LR';
+                    badge.style.opacity = collected ? '0.4' : '1';
+                    el.appendChild(badge);
+                }
+            });
+        }
+
         // --- ZONE CHANGE HANDLER ---
         ipcRenderer.on('zone-change', (event, payload) => {
             const currentZone = payload.zone;
@@ -713,6 +1016,14 @@
             isInTown = !!currentData.isTown;
             currentStepRegex = currentData.regex || null;
             updateRegexDisplay();
+
+            // Track current act for quest gem filtering
+            if (currentData.currentAct) currentAct = currentData.currentAct;
+
+            // Quest gems: always show if there are uncollected gems for this build
+            if (questGemReminders.length > 0) {
+                updateQuestGemsUI();
+            }
 
             // Weapon Target: sticky, only updates when a new one is set
             const weaponUI = document.getElementById('weapon-ui');

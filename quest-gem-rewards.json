@@ -1,0 +1,1057 @@
+{
+  "_comment": "Acts 1-5 give skill gem choices as quest rewards. Acts 6-10 give only equipment and Books of Skill/Regret â€” no gem choices. Lilly Roth (Act 6, Fallen from Grace) is the universal gem vendor for all remaining gems.",
+  "quest_gem_rewards": [
+    {
+      "quest": "The Twilight Strand",
+      "act": 1,
+      "npc": "Nessa",
+      "note": "Starting gems given when you arrive in Lioneye's Watch for the first time.",
+      "rewards": {
+        "Marauder": [
+          "Heavy Strike",
+          "Ruthless Support"
+        ],
+        "Witch": [
+          "Fireball",
+          "Arcane Surge Support"
+        ],
+        "Ranger": [
+          "Burning Arrow",
+          "Momentum Support"
+        ],
+        "Duelist": [
+          "Double Strike",
+          "Chance to Bleed Support"
+        ],
+        "Shadow": [
+          "Viper Strike",
+          "Chance to Poison Support"
+        ],
+        "Templar": [
+          "Glacial Hammer",
+          "Elemental Proliferation Support"
+        ],
+        "Scion": [
+          "Spectral Throw",
+          "Prismatic Burst Support"
+        ]
+      }
+    },
+    {
+      "quest": "Enemy at the Gate",
+      "act": 1,
+      "npc": "Tarkleigh",
+      "note": "Completed by killing Hillock on The Twilight Strand and entering Lioneye's Watch.",
+      "rewards": {
+        "Marauder": [
+          "Ground Slam",
+          "Molten Strike",
+          "Shield Crush"
+        ],
+        "Witch": [
+          "Freezing Pulse",
+          "Rolling Magma",
+          "Lightning Tendrils",
+          "Raise Zombie",
+          "Blight",
+          "Kinetic Bolt"
+        ],
+        "Ranger": [
+          "Split Arrow",
+          "Ice Shot",
+          "Frost Blades",
+          "Galvanic Arrow",
+          "Caustic Arrow"
+        ],
+        "Duelist": [
+          "Cleave",
+          "Molten Strike",
+          "Galvanic Arrow",
+          "Perforate",
+          "Splitting Steel"
+        ],
+        "Shadow": [
+          "Freezing Pulse",
+          "Explosive Trap",
+          "Stormblast Mine",
+          "Ethereal Knives",
+          "Blight",
+          "Cobra Lash"
+        ],
+        "Templar": [
+          "Smite",
+          "Frostbolt",
+          "Rolling Magma",
+          "Lightning Tendrils",
+          "Molten Strike",
+          "Purifying Flame"
+        ],
+        "Scion": [
+          "Molten Strike",
+          "Split Arrow",
+          "Lightning Tendrils",
+          "Splitting Steel"
+        ]
+      }
+    },
+    {
+      "quest": "Mercy Mission",
+      "act": 1,
+      "npc": "Nessa",
+      "note": "Completed by killing Hailrake on The Tidal Island and returning the Medicine Chest.",
+      "rewards": {
+        "Marauder": [
+          "Ancestral Call Support",
+          "Chance to Bleed Support",
+          "Momentum Support"
+        ],
+        "Witch": [
+          "Chance to Poison Support",
+          "Elemental Proliferation Support",
+          "Infused Channelling Support",
+          "Spell Cascade Support",
+          "Summon Phantasm Support"
+        ],
+        "Ranger": [
+          "Chance to Poison Support",
+          "Mirage Archer Support",
+          "Pierce Support",
+          "Volley Support"
+        ],
+        "Duelist": [
+          "Ancestral Call Support",
+          "Chance to Poison Support",
+          "Mirage Archer Support",
+          "Momentum Support",
+          "Pierce Support",
+          "Ruthless Support",
+          "Volley Support"
+        ],
+        "Shadow": [
+          "Elemental Proliferation Support",
+          "Infused Channelling Support",
+          "Momentum Support",
+          "Pierce Support",
+          "Spell Cascade Support",
+          "Swift Assembly Support"
+        ],
+        "Templar": [
+          "Ancestral Call Support",
+          "Arcane Surge Support",
+          "Chance to Bleed Support",
+          "Infused Channelling Support",
+          "Ruthless Support",
+          "Spell Cascade Support"
+        ],
+        "Scion": [
+          "Ancestral Call Support",
+          "Arcane Surge Support",
+          "Chance to Bleed Support",
+          "Chance to Poison Support",
+          "Elemental Proliferation Support",
+          "Pierce Support",
+          "Ruthless Support",
+          "Spell Cascade Support",
+          "Summon Phantasm Support",
+          "Volley Support"
+        ]
+      }
+    },
+    {
+      "quest": "Breaking Some Eggs",
+      "act": 1,
+      "npc": "Nessa",
+      "note": "Completed by placing Jade Amulet from The Fetid Pool on the Altar. Often skipped in speedruns.",
+      "optional": true,
+      "rewards": {
+        "Marauder": [
+          "Decoy Totem",
+          "Molten Shell",
+          "Ancestral Protector",
+          "Vigilant Strike",
+          "Steelskin"
+        ],
+        "Witch": [
+          "Frost Bomb",
+          "Orb of Storms",
+          "Summon Raging Spirit",
+          "Contagion",
+          "Detonate Dead",
+          "Flame Wall",
+          "Frostblink"
+        ],
+        "Ranger": [
+          "Sniper's Mark",
+          "Bear Trap",
+          "Puncture",
+          "Riposte",
+          "Shrapnel Ballista",
+          "Dash"
+        ],
+        "Duelist": [
+          "Sniper's Mark",
+          "Ancestral Protector",
+          "Decoy Totem",
+          "Puncture",
+          "Vigilant Strike",
+          "War Banner",
+          "Blood and Sand",
+          "Steelskin",
+          "Dash"
+        ],
+        "Shadow": [
+          "Bear Trap",
+          "Orb of Storms",
+          "Riposte",
+          "Contagion",
+          "Detonate Dead",
+          "Dash",
+          "Frostblink"
+        ],
+        "Templar": [
+          "Frost Bomb",
+          "Summon Holy Relic",
+          "Holy Flame Totem",
+          "Ancestral Protector",
+          "Vigilant Strike",
+          "Flame Wall",
+          "Steelskin",
+          "Frostblink"
+        ],
+        "Scion": [
+          "Frost Bomb",
+          "Bear Trap",
+          "Decoy Totem",
+          "Vigilant Strike",
+          "Steelskin",
+          "Dash",
+          "Frostblink"
+        ]
+      }
+    },
+    {
+      "quest": "The Caged Brute",
+      "act": 1,
+      "npc": "Nessa",
+      "note": "Completed by killing Brutus in The Upper Prison.",
+      "rewards": {
+        "Marauder": [
+          "Faster Attacks Support",
+          "Melee Splash Support",
+          "Added Fire Damage Support",
+          "Lifetap Support",
+          "Flamewood Support",
+          "Shield Charge",
+          "Leap Slam",
+          "Vitality",
+          "Enduring Cry",
+          "Intimidating Cry"
+        ],
+        "Witch": [
+          "Added Lightning Damage Support",
+          "Minion Damage Support",
+          "Void Manipulation Support",
+          "Unbound Ailments Support",
+          "Combustion Support",
+          "Infernal Legion Support",
+          "Efficacy Support",
+          "Devour Support",
+          "Clarity",
+          "Summon Skeletons",
+          "Lightning Warp",
+          "Flame Dash",
+          "Wither",
+          "Bodyswap"
+        ],
+        "Ranger": [
+          "Faster Attacks Support",
+          "Lesser Multiple Projectiles Support",
+          "Added Cold Damage Support",
+          "Melee Splash Support",
+          "Void Manipulation Support",
+          "Arrow Nova Support",
+          "Manaforged Arrows Support",
+          "Whirling Blades",
+          "Blink Arrow",
+          "Smoke Mine",
+          "Precision"
+        ],
+        "Duelist": [
+          "Faster Attacks Support",
+          "Added Fire Damage Support",
+          "Melee Splash Support",
+          "Lesser Multiple Projectiles Support",
+          "Maim Support",
+          "Lifetap Support",
+          "Blink Arrow",
+          "Leap Slam",
+          "Whirling Blades",
+          "Precision",
+          "Vitality",
+          "Enduring Cry",
+          "Intimidating Cry"
+        ],
+        "Shadow": [
+          "Faster Attacks Support",
+          "Added Cold Damage Support",
+          "Added Lightning Damage Support",
+          "Lesser Multiple Projectiles Support",
+          "Void Manipulation Support",
+          "Multiple Traps Support",
+          "Clarity",
+          "Precision",
+          "Flame Dash",
+          "Whirling Blades",
+          "Smoke Mine",
+          "Withering Step",
+          "Unearth",
+          "Siphoning Trap"
+        ],
+        "Templar": [
+          "Added Fire Damage Support",
+          "Added Lightning Damage Support",
+          "Melee Splash Support",
+          "Combustion Support",
+          "Lifetap Support",
+          "Flame Dash",
+          "Clarity",
+          "Vitality",
+          "Leap Slam"
+        ],
+        "Scion": [
+          "Faster Attacks Support",
+          "Added Cold Damage Support",
+          "Added Lightning Damage Support",
+          "Added Fire Damage Support",
+          "Melee Splash Support",
+          "Lesser Multiple Projectiles Support",
+          "Unbound Ailments Support",
+          "Lifetap Support",
+          "Flame Dash",
+          "Blink Arrow",
+          "Leap Slam",
+          "Withering Step"
+        ]
+      }
+    },
+    {
+      "quest": "The Siren's Cadence",
+      "act": 1,
+      "npc": "Nessa",
+      "note": "Completed by killing Merveil in The Cavern of Anger.",
+      "rewards": {
+        "Marauder": [
+          "Infernal Blow",
+          "Static Strike",
+          "Sweep",
+          "Sunder",
+          "Chain Hook",
+          "Earthshatter",
+          "Volcanic Fissure"
+        ],
+        "Witch": [
+          "Ice Nova",
+          "Blazing Salvo",
+          "Arc",
+          "Flesh Offering",
+          "Essence Drain",
+          "Scorching Ray",
+          "Volatile Dead",
+          "Creeping Frost",
+          "Manabond"
+        ],
+        "Ranger": [
+          "Toxic Rain",
+          "Rain of Arrows",
+          "Lightning Arrow",
+          "Reave",
+          "Lightning Strike",
+          "Siege Ballista",
+          "Elemental Hit",
+          "Poisonous Concoction"
+        ],
+        "Duelist": [
+          "Lacerate",
+          "Sweep",
+          "Rain of Arrows",
+          "Shattering Steel",
+          "Earthshatter"
+        ],
+        "Shadow": [
+          "Reave",
+          "Voltaxic Burst",
+          "Icicle Mine",
+          "Lightning Trap",
+          "Fire Trap",
+          "Blade Vortex",
+          "Essence Drain",
+          "Volatile Dead",
+          "Venom Gyre"
+        ],
+        "Templar": [
+          "Static Strike",
+          "Ice Nova",
+          "Blazing Salvo",
+          "Storm Call",
+          "Searing Bond",
+          "Scorching Ray",
+          "Storm Brand",
+          "Storm Burst",
+          "Wintertide Brand",
+          "Absolution",
+          "Manabond"
+        ],
+        "Scion": [
+          "Static Strike",
+          "Rain of Arrows",
+          "Ice Nova",
+          "Blade Vortex",
+          "Scorching Ray",
+          "Storm Burst",
+          "Exsanguinate",
+          "Spectral Helix"
+        ]
+      }
+    },
+    {
+      "quest": "Intruders in Black",
+      "act": 2,
+      "npc": "Yeena",
+      "note": "Completed by killing Fidelitas in The Chamber of Sins Level 2.",
+      "rewards": {
+        "Marauder": [
+          "Warlord's Mark",
+          "Herald of Ash",
+          "Herald of Thunder",
+          "Herald of Ice",
+          "Ancestral Cry",
+          "Seismic Cry",
+          "Corrupting Fever"
+        ],
+        "Witch": [
+          "Herald of Ash",
+          "Herald of Thunder",
+          "Herald of Ice",
+          "Desecrate",
+          "Arctic Armour",
+          "Cold Snap",
+          "Arcane Cloak",
+          "Galvanic Field"
+        ],
+        "Ranger": [
+          "Poacher's Mark",
+          "Herald of Agony",
+          "Herald of Ice",
+          "Herald of Thunder",
+          "Herald of Ash",
+          "Frenzy",
+          "Arctic Armour",
+          "Blood Rage",
+          "Ensnaring Arrow"
+        ],
+        "Duelist": [
+          "Poacher's Mark",
+          "Warlord's Mark",
+          "Herald of Ash",
+          "Herald of Ice",
+          "Frenzy",
+          "Herald of Thunder",
+          "Flesh and Stone",
+          "Blood Rage",
+          "Ancestral Cry",
+          "Seismic Cry",
+          "Corrupting Fever",
+          "Defiance Banner"
+        ],
+        "Shadow": [
+          "Assassin's Mark",
+          "Herald of Agony",
+          "Herald of Thunder",
+          "Herald of Ash",
+          "Herald of Ice",
+          "Blade Blast",
+          "Arctic Armour",
+          "Cold Snap",
+          "Summon Skitterbots",
+          "Blood Rage",
+          "Arcane Cloak"
+        ],
+        "Templar": [
+          "Herald of Purity",
+          "Herald of Thunder",
+          "Herald of Ash",
+          "Herald of Ice",
+          "Brand Recall",
+          "Wave of Conviction",
+          "Arcane Cloak"
+        ],
+        "Scion": [
+          "Herald of Ash",
+          "Herald of Ice",
+          "Herald of Thunder",
+          "Frenzy",
+          "Arctic Armour",
+          "Corrupting Fever"
+        ]
+      }
+    },
+    {
+      "quest": "Sharp and Cruel",
+      "act": 2,
+      "npc": "Yeena",
+      "note": "Completed by killing the Weaver in The Weaver's Chambers.",
+      "rewards": {
+        "Marauder": [
+          "Melee Physical Damage Support",
+          "Elemental Damage with Attacks Support",
+          "Shockwave Support",
+          "Close Combat Support",
+          "Rage Support",
+          "Cruelty Support",
+          "Volatility Support"
+        ],
+        "Witch": [
+          "Faster Casting Support",
+          "Minion Speed Support",
+          "Concentrated Effect Support",
+          "Controlled Destruction Support",
+          "Elemental Focus Support",
+          "Predator Support",
+          "Trinity Support",
+          "Cruelty Support",
+          "Overcharge Support",
+          "Fresh Meat Support"
+        ],
+        "Ranger": [
+          "Vicious Projectiles Support",
+          "Elemental Damage with Attacks Support",
+          "Close Combat Support",
+          "Trinity Support"
+        ],
+        "Duelist": [
+          "Melee Physical Damage Support",
+          "Elemental Damage with Attacks Support",
+          "Vicious Projectiles Support",
+          "Close Combat Support",
+          "Rage Support",
+          "Cruelty Support",
+          "Sadism Support"
+        ],
+        "Shadow": [
+          "Faster Casting Support",
+          "Melee Physical Damage Support",
+          "Trap and Mine Damage Support",
+          "Elemental Focus Support",
+          "Deadly Ailments Support",
+          "Nightblade Support",
+          "Trinity Support"
+        ],
+        "Templar": [
+          "Faster Casting Support",
+          "Concentrated Effect Support",
+          "Elemental Damage with Attacks Support",
+          "Melee Physical Damage Support",
+          "Controlled Destruction Support",
+          "Elemental Focus Support",
+          "Shockwave Support",
+          "Cruelty Support"
+        ],
+        "Scion": [
+          "Melee Physical Damage Support",
+          "Elemental Damage with Attacks Support",
+          "Faster Casting Support",
+          "Concentrated Effect Support",
+          "Vicious Projectiles Support",
+          "Deadly Ailments Support",
+          "Cruelty Support",
+          "Sadism Support"
+        ]
+      }
+    },
+    {
+      "quest": "Lost in Love",
+      "act": 3,
+      "npc": "Clarissa",
+      "note": "Completed by rescuing Clarissa from the Sewers.",
+      "rewards": {
+        "Marauder": [
+          "Anger",
+          "Determination",
+          "Vengeance",
+          "Punishment",
+          "Vulnerability",
+          "Pride",
+          "Infernal Cry",
+          "General's Cry",
+          "Petrified Blood"
+        ],
+        "Witch": [
+          "Flammability",
+          "Conductivity",
+          "Frostbite",
+          "Elemental Weakness",
+          "Despair",
+          "Enfeeble",
+          "Temporal Chains",
+          "Discipline",
+          "Purity of Elements",
+          "Convocation",
+          "Malevolence",
+          "Zealotry",
+          "Bane",
+          "Spellslinger"
+        ],
+        "Ranger": [
+          "Hatred",
+          "Grace",
+          "Despair",
+          "Alchemist's Mark"
+        ],
+        "Duelist": [
+          "Hatred",
+          "Grace",
+          "Dread Banner",
+          "Pride",
+          "Rallying Cry",
+          "Petrified Blood"
+        ],
+        "Shadow": [
+          "Flammability",
+          "Conductivity",
+          "Frostbite",
+          "Elemental Weakness",
+          "Despair",
+          "Enfeeble",
+          "Temporal Chains",
+          "Wrath",
+          "Hatred",
+          "Bane",
+          "Malevolence",
+          "Plague Bearer"
+        ],
+        "Templar": [
+          "Flammability",
+          "Conductivity",
+          "Frostbite",
+          "Elemental Weakness",
+          "Vulnerability",
+          "Enfeeble",
+          "Punishment",
+          "Zealotry",
+          "Battlemage's Cry"
+        ],
+        "Scion": [
+          "Flammability",
+          "Conductivity",
+          "Frostbite",
+          "Elemental Weakness",
+          "Vulnerability",
+          "Temporal Chains",
+          "Punishment",
+          "Anger",
+          "Wrath",
+          "Hatred",
+          "Bane",
+          "Malevolence",
+          "Zealotry",
+          "Petrified Blood"
+        ]
+      }
+    },
+    {
+      "quest": "Sever the Right Hand",
+      "act": 3,
+      "npc": "Clarissa",
+      "note": "Completed by killing General Gravicius in The Solaris Temple Level 2.",
+      "rewards": {
+        "Marauder": [
+          "Cyclone",
+          "Ice Crash",
+          "Earthquake",
+          "Ancestral Warchief",
+          "Tectonic Slam",
+          "Rage Vortex"
+        ],
+        "Witch": [
+          "Glacial Cascade",
+          "Flameblast",
+          "Firestorm",
+          "Ball Lightning",
+          "Crackling Lance",
+          "Raise Spectre",
+          "Kinetic Blast",
+          "Cremation",
+          "Soulrend",
+          "Stormbind",
+          "Hexblast",
+          "Summon Reaper",
+          "Eye of Winter",
+          "Lightning Conduit"
+        ],
+        "Ranger": [
+          "Scourge Arrow",
+          "Tornado Shot",
+          "Blast Rain",
+          "Wild Strike",
+          "Blade Flurry",
+          "Charged Dash",
+          "Artillery Ballista",
+          "Storm Rain",
+          "Explosive Concoction"
+        ],
+        "Duelist": [
+          "Cyclone",
+          "Ice Crash",
+          "Blast Rain",
+          "Charged Dash",
+          "Lancing Steel",
+          "Bladestorm",
+          "Spectral Shield Throw"
+        ],
+        "Shadow": [
+          "Pyroclast Mine",
+          "Ball Lightning",
+          "Flamethrower Trap",
+          "Lightning Spire Trap",
+          "Seismic Trap",
+          "Bladefall",
+          "Blade Flurry",
+          "Charged Dash",
+          "Cremation",
+          "Soulrend",
+          "Pestilent Strike",
+          "Hexblast"
+        ],
+        "Templar": [
+          "Ice Crash",
+          "Stormbind",
+          "Flameblast",
+          "Firestorm",
+          "Shock Nova",
+          "Shockwave Totem",
+          "Consecrated Path",
+          "Dominating Blow",
+          "Armageddon Brand",
+          "Divine Ire",
+          "Penance Brand"
+        ],
+        "Scion": [
+          "Cyclone",
+          "Tornado Shot",
+          "Flameblast",
+          "Bladefall",
+          "Blade Flurry",
+          "Charged Dash",
+          "Tectonic Slam",
+          "Divine Ire",
+          "Soulrend",
+          "Hexblast",
+          "Reap"
+        ]
+      }
+    },
+    {
+      "quest": "A Fixture of Fate",
+      "act": 3,
+      "npc": "Siosa",
+      "note": "Completed by collecting the four Thaumetic Sulphite flasks in The Library. Siosa then sells ALL Act 1-3 gems to all classes.",
+      "rewards": {
+        "Marauder": [
+          "Life Leech Support",
+          "Fortify Support",
+          "Arrogance Support",
+          "Increased Duration Support",
+          "Pulverise Support",
+          "Impale Support",
+          "Urgent Orders Support",
+          "Bloodthirst Support",
+          "Corrupting Cry Support",
+          "Controlled Blaze Support"
+        ],
+        "Witch": [
+          "Fire Penetration Support",
+          "Cold Penetration Support",
+          "Lightning Penetration Support",
+          "Burning Damage Support",
+          "Blasphemy Support",
+          "Swift Affliction Support",
+          "Energy Leech Support",
+          "Intensify Support",
+          "Pinpoint Support",
+          "Feeding Frenzy Support",
+          "Meat Shield Support",
+          "Archmage Support",
+          "Impending Doom Support",
+          "Sacrifice Support"
+        ],
+        "Ranger": [
+          "Life Leech Support",
+          "Fork Support",
+          "Fortify Support",
+          "Hypothermia Support",
+          "Ice Bite Support",
+          "Critical Strike Affliction Support",
+          "Impale Support",
+          "Second Wind Support",
+          "Focused Ballista Support"
+        ],
+        "Duelist": [
+          "Life Leech Support",
+          "Fortify Support",
+          "Arrogance Support",
+          "Hypothermia Support",
+          "Pulverise Support",
+          "Impale Support",
+          "Urgent Orders Support",
+          "Bloodthirst Support",
+          "Corrupting Cry Support"
+        ],
+        "Shadow": [
+          "Second Wind Support",
+          "Cold Penetration Support",
+          "Lightning Penetration Support",
+          "Faster Projectiles Support",
+          "Ice Bite Support",
+          "Innervate Support",
+          "Critical Strike Affliction Support",
+          "Swift Affliction Support",
+          "Charged Traps Support",
+          "High-Impact Mine Support",
+          "Energy Leech Support",
+          "Charged Mines Support",
+          "Archmage Support",
+          "Impending Doom Support",
+          "Pinpoint Support"
+        ],
+        "Templar": [
+          "Fire Penetration Support",
+          "Cold Penetration Support",
+          "Lightning Penetration Support",
+          "Fortify Support",
+          "Burning Damage Support",
+          "Blasphemy Support",
+          "Energy Leech Support",
+          "Intensify Support",
+          "Pulverise Support",
+          "Divine Blessing Support",
+          "Archmage Support",
+          "Swiftbrand Support",
+          "Arrogance Support",
+          "Guardian's Blessing Support"
+        ],
+        "Scion": [
+          "Fire Penetration Support",
+          "Cold Penetration Support",
+          "Lightning Penetration Support",
+          "Life Leech Support",
+          "Fortify Support",
+          "Ice Bite Support",
+          "Innervate Support",
+          "Energy Leech Support",
+          "Intensify Support",
+          "Impending Doom Support",
+          "Arrogance Support",
+          "Bloodthirst Support"
+        ]
+      }
+    },
+    {
+      "quest": "Breaking the Seal",
+      "act": 4,
+      "npc": "Petarus and Vanja",
+      "note": "Completed by killing Doedre, Maligaro, or Shavronne in The Mines.",
+      "rewards": {
+        "Marauder": [
+          "Summon Chaos Golem",
+          "Summon Ice Golem",
+          "Summon Flame Golem",
+          "Summon Stone Golem",
+          "Summon Lightning Golem",
+          "Berserk"
+        ],
+        "Witch": [
+          "Summon Chaos Golem",
+          "Summon Ice Golem",
+          "Summon Flame Golem",
+          "Summon Stone Golem",
+          "Summon Lightning Golem",
+          "Summon Carrion Golem",
+          "Sigil of Power",
+          "Void Sphere",
+          "Frost Shield",
+          "Hydrosphere"
+        ],
+        "Ranger": [
+          "Summon Chaos Golem",
+          "Summon Ice Golem",
+          "Summon Flame Golem",
+          "Summon Stone Golem",
+          "Summon Lightning Golem",
+          "Tornado",
+          "Snipe"
+        ],
+        "Duelist": [
+          "Summon Chaos Golem",
+          "Summon Ice Golem",
+          "Summon Flame Golem",
+          "Summon Stone Golem",
+          "Summon Lightning Golem"
+        ],
+        "Shadow": [
+          "Summon Chaos Golem",
+          "Summon Ice Golem",
+          "Summon Flame Golem",
+          "Summon Stone Golem",
+          "Summon Lightning Golem",
+          "Temporal Rift",
+          "Void Sphere",
+          "Frost Shield",
+          "Tornado",
+          "Ambush"
+        ],
+        "Templar": [
+          "Summon Chaos Golem",
+          "Summon Ice Golem",
+          "Summon Flame Golem",
+          "Summon Stone Golem",
+          "Summon Lightning Golem",
+          "Summon Carrion Golem",
+          "Sigil of Power",
+          "Void Sphere",
+          "Frost Shield",
+          "Hydrosphere",
+          "Frozen Legion"
+        ],
+        "Scion": [
+          "Summon Chaos Golem",
+          "Summon Ice Golem",
+          "Summon Flame Golem",
+          "Summon Stone Golem",
+          "Summon Lightning Golem",
+          "Void Sphere",
+          "Frost Shield",
+          "Soul Link",
+          "Flame Link",
+          "Intuitive Link"
+        ]
+      }
+    },
+    {
+      "quest": "The Eternal Nightmare",
+      "act": 4,
+      "npc": "Oyun",
+      "note": "Completed by defeating Malachai in The Harvest.",
+      "rewards": {
+        "Marauder": [
+          "Spell Echo Support",
+          "Multistrike Support",
+          "Greater Multiple Projectiles Support",
+          "Chain Support",
+          "Increased Area of Effect Support",
+          "Brutality Support",
+          "Multiple Totems Support",
+          "Fist of War Support",
+          "Behead Support",
+          "Eternal Blessing Support",
+          "Trauma Support"
+        ],
+        "Witch": [
+          "Spell Echo Support",
+          "Multistrike Support",
+          "Greater Multiple Projectiles Support",
+          "Chain Support",
+          "Increased Area of Effect Support",
+          "Decay Support",
+          "Immolate Support",
+          "Bonechill Support",
+          "Hex Bloom Support",
+          "Unleash Support"
+        ],
+        "Ranger": [
+          "Spell Echo Support",
+          "Multistrike Support",
+          "Greater Multiple Projectiles Support",
+          "Chain Support",
+          "Increased Area of Effect Support",
+          "Withering Touch Support",
+          "Greater Volley Support",
+          "Barrage Support",
+          "Returning Projectiles Support"
+        ],
+        "Duelist": [
+          "Spell Echo Support",
+          "Multistrike Support",
+          "Greater Multiple Projectiles Support",
+          "Chain Support",
+          "Increased Area of Effect Support",
+          "Greater Volley Support",
+          "Barrage Support",
+          "Fist of War Support",
+          "Behead Support",
+          "Trauma Support"
+        ],
+        "Shadow": [
+          "Spell Echo Support",
+          "Multistrike Support",
+          "Greater Multiple Projectiles Support",
+          "Chain Support",
+          "Increased Area of Effect Support",
+          "Vile Toxins Support",
+          "Withering Touch Support",
+          "Bonechill Support",
+          "Cluster Traps Support",
+          "Minefield Support",
+          "Unleash Support",
+          "Greater Volley Support",
+          "Barrage Support",
+          "Returning Projectiles Support"
+        ],
+        "Templar": [
+          "Spell Echo Support",
+          "Multistrike Support",
+          "Greater Multiple Projectiles Support",
+          "Chain Support",
+          "Increased Area of Effect Support",
+          "Ignite Proliferation Support",
+          "Multiple Totems Support",
+          "Unleash Support",
+          "Arcanist Brand",
+          "Fist of War Support",
+          "Frigid Bond Support",
+          "Spellblade Support"
+        ],
+        "Scion": [
+          "Spell Echo Support",
+          "Multistrike Support",
+          "Greater Multiple Projectiles Support",
+          "Chain Support",
+          "Increased Area of Effect Support",
+          "Decay Support",
+          "Immolate Support",
+          "Unleash Support",
+          "Greater Volley Support",
+          "Barrage Support",
+          "Returning Projectiles Support",
+          "Frigid Bond Support"
+        ]
+      }
+    }
+  ],
+  "vendor_unlocks": [
+    {
+      "quest": "A Fixture of Fate",
+      "act": 3,
+      "npc": "Siosa",
+      "sells": "all_acts_1_to_3",
+      "note": "After this quest, Siosa sells ALL Act 1-3 gems to all classes regardless of class restrictions."
+    },
+    {
+      "quest": "Fallen from Grace",
+      "act": 6,
+      "npc": "Lilly Roth",
+      "sells": "all_gems",
+      "note": "After this quest, Lilly Roth sells EVERY gem in the game to all classes. Any build gem not obtained via quest rewards can be bought here."
+    }
+  ],
+  "acts_6_to_10_note": "Acts 6-10 give no skill gem choice rewards. Quest rewards in those acts consist of equipment (helmets, boots, rings, etc.), Books of Skill (passive points), and Books of Regret (refund points). The key gem-related event is the Lilly Roth vendor unlock in Act 6."
+}

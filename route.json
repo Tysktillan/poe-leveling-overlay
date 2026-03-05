@@ -1,1628 +1,1707 @@
-[
-  {
-    "step_id": "act1_the_twilight_strand",
-    "zone": "The Twilight Strand",
-    "act": 1,
-    "tasks": [
-      "Pick up gem drop and chest gem",
-      "Kill Hillock, grab all loot, enter town"
-    ]
-  },
-  {
-    "step_id": "act1_lioneye_s_watch",
-    "zone": "Lioneye's Watch",
-    "act": 1,
-    "tasks": [],
-    "isTown": true
-  },
-  {
-    "step_id": "act1_the_coast",
-    "zone": "The Coast",
-    "act": 1,
-    "tasks": [
-      "Grab Waypoint",
-      "Enter The Tidal Island immediately"
-    ]
-  },
-  {
-    "step_id": "act1_the_tidal_island",
-    "zone": "The Tidal Island",
-    "act": 1,
-    "tasks": [
-      "Kill Hailrake",
-      "LOGOUT to character screen to return to town instantly"
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act1_lioneye_s_watch_2",
-    "zone": "Lioneye's Watch",
-    "act": 1,
-    "tasks": [],
-    "isTown": true
-  },
-  {
-    "step_id": "act1_the_mud_flats",
-    "zone": "The Mud Flats",
-    "act": 1,
-    "tasks": [
-      "Find the 3 Glyphs and open the passage"
-    ]
-  },
-  {
-    "step_id": "act1_the_fetid_pool",
-    "zone": "The Fetid Pool",
-    "act": 1,
-    "tasks": [
-      "SKIP this zone entirely. Dead end."
-    ]
-  },
-  {
-    "step_id": "act1_the_submerged_passage",
-    "zone": "The Submerged Passage",
-    "act": 1,
-    "tasks": [
-      "Drop a portal at the bridge",
-      "CONTINUE forward to The Ledge (do NOT enter Flooded Depths yet)"
-    ]
-  },
-  {
-    "step_id": "act1_the_ledge",
-    "zone": "The Ledge",
-    "act": 1,
-    "tasks": [
-      "Grab Waypoint",
-      "Take Waypoint back to town, then use your portal to return to the bridge",
-      "Enter The Flooded Depths from the bridge"
-    ]
-  },
-  {
-    "step_id": "act1_the_flooded_depths",
-    "zone": "The Flooded Depths",
-    "act": 1,
-    "tasks": [
-      "Kill the Deep Dweller (+1 Passive Point)",
-      "Logout to town"
-    ],
-    "important": true,
-    "passive_reward": 1
-  },
-  {
-    "step_id": "act1_the_climb",
-    "zone": "The Climb",
-    "act": 1,
-    "tasks": [
-      "Run straight through. Grab Waypoint if you see it."
-    ]
-  },
-  {
-    "step_id": "act1_the_lower_prison",
-    "zone": "The Lower Prison",
-    "act": 1,
-    "tasks": [
-      "Complete the Labyrinth Trial"
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act1_the_upper_prison",
-    "zone": "The Upper Prison",
-    "act": 1,
-    "tasks": [
-      "Kill Brutus",
-      "Continue forward to Prisoners Gate"
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act1_prisoner_s_gate",
-    "zone": "Prisoner's Gate",
-    "act": 1,
-    "tasks": [
-      "Grab Waypoint",
-      "Take Waypoint back to town for rewards"
-    ]
-  },
-  {
-    "step_id": "act1_lioneye_s_watch_3",
-    "zone": "Lioneye's Watch",
-    "act": 1,
-    "tasks": [],
-    "isTown": true
-  },
-  {
-    "step_id": "act1_prisoner_s_gate_2",
-    "zone": "Prisoner's Gate",
-    "act": 1,
-    "tasks": [
-      "Run through. Do not fight Piety's blockade."
-    ]
-  },
-  {
-    "step_id": "act1_the_ship_graveyard",
-    "zone": "The Ship Graveyard",
-    "act": 1,
-    "tasks": [
-      "Grab Waypoint",
-      "Find The Ship Graveyard Cave"
-    ]
-  },
-  {
-    "step_id": "act1_the_ship_graveyard_cave",
-    "zone": "The Ship Graveyard Cave",
-    "act": 1,
-    "tasks": [
-      "Grab the Allflame",
-      "Go on to The Ship Graveyard"
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act1_the_ship_graveyard_2",
-    "zone": "The Ship Graveyard",
-    "act": 1,
-    "tasks": [
-      "Kill Fairgraves (+1 passive)",
-      "Return to Town for gem purchases"
-    ],
-    "passive_reward": 1
-  },
-  {
-    "step_id": "act1_lioneye_s_watch_4",
-    "zone": "Lioneye's Watch",
-    "act": 1,
-    "tasks": [],
-    "isTown": true
-  },
-  {
-    "step_id": "act1_the_ship_graveyard_3",
-    "zone": "The Ship Graveyard",
-    "act": 1,
-    "tasks": [
-      "Continue to The Cavern of Wrath"
-    ]
-  },
-  {
-    "step_id": "act1_the_cavern_of_wrath",
-    "zone": "The Cavern of Wrath",
-    "act": 1,
-    "tasks": [
-      "Run through to The Cavern of Anger."
-    ]
-  },
-  {
-    "step_id": "act1_the_cavern_of_anger",
-    "zone": "The Cavern of Anger",
-    "act": 1,
-    "tasks": [
-      "Kill Merveil to enter Act 2."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act1_the_southern_forest",
-    "zone": "The Southern Forest",
-    "act": 1,
-    "tasks": [
-      "Run straight through to town."
-    ]
-  },
-  {
-    "step_id": "act2_the_forest_encampment",
-    "zone": "The Forest Encampment",
-    "act": 2,
-    "tasks": [],
-    "isTown": true
-  },
-  {
-    "step_id": "act2_lioneye_s_watch",
-    "zone": "Lioneye's Watch",
-    "act": 2,
-    "tasks": [],
-    "isTown": true
-  },
-  {
-    "step_id": "act2_the_forest_encampment_2",
-    "zone": "The Forest Encampment",
-    "act": 2,
-    "tasks": [
-      "Continue to The Old Fields"
-    ],
-    "isTown": true
-  },
-  {
-    "step_id": "act2_the_old_fields",
-    "zone": "The Old Fields",
-    "act": 2,
-    "tasks": [
-      "Run through. Follow the road."
-    ]
-  },
-  {
-    "step_id": "act2_the_den",
-    "zone": "The Den",
-    "act": 2,
-    "tasks": [
-      "SKIP this zone entirely. Gives a 2nd Quicksilver, but slows you down."
-    ]
-  },
-  {
-    "step_id": "act2_the_crossroads",
-    "zone": "The Crossroads",
-    "act": 2,
-    "tasks": [
-      "Grab Waypoint",
-      "Head LEFT to Chamber of Sins."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act2_the_chamber_of_sins_level_1",
-    "zone": "The Chamber of Sins Level 1",
-    "act": 2,
-    "tasks": [
-      "Find the center stairs to Level 2."
-    ]
-  },
-  {
-    "step_id": "act2_the_chamber_of_sins_level_2",
-    "zone": "The Chamber of Sins Level 2",
-    "act": 2,
-    "tasks": [
-      "Complete Labyrinth Trial",
-      "Kill Fidelitas",
-      "Logout to town"
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act2_the_forest_encampment_3",
-    "zone": "The Forest Encampment",
-    "act": 2,
-    "tasks": [],
-    "isTown": true
-  },
-  {
-    "step_id": "act2_the_riverways",
-    "zone": "The Riverways",
-    "act": 2,
-    "tasks": [
-      "Grab Waypoint",
-      "Follow broken road to Western Forest."
-    ]
-  },
-  {
-    "step_id": "act2_the_western_forest",
-    "zone": "The Western Forest",
-    "act": 2,
-    "tasks": [
-      "Kill Blackguards at the bottom, open the seal (+1 Passive)",
-      "Continue to The Weaver's Chambers"
-    ],
-    "important": true,
-    "passive_reward": 1
-  },
-  {
-    "step_id": "act2_the_weaver_s_chambers",
-    "zone": "The Weaver's Chambers",
-    "act": 2,
-    "tasks": [
-      "Kill the Weaver",
-      "Logout to town"
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act2_the_forest_encampment_4",
-    "zone": "The Forest Encampment",
-    "act": 2,
-    "tasks": [
-      "QUEST: Travel back to Act 1 Lioneye's Watch for +1 Passive (The Way Forward)"
-    ],
-    "isTown": true
-  },
-  {
-    "step_id": "act2_lioneye_s_watch_2",
-    "zone": "Lioneye's Watch",
-    "act": 2,
-    "tasks": [
-      "Claim +1 Passive Point from 'The Way Forward' quest",
-      "Return to The Crosstoads Act 2 via Waypoint"
-    ],
-    "isTown": true,
-    "passive_reward": 1
-  },
-  {
-    "step_id": "act2_the_crossroads_2",
-    "zone": "The Crossroads",
-    "act": 2,
-    "tasks": [
-      "Head down right to The Fellshrine Ruins"
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act2_the_fellshrine_ruins",
-    "zone": "The Fellshrine Ruins",
-    "act": 2,
-    "tasks": [
-      "Follow the road right to The Crypt."
-    ]
-  },
-  {
-    "step_id": "act2_the_crypt_level_1",
-    "zone": "The Crypt Level 1",
-    "act": 2,
-    "tasks": [
-      "Complete Labyrinth Trial",
-      "Logout to town (Skip Level 2!)"
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act2_the_forest_encampment_5",
-    "zone": "The Forest Encampment",
-    "act": 2,
-    "tasks": [
-      "Take waypoint to The Crossroads"
-    ],
-    "isTown": true
-  },
-  {
-    "step_id": "act2_the_crossroads_3",
-    "zone": "The Crossroads",
-    "act": 2,
-    "tasks": [
-      "Head right to The Broken Bridge"
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act2_the_broken_bridge",
-    "zone": "The Broken Bridge",
-    "act": 2,
-    "tasks": [
-      "Kill Kraityn (Bandits)",
-      "Logout to town."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act2_the_forest_encampment_6",
-    "zone": "The Forest Encampment",
-    "act": 2,
-    "tasks": [
-      "Take waypoint to The Riverways"
-    ],
-    "isTown": true
-  },
-  {
-    "step_id": "act2_the_riverways_2",
-    "zone": "The Riverways",
-    "act": 2,
-    "tasks": [
-      "Go up to The Wetlands"
-    ]
-  },
-  {
-    "step_id": "act2_the_wetlands",
-    "zone": "The Wetlands",
-    "act": 2,
-    "tasks": [
-      "Kill Oak (Bandits)",
-      "Grab Waypoint",
-      "Open the Vaal Ruins seal."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act2_the_vaal_ruins",
-    "zone": "The Vaal Ruins",
-    "act": 2,
-    "tasks": [
-      "Run through the maze to the exit."
-    ]
-  },
-  {
-    "step_id": "act2_the_northern_forest",
-    "zone": "The Northern Forest",
-    "act": 2,
-    "tasks": [
-      "Run to the top-left to enter The Caverns."
-    ]
-  },
-  {
-    "step_id": "act2_the_dread_thicket",
-    "zone": "The Dread Thicket",
-    "act": 2,
-    "tasks": [
-      "SKIP (In Act 2). Hideout spawn only."
-    ]
-  },
-  {
-    "step_id": "act2_the_caverns",
-    "zone": "The Caverns",
-    "act": 2,
-    "tasks": [
-      "Run through to the Waypoint",
-      "Go back to the Western Forest"
-    ]
-  },
-  {
-    "step_id": "act2_the_western_forest_2",
-    "zone": "The Western Forest",
-    "act": 2,
-    "tasks": [
-      "log out to town"
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act2_the_forest_encampment_7",
-    "zone": "The Forest Encampment",
-    "act": 2,
-    "tasks": [
-      "Take waypoint back to The Caverns"
-    ],
-    "isTown": true
-  },
-  {
-    "step_id": "act2_the_caverns_2",
-    "zone": "The Caverns",
-    "act": 2,
-    "tasks": [
-      "Continue to the Ancient Pyramid"
-    ]
-  },
-  {
-    "step_id": "act2_the_ancient_pyramid",
-    "zone": "The Ancient Pyramid",
-    "act": 2,
-    "tasks": [
-      "Climb to the top, kill Vaal Oversoul."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act2_the_city_of_sarn",
-    "zone": "The City of Sarn",
-    "act": 2,
-    "tasks": [
-      "Kill the Guard",
-      "Talk to Clarissa",
-      "Enter Town."
-    ]
-  },
-  {
-    "step_id": "act3_the_sarn_encampment",
-    "zone": "The Sarn Encampment",
-    "act": 3,
-    "tasks": [
-      "Continue to The Slums"
-    ],
-    "isTown": true
-  },
-  {
-    "step_id": "act3_the_slums",
-    "zone": "The Slums",
-    "act": 3,
-    "tasks": [
-      "Rush to The Crematorium."
-    ]
-  },
-  {
-    "step_id": "act3_the_crematorium",
-    "zone": "The Crematorium",
-    "act": 3,
-    "tasks": [
-      "Complete Labyrinth Trial",
-      "Kill Piety (Tolman Quest)",
-      "Logout to town"
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act3_the_sarn_encampment_2",
-    "zone": "The Sarn Encampment",
-    "act": 3,
-    "tasks": [
-      "Go back to The Slums"
-    ],
-    "isTown": true
-  },
-  {
-    "step_id": "act3_the_slums_2",
-    "zone": "The Slums",
-    "act": 3,
-    "tasks": [
-      "Find the Sewers."
-    ]
-  },
-  {
-    "step_id": "act3_the_sewers",
-    "zone": "The Sewers",
-    "act": 3,
-    "tasks": [
-      "Find the 3 Busts (+1 Passive Point)"
-    ],
-    "important": true,
-    "passive_reward": 1
-  },
-  {
-    "step_id": "act3_the_marketplace",
-    "zone": "The Marketplace",
-    "act": 3,
-    "tasks": [
-      "Grab Waypoint",
-      "Find the Catacombs entrance nearby."
-    ]
-  },
-  {
-    "step_id": "act3_the_catacombs",
-    "zone": "The Catacombs",
-    "act": 3,
-    "tasks": [
-      "Complete Labyrinth Trial",
-      "Portal back to town/Marketplace."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act3_the_marketplace_2",
-    "zone": "The Marketplace",
-    "act": 3,
-    "tasks": [
-      "Go to The Battlefront"
-    ]
-  },
-  {
-    "step_id": "act3_the_battlefront",
-    "zone": "The Battlefront",
-    "act": 3,
-    "tasks": [
-      "Grab Waypoint",
-      "Grab the Ribbon Spool from the chest bottom-left.",
-      "Go to The Docks"
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act3_the_docks",
-    "zone": "The Docks",
-    "act": 3,
-    "tasks": [
-      "Find the Supply Container with the Thaumetic Sulphite",
-      "Go back to The Battlefront"
-    ]
-  },
-  {
-    "step_id": "act3_the_battlefront_2",
-    "zone": "The Battlefront",
-    "act": 3,
-    "tasks": [
-      "Go to The Solaris Temple"
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act3_the_solaris_temple_level_1",
-    "zone": "The Solaris Temple Level 1",
-    "act": 3,
-    "tasks": [
-      "Run through to Level 2."
-    ]
-  },
-  {
-    "step_id": "act3_the_solaris_temple_level_2",
-    "zone": "The Solaris Temple Level 2",
-    "act": 3,
-    "tasks": [
-      "Talk to Dialla",
-      "Grab Rare Lapis Amulet reward from Dialla",
-      "Go back to The Sewers"
-    ]
-  },
-  {
-    "step_id": "act3_the_sewers_2",
-    "zone": "The Sewers",
-    "act": 3,
-    "tasks": [
-      "Continue to The Ebony Barracks"
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act3_the_ebony_barracks",
-    "zone": "The Ebony Barracks",
-    "act": 3,
-    "tasks": [
-      "Grab Waypoint",
-      "Kill General Gravicius",
-      "Go UP to Lunaris Temple."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act3_the_lunaris_temple_level_1",
-    "zone": "The Lunaris Temple Level 1",
-    "act": 3,
-    "tasks": [
-      "Run through to Level 2."
-    ]
-  },
-  {
-    "step_id": "act3_the_lunaris_temple_level_2",
-    "zone": "The Lunaris Temple Level 2",
-    "act": 3,
-    "tasks": [
-      "Kill Piety",
-      "log out to town"
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act3_the_sarn_encampment_3",
-    "zone": "The Sarn Encampment",
-    "act": 3,
-    "tasks": [
-      "Go back to The Ebony Barracks"
-    ],
-    "isTown": true
-  },
-  {
-    "step_id": "act3_the_ebony_barracks_2",
-    "zone": "The Ebony Barracks",
-    "act": 3,
-    "tasks": [
-      "Go right to The Imperial Gardens"
-    ]
-  },
-  {
-    "step_id": "act3_the_imperial_gardens",
-    "zone": "The Imperial Gardens",
-    "act": 3,
-    "tasks": [
-      "Complete Labyrinth Trial",
-      "Grab Waypoint",
-      "Head right to Sceptre of God."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act3_the_library",
-    "zone": "The Library",
-    "act": 3,
-    "tasks": [
-      "SKIP. You don't need any extra gems from Siosa."
-    ]
-  },
-  {
-    "step_id": "act3_the_archives",
-    "zone": "The Archives",
-    "act": 3,
-    "tasks": [
-      "SKIP."
-    ]
-  },
-  {
-    "step_id": "act3_the_sceptre_of_god",
-    "zone": "The Sceptre of God",
-    "act": 3,
-    "tasks": [
-      "Climb the floors."
-    ]
-  },
-  {
-    "step_id": "act3_the_upper_sceptre_of_god",
-    "zone": "The Upper Sceptre of God",
-    "act": 3,
-    "tasks": [
-      "Kill Dominus",
-      "Enter the Aqueduct."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act3_the_aqueduct",
-    "zone": "The Aqueduct",
-    "act": 3,
-    "tasks": [
-      "Run straight through to town."
-    ]
-  },
-  {
-    "step_id": "act4_highgate",
-    "zone": "Highgate",
-    "act": 4,
-    "tasks": [
-      "Return to Sarn Encampment to turn in quests."
-    ],
-    "isTown": true
-  },
-  {
-    "step_id": "act4_the_sarn_encampment",
-    "zone": "The Sarn Encampment",
-    "act": 4,
-    "tasks": [
-      "Return to Highgate after turning in quests"
-    ],
-    "isTown": true
-  },
-  {
-    "step_id": "act4_highgate_2",
-    "zone": "Highgate",
-    "act": 4,
-    "tasks": [
-      "Go to The Dried Lake"
-    ],
-    "isTown": true
-  },
-  {
-    "step_id": "act4_the_dried_lake",
-    "zone": "The Dried Lake",
-    "act": 4,
-    "tasks": [
-      "Kill Voll",
-      "Return to town to open the Mines."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act4_highgate_3",
-    "zone": "Highgate",
-    "act": 4,
-    "tasks": [
-      "Go to The Mines"
-    ],
-    "isTown": true
-  },
-  {
-    "step_id": "act4_the_mines_level_1",
-    "zone": "The Mines Level 1",
-    "act": 4,
-    "tasks": [
-      "Run through to Level 2."
-    ]
-  },
-  {
-    "step_id": "act4_the_mines_level_2",
-    "zone": "The Mines Level 2",
-    "act": 4,
-    "tasks": [
-      "Free Deshret (Click the blue spirit +1 Passive)",
-      "Continue to The Crystal Veins"
-    ],
-    "important": true,
-    "passive_reward": 1
-  },
-  {
-    "step_id": "act4_the_crystal_veins",
-    "zone": "The Crystal Veins",
-    "act": 4,
-    "tasks": [
-      "Grab Waypoint",
-      "Complete Kaom's & Daresso's dreams."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act4_kaom_s_dream",
-    "zone": "Kaom's Dream",
-    "act": 4,
-    "tasks": [
-      "Run to the Stronghold."
-    ]
-  },
-  {
-    "step_id": "act4_kaom_s_stronghold",
-    "zone": "Kaom's Stronghold",
-    "act": 4,
-    "tasks": [
-      "Kill King Kaom."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act4_daresso_s_dream",
-    "zone": "Daresso's Dream",
-    "act": 4,
-    "tasks": [
-      "Clear the fighting pits."
-    ]
-  },
-  {
-    "step_id": "act4_the_grand_arena",
-    "zone": "The Grand Arena",
-    "act": 4,
-    "tasks": [
-      "Kill Daresso."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act4_the_belly_of_the_beast_level_1",
-    "zone": "The Belly of the Beast Level 1",
-    "act": 4,
-    "tasks": [
-      "Run to Level 2."
-    ]
-  },
-  {
-    "step_id": "act4_the_belly_of_the_beast_level_2",
-    "zone": "The Belly of the Beast Level 2",
-    "act": 4,
-    "tasks": [
-      "Kill Piety."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act4_the_harvest",
-    "zone": "The Harvest",
-    "act": 4,
-    "tasks": [
-      "Kill Malachai."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act4_the_ascent",
-    "zone": "The Ascent",
-    "act": 4,
-    "tasks": [
-      "Interact with the resonator to travel to Act 5."
-    ]
-  },
-  {
-    "step_id": "act5_the_slave_pens",
-    "zone": "The Slave Pens",
-    "act": 5,
-    "tasks": [
-      "Kill the Overseer",
-      "Enter Town."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act5_overseer_s_tower",
-    "zone": "Overseer's Tower",
-    "act": 5,
-    "tasks": [],
-    "isTown": true
-  },
-  {
-    "step_id": "act5_the_control_blocks",
-    "zone": "The Control Blocks",
-    "act": 5,
-    "tasks": [
-      "Find the Miasmeter (+1 Passive)",
-      "Kill Justicar Casticus"
-    ],
-    "important": true,
-    "passive_reward": 1
-  },
-  {
-    "step_id": "act5_oriath_square",
-    "zone": "Oriath Square",
-    "act": 5,
-    "tasks": [
-      "Run to Templar Courts."
-    ]
-  },
-  {
-    "step_id": "act5_the_templar_courts",
-    "zone": "The Templar Courts",
-    "act": 5,
-    "tasks": [
-      "Run to Chamber of Innocence."
-    ]
-  },
-  {
-    "step_id": "act5_the_chamber_of_innocence",
-    "zone": "The Chamber of Innocence",
-    "act": 5,
-    "tasks": [
-      "Kill High Templar Avarius / Innocence"
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act5_the_ruined_square",
-    "zone": "The Ruined Square",
-    "act": 5,
-    "tasks": [
-      "Grab Waypoint",
-      "Find the Ossuary and Reliquary."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act5_the_torched_courts",
-    "zone": "The Torched Courts",
-    "act": 5,
-    "tasks": [
-      "Run through."
-    ]
-  },
-  {
-    "step_id": "act5_the_ossuary",
-    "zone": "The Ossuary",
-    "act": 5,
-    "tasks": [
-      "Find the Sign of Purity"
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act5_the_reliquary",
-    "zone": "The Reliquary",
-    "act": 5,
-    "tasks": [
-      "Find Kitava's Torments (+1 Passive Point)"
-    ],
-    "important": true,
-    "passive_reward": 1
-  },
-  {
-    "step_id": "act5_the_cathedral_rooftop",
-    "zone": "The Cathedral Rooftop",
-    "act": 5,
-    "tasks": [
-      "Save Bannon",
-      "Fight Kitava. You will lose 30% of all Resistances!"
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act6_lioneye_s_watch",
-    "zone": "Lioneye's Watch",
-    "act": 6,
-    "tasks": [],
-    "isTown": true
-  },
-  {
-    "step_id": "act6_the_twilight_strand",
-    "zone": "The Twilight Strand",
-    "act": 6,
-    "tasks": [
-      "Clear EVERY monster to unlock Lilly Roth gem vendor."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act6_the_coast",
-    "zone": "The Coast",
-    "act": 6,
-    "tasks": [
-      "Run straight to Mud Flats. Skip Tidal Island."
-    ]
-  },
-  {
-    "step_id": "act6_the_tidal_island",
-    "zone": "The Tidal Island",
-    "act": 6,
-    "tasks": [
-      "SKIP. Only needed for a minor lore quest."
-    ]
-  },
-  {
-    "step_id": "act6_the_mud_flats",
-    "zone": "The Mud Flats",
-    "act": 6,
-    "tasks": [
-      "Kill the Dishonoured Queen",
-      "Grab the Eye of Conquest"
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act6_the_karui_fortress",
-    "zone": "The Karui Fortress",
-    "act": 6,
-    "tasks": [
-      "Kill Tukohama (+1 Passive Point)"
-    ],
-    "important": true,
-    "passive_reward": 1
-  },
-  {
-    "step_id": "act6_the_ridge",
-    "zone": "The Ridge",
-    "act": 6,
-    "tasks": [
-      "Run through to Prison."
-    ]
-  },
-  {
-    "step_id": "act6_the_lower_prison",
-    "zone": "The Lower Prison",
-    "act": 6,
-    "tasks": [
-      "Run through to Shavronne's Tower."
-    ]
-  },
-  {
-    "step_id": "act6_shavronne_s_tower",
-    "zone": "Shavronne's Tower",
-    "act": 6,
-    "tasks": [
-      "Climb to the roof",
-      "Kill Brutus/Shavronne"
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act6_prisoner_s_gate",
-    "zone": "Prisoner's Gate",
-    "act": 6,
-    "tasks": [
-      "Kill Abberath in the side-valley (+1 Passive Point)"
-    ],
-    "important": true,
-    "passive_reward": 1
-  },
-  {
-    "step_id": "act6_the_riverways",
-    "zone": "The Riverways",
-    "act": 6,
-    "tasks": [
-      "Grab Waypoint",
-      "Head to Wetlands."
-    ]
-  },
-  {
-    "step_id": "act6_the_wetlands",
-    "zone": "The Wetlands",
-    "act": 6,
-    "tasks": [
-      "Kill Ryslatha in the Spawning Ground (+1 Passive Point)"
-    ],
-    "important": true,
-    "passive_reward": 1
-  },
-  {
-    "step_id": "act6_the_western_forest",
-    "zone": "The Western Forest",
-    "act": 6,
-    "tasks": [
-      "Follow the road through."
-    ]
-  },
-  {
-    "step_id": "act6_the_southern_forest",
-    "zone": "The Southern Forest",
-    "act": 6,
-    "tasks": [
-      "Run to Caverns."
-    ]
-  },
-  {
-    "step_id": "act6_the_cavern_of_anger",
-    "zone": "The Cavern of Anger",
-    "act": 6,
-    "tasks": [
-      "Open the black flag chest",
-      "Head to Beacon."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act6_the_beacon",
-    "zone": "The Beacon",
-    "act": 6,
-    "tasks": [
-      "Escort the payload, light the beacon, sail away."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act6_the_brine_king_s_reef",
-    "zone": "The Brine King's Reef",
-    "act": 6,
-    "tasks": [
-      "Kill the Brine King (Act 6 Boss)"
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act7_the_bridge_encampment",
-    "zone": "The Bridge Encampment",
-    "act": 7,
-    "tasks": [],
-    "isTown": true
-  },
-  {
-    "step_id": "act7_the_broken_bridge",
-    "zone": "The Broken Bridge",
-    "act": 7,
-    "tasks": [
-      "Grab the Silver Locket from the chest."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act7_the_crossroads",
-    "zone": "The Crossroads",
-    "act": 7,
-    "tasks": [
-      "Grab Waypoint",
-      "Head down to Fellshrine."
-    ]
-  },
-  {
-    "step_id": "act7_the_fellshrine_ruins",
-    "zone": "The Fellshrine Ruins",
-    "act": 7,
-    "tasks": [
-      "Enter the Crypt."
-    ]
-  },
-  {
-    "step_id": "act7_the_crypt",
-    "zone": "The Crypt",
-    "act": 7,
-    "tasks": [
-      "Complete Labyrinth Trial",
-      "Find Maligaro's Map in the container."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act7_the_chamber_of_sins_level_1",
-    "zone": "The Chamber of Sins Level 1",
-    "act": 7,
-    "tasks": [
-      "Insert Map into device, run Maligaro's Sanctum."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act7_maligaro_s_sanctum",
-    "zone": "Maligaro's Sanctum",
-    "act": 7,
-    "tasks": [
-      "Kill Maligaro",
-      "Take the Black Venom back to Chamber Level 1."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act7_the_chamber_of_sins_level_2",
-    "zone": "The Chamber of Sins Level 2",
-    "act": 7,
-    "tasks": [
-      "Complete Labyrinth Trial"
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act7_the_den",
-    "zone": "The Den",
-    "act": 7,
-    "tasks": [
-      "Kill the Great White Beast",
-      "Logout to get reward (Optional)."
-    ]
-  },
-  {
-    "step_id": "act7_the_ashen_fields",
-    "zone": "The Ashen Fields",
-    "act": 7,
-    "tasks": [
-      "Kill Greust in the camp."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act7_the_northern_forest",
-    "zone": "The Northern Forest",
-    "act": 7,
-    "tasks": [
-      "Grab Waypoint",
-      "Clear Dread Thicket FIRST, then Causeway."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act7_the_dread_thicket",
-    "zone": "The Dread Thicket",
-    "act": 7,
-    "tasks": [
-      "Collect ALL Fireflies",
-      "Kill Gruthkul (+1 Passive Point)"
-    ],
-    "important": true,
-    "passive_reward": 1
-  },
-  {
-    "step_id": "act7_the_causeway",
-    "zone": "The Causeway",
-    "act": 7,
-    "tasks": [
-      "Grab Kishara's Star from the box."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act7_the_vaal_city",
-    "zone": "The Vaal City",
-    "act": 7,
-    "tasks": [
-      "Talk to Yeena to open the Temple."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act7_the_temple_of_decay_level_1",
-    "zone": "The Temple of Decay Level 1",
-    "act": 7,
-    "tasks": [
-      "Run to Level 2."
-    ]
-  },
-  {
-    "step_id": "act7_the_temple_of_decay_level_2",
-    "zone": "The Temple of Decay Level 2",
-    "act": 7,
-    "tasks": [
-      "Kill Arakaali (Act 7 Boss)"
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act8_the_sarn_encampment",
-    "zone": "The Sarn Encampment",
-    "act": 8,
-    "tasks": [
-      "ACT 8 FLASK CHECK: Use a Hallowed Life Flask with Freeze Immunity in cold zones.",
-      "Alternative: Roll Freeze Immunity on your ilvl 4 Quicksilver Flask from Hailrake."
-    ],
-    "isTown": true
-  },
-  {
-    "step_id": "act8_the_sarn_ramparts",
-    "zone": "The Sarn Ramparts",
-    "act": 8,
-    "tasks": [
-      "Climb to the Conduits."
-    ]
-  },
-  {
-    "step_id": "act8_the_toxic_conduits",
-    "zone": "The Toxic Conduits",
-    "act": 8,
-    "tasks": [
-      "Run to Doedre's Cesspool."
-    ]
-  },
-  {
-    "step_id": "act8_doedre_s_cesspool",
-    "zone": "Doedre's Cesspool",
-    "act": 8,
-    "tasks": [
-      "Kill Doedre",
-      "Open the grate valve."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act8_the_grand_promenade",
-    "zone": "The Grand Promenade",
-    "act": 8,
-    "tasks": [
-      "Run to the Bath House."
-    ]
-  },
-  {
-    "step_id": "act8_the_bath_house",
-    "zone": "The Bath House",
-    "act": 8,
-    "tasks": [
-      "Complete Labyrinth Trial",
-      "Find High Gardens entrance.",
-      "Kill Hector Titucius for Wings of Watyx."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act8_the_high_gardens",
-    "zone": "The High Gardens",
-    "act": 8,
-    "tasks": [
-      "Kill Yugul (+1 Passive Point)"
-    ],
-    "important": true,
-    "passive_reward": 1
-  },
-  {
-    "step_id": "act8_the_quay",
-    "zone": "The Quay",
-    "act": 8,
-    "tasks": [
-      "Find the Ankh of Eternity",
-      "Find the Resurrection Site",
-      "Kill Tolman (+1 Passive Point)"
-    ],
-    "important": true,
-    "passive_reward": 1
-  },
-  {
-    "step_id": "act8_the_grain_gate",
-    "zone": "The Grain Gate",
-    "act": 8,
-    "tasks": [
-      "Kill the Gemling Legion (+1 Passive Point)"
-    ],
-    "important": true,
-    "passive_reward": 1
-  },
-  {
-    "step_id": "act8_the_imperial_fields",
-    "zone": "The Imperial Fields",
-    "act": 8,
-    "tasks": [
-      "Run through to Solaris Concourse."
-    ]
-  },
-  {
-    "step_id": "act8_the_solaris_concourse",
-    "zone": "The Solaris Concourse",
-    "act": 8,
-    "tasks": [
-      "Enter Solaris Temple Level 1."
-    ]
-  },
-  {
-    "step_id": "act8_the_solaris_temple_level_1",
-    "zone": "The Solaris Temple Level 1",
-    "act": 8,
-    "tasks": [
-      "Run to Level 2."
-    ]
-  },
-  {
-    "step_id": "act8_the_solaris_temple_level_2",
-    "zone": "The Solaris Temple Level 2",
-    "act": 8,
-    "tasks": [
-      "Kill Dawn, grab the Sun Orb."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act8_the_lunaris_concourse",
-    "zone": "The Lunaris Concourse",
-    "act": 8,
-    "tasks": [
-      "Enter Lunaris Temple Level 1."
-    ]
-  },
-  {
-    "step_id": "act8_the_lunaris_temple_level_1",
-    "zone": "The Lunaris Temple Level 1",
-    "act": 8,
-    "tasks": [
-      "Run to Level 2."
-    ]
-  },
-  {
-    "step_id": "act8_the_lunaris_temple_level_2",
-    "zone": "The Lunaris Temple Level 2",
-    "act": 8,
-    "tasks": [
-      "Kill Dusk, grab the Moon Orb."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act8_the_harbour_bridge",
-    "zone": "The Harbour Bridge",
-    "act": 8,
-    "tasks": [
-      "Go to the center, kill Solaris and Lunaris (Act 8 Boss)"
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act8_the_blood_aqueduct",
-    "zone": "The Blood Aqueduct",
-    "act": 8,
-    "tasks": [
-      "Run to Highgate. If under leveled, farm this zone to Level 60!"
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act9_highgate",
-    "zone": "Highgate",
-    "act": 9,
-    "tasks": [
-      "Prepare for Act 9. Almost there!"
-    ],
-    "isTown": true
-  },
-  {
-    "step_id": "act9_the_descent",
-    "zone": "The Descent",
-    "act": 9,
-    "tasks": [
-      "Use the supply hoists to descend."
-    ]
-  },
-  {
-    "step_id": "act9_the_vastiri_desert",
-    "zone": "The Vastiri Desert",
-    "act": 9,
-    "tasks": [
-      "Find the Storm Blade box",
-      "Find the Oasis entrance."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act9_the_oasis",
-    "zone": "The Oasis",
-    "act": 9,
-    "tasks": [
-      "Kill Shakari (+1 Passive Point)"
-    ],
-    "important": true,
-    "passive_reward": 1
-  },
-  {
-    "step_id": "act9_the_foothills",
-    "zone": "The Foothills",
-    "act": 9,
-    "tasks": [
-      "Grab Waypoint",
-      "Find Boiling Lake entrance."
-    ]
-  },
-  {
-    "step_id": "act9_the_boiling_lake",
-    "zone": "The Boiling Lake",
-    "act": 9,
-    "tasks": [
-      "Kill the Basilisk, grab its acid."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act9_the_tunnel",
-    "zone": "The Tunnel",
-    "act": 9,
-    "tasks": [
-      "Complete Labyrinth Trial",
-      "Proceed to Quarry."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act9_the_quarry",
-    "zone": "The Quarry",
-    "act": 9,
-    "tasks": [
-      "Clear Shrine of the Winds to kill Garukhan (+1 Passive Point)",
-      "Find the Refinery."
-    ],
-    "important": true,
-    "passive_reward": 1
-  },
-  {
-    "step_id": "act9_the_refinery",
-    "zone": "The Refinery",
-    "act": 9,
-    "tasks": [
-      "Kill General Adus, grab the Trarthan Powder."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act9_the_belly_of_the_beast",
-    "zone": "The Belly of the Beast",
-    "act": 9,
-    "tasks": [
-      "Run to the Rotting Core."
-    ]
-  },
-  {
-    "step_id": "act9_the_rotting_core",
-    "zone": "The Rotting Core",
-    "act": 9,
-    "tasks": [
-      "Defeat Maligaro, Doedre, and Shavronne",
-      "Kill the Depraved Trinity (Act 9 Boss)"
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act10_oriath_docks",
-    "zone": "Oriath Docks",
-    "act": 10,
-    "tasks": [],
-    "isTown": true
-  },
-  {
-    "step_id": "act10_the_cathedral_rooftop",
-    "zone": "The Cathedral Rooftop",
-    "act": 10,
-    "tasks": [
-      "Rescue Bannon",
-      "Head to Ravaged Square."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act10_the_ravaged_square",
-    "zone": "The Ravaged Square",
-    "act": 10,
-    "tasks": [
-      "Grab Waypoint.",
-      "Clear the zones below, then enter the Canals."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act10_the_torched_courts",
-    "zone": "The Torched Courts",
-    "act": 10,
-    "tasks": [
-      "Run to Desecrated Chambers."
-    ]
-  },
-  {
-    "step_id": "act10_the_desecrated_chambers",
-    "zone": "The Desecrated Chambers",
-    "act": 10,
-    "tasks": [
-      "Kill Avarius, grab the Staff of Purity."
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act10_the_control_blocks",
-    "zone": "The Control Blocks",
-    "act": 10,
-    "tasks": [
-      "Kill Vilenta (+1 Passive Point)"
-    ],
-    "important": true,
-    "passive_reward": 1
-  },
-  {
-    "step_id": "act10_the_reliquary",
-    "zone": "The Reliquary",
-    "act": 10,
-    "tasks": [
-      "Find the Tears of Maji (+1 Passive Point)"
-    ],
-    "important": true,
-    "passive_reward": 1
-  },
-  {
-    "step_id": "act10_the_ossuary",
-    "zone": "The Ossuary",
-    "act": 10,
-    "tasks": [
-      "Complete the Labyrinth Trial for your final map trial!"
-    ],
-    "important": true
-  },
-  {
-    "step_id": "act10_the_canals",
-    "zone": "The Canals",
-    "act": 10,
-    "tasks": [
-      "Run through to Feeding Trough."
-    ]
-  },
-  {
-    "step_id": "act10_the_feeding_trough",
-    "zone": "The Feeding Trough",
-    "act": 10,
-    "tasks": [
-      "Fight Kitava. Congratulations on finishing the campaign!"
-    ],
-    "important": true
-  }
-]
+{
+  "leveling_regex": [
+    {
+      "name": "2H Melee (RRG links)",
+      "regex": "-\\w-.-|r-r-|-r-r|r-.-r|g-g-|-g-g|g-.-g|Runn|rint"
+    },
+    {
+      "name": "Caster (BBB links)",
+      "regex": "-\\w-.-|b-b-|-b-b|b-.-b|Runn|rint"
+    },
+    {
+      "name": "Bow / Dex (GGG links)",
+      "regex": "-\\w-.-|g-g-|-g-g|g-.-g|Runn|rint"
+    },
+    {
+      "name": "Spellcaster (BBG links)",
+      "regex": "-\\w-.-|b-b-|-b-b|b-.-b|g-g-|-g-g|g-.-g|Runn|rint"
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "act1_the_twilight_strand",
+      "zone": "The Twilight Strand",
+      "act": 1,
+      "tasks": [
+        "Pick up gem drop and chest gem",
+        "Kill Hillock, grab all loot, enter town"
+      ]
+    },
+    {
+      "step_id": "act1_lioneye_s_watch",
+      "zone": "Lioneye's Watch",
+      "act": 1,
+      "tasks": [
+        "Claim quest gem reward from Tarkleigh"
+      ],
+      "isTown": true,
+      "quest_reward": "Enemy at the Gate"
+    },
+    {
+      "step_id": "act1_the_coast",
+      "zone": "The Coast",
+      "act": 1,
+      "tasks": [
+        "Grab Waypoint",
+        "Enter The Tidal Island immediately"
+      ]
+    },
+    {
+      "step_id": "act1_the_tidal_island",
+      "zone": "The Tidal Island",
+      "act": 1,
+      "tasks": [
+        "Kill Hailrake",
+        "LOGOUT to character screen to return to town instantly"
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act1_lioneye_s_watch_2",
+      "zone": "Lioneye's Watch",
+      "act": 1,
+      "tasks": [
+        "Claim Quicksilver Flask from Nessa",
+        "Claim quest gem reward from Nessa",
+        "Take the waypoint back to The Coast"
+      ],
+      "isTown": true,
+      "quest_reward": "Mercy Mission"
+    },
+    {
+      "step_id": "act1_the_mud_flats",
+      "zone": "The Mud Flats",
+      "act": 1,
+      "tasks": [
+        "Find the 3 Glyphs and open the passage"
+      ]
+    },
+    {
+      "step_id": "act1_the_fetid_pool",
+      "zone": "The Fetid Pool",
+      "act": 1,
+      "tasks": [
+        "SKIP this zone entirely. Dead end."
+      ]
+    },
+    {
+      "step_id": "act1_the_submerged_passage",
+      "zone": "The Submerged Passage",
+      "act": 1,
+      "tasks": [
+        "Drop a portal at the bridge",
+        "CONTINUE forward to The Ledge (do NOT enter Flooded Depths yet)"
+      ]
+    },
+    {
+      "step_id": "act1_the_ledge",
+      "zone": "The Ledge",
+      "act": 1,
+      "tasks": [
+        "Grab Waypoint",
+        "Take Waypoint back to town, then use your portal to return to the bridge",
+        "Enter The Flooded Depths from the bridge"
+      ]
+    },
+    {
+      "step_id": "act1_the_flooded_depths",
+      "zone": "The Flooded Depths",
+      "act": 1,
+      "tasks": [
+        "Kill the Deep Dweller (+1 Passive Point)",
+        "Logout to town"
+      ],
+      "important": true,
+      "passive_reward": 1
+    },
+    {
+      "step_id": "act1_the_climb",
+      "zone": "The Climb",
+      "act": 1,
+      "tasks": [
+        "Run straight through. Grab Waypoint if you see it.",
+        "Go directly to The Lower Prison"
+      ]
+    },
+    {
+      "step_id": "act1_the_lower_prison",
+      "zone": "The Lower Prison",
+      "act": 1,
+      "tasks": [
+        "Complete the Labyrinth Trial"
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act1_the_upper_prison",
+      "zone": "The Upper Prison",
+      "act": 1,
+      "tasks": [
+        "Kill Brutus",
+        "Continue forward to Prisoners Gate"
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act1_prisoner_s_gate",
+      "zone": "Prisoner's Gate",
+      "act": 1,
+      "tasks": [
+        "Grab Waypoint",
+        "Take Waypoint back to town for rewards"
+      ]
+    },
+    {
+      "step_id": "act1_lioneye_s_watch_3",
+      "zone": "Lioneye's Watch",
+      "act": 1,
+      "tasks": [
+        "Claim quest gem rewards from Nessa",
+        "Buy any gems your build needs from Nessa"
+      ],
+      "isTown": true,
+      "quest_reward": "The Caged Brute"
+    },
+    {
+      "step_id": "act1_prisoner_s_gate_2",
+      "zone": "Prisoner's Gate",
+      "act": 1,
+      "tasks": [
+        "Run through. Do not fight Piety's blockade."
+      ]
+    },
+    {
+      "step_id": "act1_the_ship_graveyard",
+      "zone": "The Ship Graveyard",
+      "act": 1,
+      "tasks": [
+        "Grab Waypoint",
+        "Find The Ship Graveyard Cave"
+      ]
+    },
+    {
+      "step_id": "act1_the_ship_graveyard_cave",
+      "zone": "The Ship Graveyard Cave",
+      "act": 1,
+      "tasks": [
+        "Grab the Allflame",
+        "Go on to The Ship Graveyard"
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act1_the_ship_graveyard_2",
+      "zone": "The Ship Graveyard",
+      "act": 1,
+      "tasks": [
+        "Kill Fairgraves (+1 passive)",
+        "Return to Town for gem purchases"
+      ],
+      "passive_reward": 1
+    },
+    {
+      "step_id": "act1_lioneye_s_watch_4",
+      "zone": "Lioneye's Watch",
+      "act": 1,
+      "tasks": [
+        "Claim quest rewards",
+        "Buy any gems your build needs from Nessa"
+      ],
+      "isTown": true
+    },
+    {
+      "step_id": "act1_the_ship_graveyard_3",
+      "zone": "The Ship Graveyard",
+      "act": 1,
+      "tasks": [
+        "Continue to The Cavern of Wrath"
+      ]
+    },
+    {
+      "step_id": "act1_the_cavern_of_wrath",
+      "zone": "The Cavern of Wrath",
+      "act": 1,
+      "tasks": [
+        "Run through to The Cavern of Anger."
+      ]
+    },
+    {
+      "step_id": "act1_the_cavern_of_anger",
+      "zone": "The Cavern of Anger",
+      "act": 1,
+      "tasks": [
+        "Kill Merveil to enter Act 2."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act1_the_southern_forest",
+      "zone": "The Southern Forest",
+      "act": 1,
+      "tasks": [
+        "Run straight through to town."
+      ]
+    },
+    {
+      "step_id": "act2_the_forest_encampment",
+      "zone": "The Forest Encampment",
+      "act": 2,
+      "tasks": [
+        "Claim quest gem rewards from Yeena",
+        "Continue to The Old Fields"
+      ],
+      "isTown": true,
+      "quest_reward": "The Siren's Cadence"
+    },
+    {
+      "step_id": "act2_lioneye_s_watch",
+      "zone": "Lioneye's Watch",
+      "act": 2,
+      "tasks": [
+        "Claim quest gem rewards from Nessa",
+        "Return to Forest Encampment"
+      ],
+      "isTown": true,
+      "quest_reward": "The Siren's Cadence"
+    },
+    {
+      "step_id": "act2_the_forest_encampment_2",
+      "zone": "The Forest Encampment",
+      "act": 2,
+      "tasks": [
+        "Continue to The Old Fields"
+      ],
+      "isTown": true
+    },
+    {
+      "step_id": "act2_the_old_fields",
+      "zone": "The Old Fields",
+      "act": 2,
+      "tasks": [
+        "Run through. Follow the road."
+      ]
+    },
+    {
+      "step_id": "act2_the_den",
+      "zone": "The Den",
+      "act": 2,
+      "tasks": [
+        "SKIP this zone entirely. Gives a 2nd Quicksilver, but slows you down."
+      ]
+    },
+    {
+      "step_id": "act2_the_crossroads",
+      "zone": "The Crossroads",
+      "act": 2,
+      "tasks": [
+        "Grab Waypoint",
+        "Head LEFT to Chamber of Sins."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act2_the_chamber_of_sins_level_1",
+      "zone": "The Chamber of Sins Level 1",
+      "act": 2,
+      "tasks": [
+        "Find the center stairs to Level 2."
+      ]
+    },
+    {
+      "step_id": "act2_the_chamber_of_sins_level_2",
+      "zone": "The Chamber of Sins Level 2",
+      "act": 2,
+      "tasks": [
+        "Complete Labyrinth Trial",
+        "Kill Fidelitas",
+        "Logout to town"
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act2_the_forest_encampment_3",
+      "zone": "The Forest Encampment",
+      "act": 2,
+      "tasks": [
+        "Claim quest gem rewards from Yeena"
+      ],
+      "isTown": true,
+      "quest_reward": "Intruders in Black"
+    },
+    {
+      "step_id": "act2_the_riverways",
+      "zone": "The Riverways",
+      "act": 2,
+      "tasks": [
+        "Grab Waypoint",
+        "Follow broken road to Western Forest."
+      ]
+    },
+    {
+      "step_id": "act2_the_western_forest",
+      "zone": "The Western Forest",
+      "act": 2,
+      "tasks": [
+        "Kill Blackguards at the bottom, open the seal (+1 Passive)",
+        "Continue to The Weaver's Chambers"
+      ],
+      "important": true,
+      "passive_reward": 1
+    },
+    {
+      "step_id": "act2_the_weaver_s_chambers",
+      "zone": "The Weaver's Chambers",
+      "act": 2,
+      "tasks": [
+        "Kill the Weaver",
+        "Logout to town"
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act2_the_forest_encampment_4",
+      "zone": "The Forest Encampment",
+      "act": 2,
+      "tasks": [
+        "Claim quest gem rewards from Yeena",
+        "QUEST: Travel back to Act 1 Lioneye's Watch for +1 Passive (The Way Forward)"
+      ],
+      "isTown": true,
+      "quest_reward": "Sharp and Cruel",
+      "passive_reward": 1
+    },
+    {
+      "step_id": "act2_lioneye_s_watch_2",
+      "zone": "Lioneye's Watch",
+      "act": 2,
+      "tasks": [
+        "Claim +1 Passive Point from 'The Way Forward' quest",
+        "Return to The Crosstoads Act 2 via Waypoint"
+      ],
+      "isTown": true,
+      "passive_reward": 1
+    },
+    {
+      "step_id": "act2_the_crossroads_2",
+      "zone": "The Crossroads",
+      "act": 2,
+      "tasks": [
+        "Head down right to The Fellshrine Ruins"
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act2_the_fellshrine_ruins",
+      "zone": "The Fellshrine Ruins",
+      "act": 2,
+      "tasks": [
+        "Follow the road right to The Crypt."
+      ]
+    },
+    {
+      "step_id": "act2_the_crypt_level_1",
+      "zone": "The Crypt Level 1",
+      "act": 2,
+      "tasks": [
+        "Complete Labyrinth Trial",
+        "Logout to town (Skip Level 2!)"
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act2_the_forest_encampment_5",
+      "zone": "The Forest Encampment",
+      "act": 2,
+      "tasks": [
+        "Take waypoint to The Crossroads"
+      ],
+      "isTown": true
+    },
+    {
+      "step_id": "act2_the_crossroads_3",
+      "zone": "The Crossroads",
+      "act": 2,
+      "tasks": [
+        "Head right to The Broken Bridge"
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act2_the_broken_bridge",
+      "zone": "The Broken Bridge",
+      "act": 2,
+      "tasks": [
+        "Deal with Kraityn (bandit quest)",
+        "Logout to town.",
+        "TIP: Search for and defeat the 3 Exiles beside the waypoint for extra items."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act2_the_forest_encampment_6",
+      "zone": "The Forest Encampment",
+      "act": 2,
+      "tasks": [
+        "Take waypoint to The Riverways"
+      ],
+      "isTown": true
+    },
+    {
+      "step_id": "act2_the_riverways_2",
+      "zone": "The Riverways",
+      "act": 2,
+      "tasks": [
+        "Go up to The Wetlands"
+      ]
+    },
+    {
+      "step_id": "act2_the_wetlands",
+      "zone": "The Wetlands",
+      "act": 2,
+      "tasks": [
+        "Deal with Oak (bandit quest)",
+        "Grab Waypoint",
+        "Open the Vaal Ruins seal."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act2_the_vaal_ruins",
+      "zone": "The Vaal Ruins",
+      "act": 2,
+      "tasks": [
+        "Run through the maze to the exit."
+      ]
+    },
+    {
+      "step_id": "act2_the_northern_forest",
+      "zone": "The Northern Forest",
+      "act": 2,
+      "tasks": [
+        "Run to the top-left to enter The Caverns."
+      ]
+    },
+    {
+      "step_id": "act2_the_dread_thicket",
+      "zone": "The Dread Thicket",
+      "act": 2,
+      "tasks": [
+        "SKIP (In Act 2). Hideout spawn only."
+      ]
+    },
+    {
+      "step_id": "act2_the_caverns",
+      "zone": "The Caverns",
+      "act": 2,
+      "tasks": [
+        "Run through to the Waypoint",
+        "Go back to the Western Forest"
+      ]
+    },
+    {
+      "step_id": "act2_the_western_forest_2",
+      "zone": "The Western Forest",
+      "act": 2,
+      "tasks": [
+        "Deal with Alira (bandit quest)\nlogout/portal to town"
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act2_the_forest_encampment_7",
+      "zone": "The Forest Encampment",
+      "act": 2,
+      "tasks": [
+        "Take waypoint back to The Caverns"
+      ],
+      "isTown": true
+    },
+    {
+      "step_id": "act2_the_caverns_2",
+      "zone": "The Caverns",
+      "act": 2,
+      "tasks": [
+        "Continue to the Ancient Pyramid"
+      ]
+    },
+    {
+      "step_id": "act2_the_ancient_pyramid",
+      "zone": "The Ancient Pyramid",
+      "act": 2,
+      "tasks": [
+        "Climb to the top, kill Vaal Oversoul."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act2_the_city_of_sarn",
+      "zone": "The City of Sarn",
+      "act": 2,
+      "tasks": [
+        "Kill the Guard",
+        "Talk to Clarissa",
+        "Enter Town."
+      ]
+    },
+    {
+      "step_id": "act3_the_sarn_encampment",
+      "zone": "The Sarn Encampment",
+      "act": 3,
+      "tasks": [
+        "Claim quest gem rewards from Clarissa",
+        "Continue to The Slums"
+      ],
+      "isTown": true,
+      "quest_reward": "Lost in Love"
+    },
+    {
+      "step_id": "act3_the_slums",
+      "zone": "The Slums",
+      "act": 3,
+      "tasks": [
+        "Rush to The Crematorium."
+      ]
+    },
+    {
+      "step_id": "act3_the_crematorium",
+      "zone": "The Crematorium",
+      "act": 3,
+      "tasks": [
+        "Complete Labyrinth Trial",
+        "Kill Piety (Tolman Quest)",
+        "Logout to town"
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act3_the_sarn_encampment_2",
+      "zone": "The Sarn Encampment",
+      "act": 3,
+      "tasks": [
+        "Claim quest gem rewards from Clarissa",
+        "Go back to The Slums"
+      ],
+      "isTown": true,
+      "quest_reward": "Lost in Love"
+    },
+    {
+      "step_id": "act3_the_slums_2",
+      "zone": "The Slums",
+      "act": 3,
+      "tasks": [
+        "Find the Sewers."
+      ]
+    },
+    {
+      "step_id": "act3_the_sewers",
+      "zone": "The Sewers",
+      "act": 3,
+      "tasks": [
+        "Find the 3 Busts (+1 Passive Point)",
+        "TIP: Look for crafting bench recipes in the passage to Ebony Barracks"
+      ],
+      "important": true,
+      "passive_reward": 1
+    },
+    {
+      "step_id": "act3_the_marketplace",
+      "zone": "The Marketplace",
+      "act": 3,
+      "tasks": [
+        "Grab Waypoint",
+        "Find the Catacombs entrance nearby."
+      ]
+    },
+    {
+      "step_id": "act3_the_catacombs",
+      "zone": "The Catacombs",
+      "act": 3,
+      "tasks": [
+        "Complete Labyrinth Trial",
+        "Portal back to town/Marketplace."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act3_the_marketplace_2",
+      "zone": "The Marketplace",
+      "act": 3,
+      "tasks": [
+        "Go to The Battlefront"
+      ]
+    },
+    {
+      "step_id": "act3_the_battlefront",
+      "zone": "The Battlefront",
+      "act": 3,
+      "tasks": [
+        "Grab Waypoint",
+        "Grab the Ribbon Spool from the chest bottom-left.",
+        "Go to The Docks"
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act3_the_docks",
+      "zone": "The Docks",
+      "act": 3,
+      "tasks": [
+        "Find the Supply Container with the Thaumetic Sulphite",
+        "Go back to The Battlefront"
+      ]
+    },
+    {
+      "step_id": "act3_the_battlefront_2",
+      "zone": "The Battlefront",
+      "act": 3,
+      "tasks": [
+        "Go to The Solaris Temple"
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act3_the_solaris_temple_level_1",
+      "zone": "The Solaris Temple Level 1",
+      "act": 3,
+      "tasks": [
+        "Run through to Level 2."
+      ]
+    },
+    {
+      "step_id": "act3_the_solaris_temple_level_2",
+      "zone": "The Solaris Temple Level 2",
+      "act": 3,
+      "tasks": [
+        "Talk to Dialla",
+        "Grab Rare Lapis Amulet reward from Dialla",
+        "Go back to The Sewers"
+      ]
+    },
+    {
+      "step_id": "act3_the_sewers_2",
+      "zone": "The Sewers",
+      "act": 3,
+      "tasks": [
+        "Continue to The Ebony Barracks"
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act3_the_ebony_barracks",
+      "zone": "The Ebony Barracks",
+      "act": 3,
+      "tasks": [
+        "Grab Waypoint",
+        "Kill General Gravicius",
+        "Go UP to Lunaris Temple."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act3_the_lunaris_temple_level_1",
+      "zone": "The Lunaris Temple Level 1",
+      "act": 3,
+      "tasks": [
+        "Run through to Level 2."
+      ]
+    },
+    {
+      "step_id": "act3_the_lunaris_temple_level_2",
+      "zone": "The Lunaris Temple Level 2",
+      "act": 3,
+      "tasks": [
+        "Kill Piety",
+        "log out to town"
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act3_the_sarn_encampment_3",
+      "zone": "The Sarn Encampment",
+      "act": 3,
+      "tasks": [
+        "Claim quest gem rewards from Clarissa",
+        "Go back to The Ebony Barracks"
+      ],
+      "isTown": true,
+      "quest_reward": "Sever the Right Hand"
+    },
+    {
+      "step_id": "act3_the_ebony_barracks_2",
+      "zone": "The Ebony Barracks",
+      "act": 3,
+      "tasks": [
+        "Go right to The Imperial Gardens"
+      ]
+    },
+    {
+      "step_id": "act3_the_imperial_gardens",
+      "zone": "The Imperial Gardens",
+      "act": 3,
+      "tasks": [
+        "Complete Labyrinth Trial",
+        "Grab Waypoint",
+        "Head right to Sceptre of God.",
+        "OPTIONAL: Do the Library quest if your build needs gems from Siosa"
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act3_the_library",
+      "zone": "The Library",
+      "act": 3,
+      "tasks": [
+        "OPTIONAL: Buy gems from Siosa if your build needs them"
+      ],
+      "quest_reward": "A Fixture of Fate"
+    },
+    {
+      "step_id": "act3_the_archives",
+      "zone": "The Archives",
+      "act": 3,
+      "tasks": [
+        "OPTIONAL: Required to unlock Siosa's gem shop"
+      ]
+    },
+    {
+      "step_id": "act3_the_sceptre_of_god",
+      "zone": "The Sceptre of God",
+      "act": 3,
+      "tasks": [
+        "Climb the floors."
+      ]
+    },
+    {
+      "step_id": "act3_the_upper_sceptre_of_god",
+      "zone": "The Upper Sceptre of God",
+      "act": 3,
+      "tasks": [
+        "Kill Dominus",
+        "Enter the Aqueduct."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act3_the_aqueduct",
+      "zone": "The Aqueduct",
+      "act": 3,
+      "tasks": [
+        "Run straight through to town."
+      ]
+    },
+    {
+      "step_id": "act4_highgate",
+      "zone": "Highgate",
+      "act": 4,
+      "tasks": [
+        "Return to Sarn Encampment to turn in quests.",
+        "TIP: Get to Level 32 before entering Kaom's Stronghold to avoid XP penalties."
+      ],
+      "isTown": true
+    },
+    {
+      "step_id": "act4_the_sarn_encampment",
+      "zone": "The Sarn Encampment",
+      "act": 4,
+      "tasks": [
+        "Return to Highgate after turning in quests"
+      ],
+      "isTown": true
+    },
+    {
+      "step_id": "act4_highgate_2",
+      "zone": "Highgate",
+      "act": 4,
+      "tasks": [
+        "Go to The Dried Lake"
+      ],
+      "isTown": true
+    },
+    {
+      "step_id": "act4_the_dried_lake",
+      "zone": "The Dried Lake",
+      "act": 4,
+      "tasks": [
+        "Kill Voll",
+        "Return to town to open the Mines."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act4_highgate_3",
+      "zone": "Highgate",
+      "act": 4,
+      "tasks": [
+        "Go to The Mines"
+      ],
+      "isTown": true
+    },
+    {
+      "step_id": "act4_the_mines_level_1",
+      "zone": "The Mines Level 1",
+      "act": 4,
+      "tasks": [
+        "Run through to Level 2."
+      ]
+    },
+    {
+      "step_id": "act4_the_mines_level_2",
+      "zone": "The Mines Level 2",
+      "act": 4,
+      "tasks": [
+        "Free Deshret (Click the blue spirit +1 Passive)",
+        "Continue to The Crystal Veins"
+      ],
+      "important": true,
+      "passive_reward": 1
+    },
+    {
+      "step_id": "act4_the_crystal_veins",
+      "zone": "The Crystal Veins",
+      "act": 4,
+      "tasks": [
+        "Grab Waypoint",
+        "Complete Kaom's & Daresso's dreams."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act4_kaom_s_dream",
+      "zone": "Kaom's Dream",
+      "act": 4,
+      "tasks": [
+        "Run to the Stronghold."
+      ]
+    },
+    {
+      "step_id": "act4_kaom_s_stronghold",
+      "zone": "Kaom's Stronghold",
+      "act": 4,
+      "tasks": [
+        "Kill King Kaom."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act4_daresso_s_dream",
+      "zone": "Daresso's Dream",
+      "act": 4,
+      "tasks": [
+        "Clear the fighting pits."
+      ]
+    },
+    {
+      "step_id": "act4_the_grand_arena",
+      "zone": "The Grand Arena",
+      "act": 4,
+      "tasks": [
+        "Kill Daresso."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act4_the_belly_of_the_beast_level_1",
+      "zone": "The Belly of the Beast Level 1",
+      "act": 4,
+      "tasks": [
+        "Run to Level 2."
+      ]
+    },
+    {
+      "step_id": "act4_the_belly_of_the_beast_level_2",
+      "zone": "The Belly of the Beast Level 2",
+      "act": 4,
+      "tasks": [
+        "Kill Piety."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act4_the_harvest",
+      "zone": "The Harvest",
+      "act": 4,
+      "tasks": [
+        "Kill Malachai."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act4_the_ascent",
+      "zone": "The Ascent",
+      "act": 4,
+      "tasks": [
+        "Interact with the resonator to travel to Act 5."
+      ]
+    },
+    {
+      "step_id": "act5_the_slave_pens",
+      "zone": "The Slave Pens",
+      "act": 5,
+      "tasks": [
+        "Kill the Overseer",
+        "Enter Town."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act5_overseer_s_tower",
+      "zone": "Overseer's Tower",
+      "act": 5,
+      "tasks": [
+        "Claim quest rewards from Lani"
+      ],
+      "isTown": true
+    },
+    {
+      "step_id": "act5_the_control_blocks",
+      "zone": "The Control Blocks",
+      "act": 5,
+      "tasks": [
+        "Find the Miasmeter (+1 Passive)",
+        "Kill Justicar Casticus"
+      ],
+      "important": true,
+      "passive_reward": 1
+    },
+    {
+      "step_id": "act5_oriath_square",
+      "zone": "Oriath Square",
+      "act": 5,
+      "tasks": [
+        "Run to Templar Courts."
+      ]
+    },
+    {
+      "step_id": "act5_the_templar_courts",
+      "zone": "The Templar Courts",
+      "act": 5,
+      "tasks": [
+        "Run to Chamber of Innocence."
+      ]
+    },
+    {
+      "step_id": "act5_the_chamber_of_innocence",
+      "zone": "The Chamber of Innocence",
+      "act": 5,
+      "tasks": [
+        "Kill High Templar Avarius / Innocence",
+        "TIP: This zone has many guaranteed Magic Monster packs — farm them for extra XP!"
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act5_the_ruined_square",
+      "zone": "The Ruined Square",
+      "act": 5,
+      "tasks": [
+        "Grab Waypoint",
+        "Find the Ossuary and Reliquary."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act5_the_torched_courts",
+      "zone": "The Torched Courts",
+      "act": 5,
+      "tasks": [
+        "Run through."
+      ]
+    },
+    {
+      "step_id": "act5_the_ossuary",
+      "zone": "The Ossuary",
+      "act": 5,
+      "tasks": [
+        "Find the Sign of Purity",
+        "TIP: Click the Lever above the Sign to unlock a crafting bench recipe"
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act5_the_reliquary",
+      "zone": "The Reliquary",
+      "act": 5,
+      "tasks": [
+        "Find Kitava's Torments (+1 Passive Point)",
+        "TIP: Place a portal outside the Cathedral Rooftop entrance before entering!"
+      ],
+      "important": true,
+      "passive_reward": 1
+    },
+    {
+      "step_id": "act5_the_cathedral_rooftop",
+      "zone": "The Cathedral Rooftop",
+      "act": 5,
+      "tasks": [
+        "Save Bannon",
+        "Fight Kitava. You will lose 30% of all Resistances!"
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act6_lioneye_s_watch",
+      "zone": "Lioneye's Watch",
+      "act": 6,
+      "tasks": [
+        "Clear Twilight Strand to unlock Lilly Roth gem vendor",
+        "Buy all gems your build needs from Lilly Roth"
+      ],
+      "isTown": true
+    },
+    {
+      "step_id": "act6_the_twilight_strand",
+      "zone": "The Twilight Strand",
+      "act": 6,
+      "tasks": [
+        "Clear EVERY monster to unlock Lilly Roth gem vendor."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act6_the_coast",
+      "zone": "The Coast",
+      "act": 6,
+      "tasks": [
+        "Run straight to Mud Flats. Skip Tidal Island."
+      ]
+    },
+    {
+      "step_id": "act6_the_tidal_island",
+      "zone": "The Tidal Island",
+      "act": 6,
+      "tasks": [
+        "SKIP. Only needed for a minor lore quest."
+      ]
+    },
+    {
+      "step_id": "act6_the_mud_flats",
+      "zone": "The Mud Flats",
+      "act": 6,
+      "tasks": [
+        "Kill the Dishonoured Queen",
+        "Grab the Eye of Conquest"
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act6_the_karui_fortress",
+      "zone": "The Karui Fortress",
+      "act": 6,
+      "tasks": [
+        "Kill Tukohama (+1 Passive Point)"
+      ],
+      "important": true,
+      "passive_reward": 1
+    },
+    {
+      "step_id": "act6_the_ridge",
+      "zone": "The Ridge",
+      "act": 6,
+      "tasks": [
+        "Run through to Prison."
+      ]
+    },
+    {
+      "step_id": "act6_the_lower_prison",
+      "zone": "The Lower Prison",
+      "act": 6,
+      "tasks": [
+        "Run through to Shavronne's Tower."
+      ]
+    },
+    {
+      "step_id": "act6_shavronne_s_tower",
+      "zone": "Shavronne's Tower",
+      "act": 6,
+      "tasks": [
+        "Climb to the roof",
+        "Kill Brutus/Shavronne"
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act6_prisoner_s_gate",
+      "zone": "Prisoner's Gate",
+      "act": 6,
+      "tasks": [
+        "Kill Abberath in the side-valley (+1 Passive Point)"
+      ],
+      "important": true,
+      "passive_reward": 1
+    },
+    {
+      "step_id": "act6_the_riverways",
+      "zone": "The Riverways",
+      "act": 6,
+      "tasks": [
+        "Grab Waypoint",
+        "Head to Wetlands."
+      ]
+    },
+    {
+      "step_id": "act6_the_wetlands",
+      "zone": "The Wetlands",
+      "act": 6,
+      "tasks": [
+        "Kill Ryslatha in the Spawning Ground (+1 Passive Point)"
+      ],
+      "important": true,
+      "passive_reward": 1
+    },
+    {
+      "step_id": "act6_the_western_forest",
+      "zone": "The Western Forest",
+      "act": 6,
+      "tasks": [
+        "Follow the road through."
+      ]
+    },
+    {
+      "step_id": "act6_the_southern_forest",
+      "zone": "The Southern Forest",
+      "act": 6,
+      "tasks": [
+        "Run to Caverns."
+      ]
+    },
+    {
+      "step_id": "act6_the_cavern_of_anger",
+      "zone": "The Cavern of Anger",
+      "act": 6,
+      "tasks": [
+        "Open the black flag chest",
+        "Head to Beacon."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act6_the_beacon",
+      "zone": "The Beacon",
+      "act": 6,
+      "tasks": [
+        "Escort the payload, light the beacon, sail away.",
+        "TIP: Place a Safety Portal — the fuel pylon enemies can be very dangerous!"
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act6_the_brine_king_s_reef",
+      "zone": "The Brine King's Reef",
+      "act": 6,
+      "tasks": [
+        "Kill the Brine King (Act 6 Boss)"
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act7_the_bridge_encampment",
+      "zone": "The Bridge Encampment",
+      "act": 7,
+      "tasks": [
+        "Claim quest rewards"
+      ],
+      "isTown": true
+    },
+    {
+      "step_id": "act7_the_broken_bridge",
+      "zone": "The Broken Bridge",
+      "act": 7,
+      "tasks": [
+        "Grab the Silver Locket from the chest."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act7_the_crossroads",
+      "zone": "The Crossroads",
+      "act": 7,
+      "tasks": [
+        "Grab Waypoint",
+        "Head down to Fellshrine."
+      ]
+    },
+    {
+      "step_id": "act7_the_fellshrine_ruins",
+      "zone": "The Fellshrine Ruins",
+      "act": 7,
+      "tasks": [
+        "Enter the Crypt."
+      ]
+    },
+    {
+      "step_id": "act7_the_crypt",
+      "zone": "The Crypt",
+      "act": 7,
+      "tasks": [
+        "Complete Labyrinth Trial",
+        "Find Maligaro's Map in the container."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act7_the_chamber_of_sins_level_1",
+      "zone": "The Chamber of Sins Level 1",
+      "act": 7,
+      "tasks": [
+        "Insert Map into device, run Maligaro's Sanctum."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act7_maligaro_s_sanctum",
+      "zone": "Maligaro's Sanctum",
+      "act": 7,
+      "tasks": [
+        "Kill Maligaro",
+        "Take the Black Venom back to Chamber Level 1."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act7_the_chamber_of_sins_level_2",
+      "zone": "The Chamber of Sins Level 2",
+      "act": 7,
+      "tasks": [
+        "Complete Labyrinth Trial"
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act7_the_den",
+      "zone": "The Den",
+      "act": 7,
+      "tasks": [
+        "Kill the Great White Beast",
+        "Logout to get reward (Optional)."
+      ]
+    },
+    {
+      "step_id": "act7_the_ashen_fields",
+      "zone": "The Ashen Fields",
+      "act": 7,
+      "tasks": [
+        "Kill Greust in the camp."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act7_the_northern_forest",
+      "zone": "The Northern Forest",
+      "act": 7,
+      "tasks": [
+        "Grab Waypoint",
+        "Clear Dread Thicket FIRST, then Causeway.",
+        "TIP: Place a portal near the Dread Thicket entrance if you see it."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act7_the_dread_thicket",
+      "zone": "The Dread Thicket",
+      "act": 7,
+      "tasks": [
+        "Collect ALL Fireflies",
+        "Kill Gruthkul (+1 Passive Point)"
+      ],
+      "important": true,
+      "passive_reward": 1
+    },
+    {
+      "step_id": "act7_the_causeway",
+      "zone": "The Causeway",
+      "act": 7,
+      "tasks": [
+        "Grab Kishara's Star from the box."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act7_the_vaal_city",
+      "zone": "The Vaal City",
+      "act": 7,
+      "tasks": [
+        "Talk to Yeena to open the Temple."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act7_the_temple_of_decay_level_1",
+      "zone": "The Temple of Decay Level 1",
+      "act": 7,
+      "tasks": [
+        "Run to Level 2."
+      ]
+    },
+    {
+      "step_id": "act7_the_temple_of_decay_level_2",
+      "zone": "The Temple of Decay Level 2",
+      "act": 7,
+      "tasks": [
+        "Kill Arakaali (Act 7 Boss)"
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act8_the_sarn_encampment",
+      "zone": "The Sarn Encampment",
+      "act": 8,
+      "tasks": [
+        "ACT 8 FLASK CHECK: Use a Hallowed Life Flask with Freeze Immunity in cold zones.",
+        "Alternative: Roll Freeze Immunity on your ilvl 4 Quicksilver Flask from Hailrake."
+      ],
+      "isTown": true
+    },
+    {
+      "step_id": "act8_the_sarn_ramparts",
+      "zone": "The Sarn Ramparts",
+      "act": 8,
+      "tasks": [
+        "Climb to the Conduits."
+      ]
+    },
+    {
+      "step_id": "act8_the_toxic_conduits",
+      "zone": "The Toxic Conduits",
+      "act": 8,
+      "tasks": [
+        "Run to Doedre's Cesspool."
+      ]
+    },
+    {
+      "step_id": "act8_doedre_s_cesspool",
+      "zone": "Doedre's Cesspool",
+      "act": 8,
+      "tasks": [
+        "Kill Doedre",
+        "Open the grate valve."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act8_the_grand_promenade",
+      "zone": "The Grand Promenade",
+      "act": 8,
+      "tasks": [
+        "Run to the Bath House."
+      ]
+    },
+    {
+      "step_id": "act8_the_bath_house",
+      "zone": "The Bath House",
+      "act": 8,
+      "tasks": [
+        "Complete Labyrinth Trial",
+        "Find High Gardens entrance.",
+        "Kill Hector Titucius for Wings of Watyx."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act8_the_high_gardens",
+      "zone": "The High Gardens",
+      "act": 8,
+      "tasks": [
+        "Kill Yugul (+1 Passive Point)"
+      ],
+      "important": true,
+      "passive_reward": 1
+    },
+    {
+      "step_id": "act8_the_quay",
+      "zone": "The Quay",
+      "act": 8,
+      "tasks": [
+        "Find the Ankh of Eternity",
+        "Find the Resurrection Site",
+        "Kill Tolman (+1 Passive Point)"
+      ],
+      "important": true,
+      "passive_reward": 1
+    },
+    {
+      "step_id": "act8_the_grain_gate",
+      "zone": "The Grain Gate",
+      "act": 8,
+      "tasks": [
+        "Kill the Gemling Legion (+1 Passive Point)"
+      ],
+      "important": true,
+      "passive_reward": 1
+    },
+    {
+      "step_id": "act8_the_imperial_fields",
+      "zone": "The Imperial Fields",
+      "act": 8,
+      "tasks": [
+        "Run through to Solaris Concourse."
+      ]
+    },
+    {
+      "step_id": "act8_the_solaris_concourse",
+      "zone": "The Solaris Concourse",
+      "act": 8,
+      "tasks": [
+        "Enter Solaris Temple Level 1."
+      ]
+    },
+    {
+      "step_id": "act8_the_solaris_temple_level_1",
+      "zone": "The Solaris Temple Level 1",
+      "act": 8,
+      "tasks": [
+        "Run to Level 2."
+      ]
+    },
+    {
+      "step_id": "act8_the_solaris_temple_level_2",
+      "zone": "The Solaris Temple Level 2",
+      "act": 8,
+      "tasks": [
+        "Kill Dawn, grab the Sun Orb."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act8_the_lunaris_concourse",
+      "zone": "The Lunaris Concourse",
+      "act": 8,
+      "tasks": [
+        "Enter Lunaris Temple Level 1."
+      ]
+    },
+    {
+      "step_id": "act8_the_lunaris_temple_level_1",
+      "zone": "The Lunaris Temple Level 1",
+      "act": 8,
+      "tasks": [
+        "Run to Level 2."
+      ]
+    },
+    {
+      "step_id": "act8_the_lunaris_temple_level_2",
+      "zone": "The Lunaris Temple Level 2",
+      "act": 8,
+      "tasks": [
+        "Kill Dusk, grab the Moon Orb."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act8_the_harbour_bridge",
+      "zone": "The Harbour Bridge",
+      "act": 8,
+      "tasks": [
+        "Go to the center, kill Solaris and Lunaris (Act 8 Boss)",
+        "TIP: Ctrl+Click the entrance to reset the zone for more XP on your way out."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act8_the_blood_aqueduct",
+      "zone": "The Blood Aqueduct",
+      "act": 8,
+      "tasks": [
+        "Run to Highgate. If under leveled, farm this zone to Level 60!"
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act9_highgate",
+      "zone": "Highgate",
+      "act": 9,
+      "tasks": [
+        "Prepare for Act 9. Almost there!"
+      ],
+      "isTown": true
+    },
+    {
+      "step_id": "act9_the_descent",
+      "zone": "The Descent",
+      "act": 9,
+      "tasks": [
+        "Use the supply hoists to descend."
+      ]
+    },
+    {
+      "step_id": "act9_the_vastiri_desert",
+      "zone": "The Vastiri Desert",
+      "act": 9,
+      "tasks": [
+        "Find the Storm Blade box",
+        "Find the Oasis entrance."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act9_the_oasis",
+      "zone": "The Oasis",
+      "act": 9,
+      "tasks": [
+        "Kill Shakari (+1 Passive Point)"
+      ],
+      "important": true,
+      "passive_reward": 1
+    },
+    {
+      "step_id": "act9_the_foothills",
+      "zone": "The Foothills",
+      "act": 9,
+      "tasks": [
+        "Grab Waypoint",
+        "Find Boiling Lake entrance."
+      ]
+    },
+    {
+      "step_id": "act9_the_boiling_lake",
+      "zone": "The Boiling Lake",
+      "act": 9,
+      "tasks": [
+        "Kill the Basilisk, grab its acid."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act9_the_tunnel",
+      "zone": "The Tunnel",
+      "act": 9,
+      "tasks": [
+        "Complete Labyrinth Trial",
+        "Proceed to Quarry."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act9_the_quarry",
+      "zone": "The Quarry",
+      "act": 9,
+      "tasks": [
+        "Clear Shrine of the Winds to kill Garukhan (+1 Passive Point)",
+        "Find the Refinery.",
+        "TIP: Look for crafting bench recipes near the Waypoint"
+      ],
+      "important": true,
+      "passive_reward": 1
+    },
+    {
+      "step_id": "act9_the_refinery",
+      "zone": "The Refinery",
+      "act": 9,
+      "tasks": [
+        "Kill General Adus, grab the Trarthan Powder."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act9_the_belly_of_the_beast",
+      "zone": "The Belly of the Beast",
+      "act": 9,
+      "tasks": [
+        "Run to the Rotting Core.",
+        "TIP: Consider rolling a Bleed Removal Flask for this zone."
+      ]
+    },
+    {
+      "step_id": "act9_the_rotting_core",
+      "zone": "The Rotting Core",
+      "act": 9,
+      "tasks": [
+        "Defeat Maligaro, Doedre, and Shavronne",
+        "Kill the Depraved Trinity (Act 9 Boss)"
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act10_oriath_docks",
+      "zone": "Oriath Docks",
+      "act": 10,
+      "tasks": [
+        "Claim quest rewards"
+      ],
+      "isTown": true
+    },
+    {
+      "step_id": "act10_the_cathedral_rooftop",
+      "zone": "The Cathedral Rooftop",
+      "act": 10,
+      "tasks": [
+        "Rescue Bannon",
+        "Head to Ravaged Square."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act10_the_ravaged_square",
+      "zone": "The Ravaged Square",
+      "act": 10,
+      "tasks": [
+        "Grab Waypoint.",
+        "Clear the zones below, then enter the Canals.",
+        "TIP: Place a portal near the entrance, WP to town, then take portal south to find The Control Blocks."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act10_the_torched_courts",
+      "zone": "The Torched Courts",
+      "act": 10,
+      "tasks": [
+        "Run to Desecrated Chambers."
+      ]
+    },
+    {
+      "step_id": "act10_the_desecrated_chambers",
+      "zone": "The Desecrated Chambers",
+      "act": 10,
+      "tasks": [
+        "Kill Avarius, grab the Staff of Purity."
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act10_the_control_blocks",
+      "zone": "The Control Blocks",
+      "act": 10,
+      "tasks": [
+        "Kill Vilenta (+1 Passive Point)"
+      ],
+      "important": true,
+      "passive_reward": 1
+    },
+    {
+      "step_id": "act10_the_reliquary",
+      "zone": "The Reliquary",
+      "act": 10,
+      "tasks": [
+        "Find the Tears of Maji (+1 Passive Point)"
+      ],
+      "important": true,
+      "passive_reward": 1
+    },
+    {
+      "step_id": "act10_the_ossuary",
+      "zone": "The Ossuary",
+      "act": 10,
+      "tasks": [
+        "Complete the Labyrinth Trial for your final map trial!"
+      ],
+      "important": true
+    },
+    {
+      "step_id": "act10_the_canals",
+      "zone": "The Canals",
+      "act": 10,
+      "tasks": [
+        "Run through to Feeding Trough."
+      ]
+    },
+    {
+      "step_id": "act10_the_feeding_trough",
+      "zone": "The Feeding Trough",
+      "act": 10,
+      "tasks": [
+        "Fight Kitava. Congratulations on finishing the campaign!"
+      ],
+      "important": true
+    }
+  ]
+}
