@@ -27,6 +27,14 @@ Import a build from **Path of Building** and the overlay loads:
 
 ---
 
+## Video Walkthrough
+
+[![Watch the walkthrough](https://img.youtube.com/vi/tDDxlzWgYpw/hqdefault.jpg)](https://youtu.be/tDDxlzWgYpw)
+
+https://youtu.be/tDDxlzWgYpw
+
+---
+
 ## Features
 
 | Feature | Description |
