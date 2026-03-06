@@ -12,18 +12,82 @@ const GetAsyncKeyState = user32.func('short __stdcall GetAsyncKeyState(int vKey)
 // Persistent settings
 // ---------------------------------------------------------------------------
 
-const SETTINGS_FILE = path.join(__dirname, 'settings.json');
+const LEGACY_SETTINGS_FILE = path.join(__dirname, 'settings.json');
+
+const DEFAULT_HOTKEYS = {
+    toggleInteractive: 'CommandOrControl+Shift+F',
+    toggleTree: 'CommandOrControl+Shift+T',
+    toggleNotes: 'CommandOrControl+Shift+D',
+    resetBuildSelection: 'CommandOrControl+Shift+R',
+    toggleOverlay: 'CommandOrControl+Shift+H',
+    stepForward: 'Alt+Shift+Right',
+    stepBackward: 'Alt+Shift+Left'
+};
+
+function sanitizeRegexPresets(value) {
+    if (!Array.isArray(value)) return [];
+    const out = [];
+    for (const item of value) {
+        if (!item || typeof item !== 'object') continue;
+        const name = String(item.name || '').trim();
+        const regex = String(item.regex || '').trim();
+        if (!name || !regex) continue;
+        out.push({ name, regex });
+    }
+    return out;
+}
+
+function sanitizeHotkeys(value) {
+    const input = (value && typeof value === 'object') ? value : {};
+    const out = {};
+    for (const [action, fallback] of Object.entries(DEFAULT_HOTKEYS)) {
+        const raw = input[action];
+        const key = (typeof raw === 'string' && raw.trim()) ? raw.trim() : fallback;
+        out[action] = key;
+    }
+    return out;
+}
+
+function formatHotkeyForDisplay(value) {
+    const raw = String(value || '').trim();
+    if (!raw) return '';
+    return raw
+        .replace(/CommandOrControl/gi, 'Ctrl')
+        .replace(/CmdOrCtrl/gi, 'Ctrl')
+        .replace(/ArrowRight/gi, 'Right')
+        .replace(/ArrowLeft/gi, 'Left');
+}
+
+function getSettingsFilePath() {
+    try {
+        const dir = app.getPath('userData');
+        fs.mkdirSync(dir, { recursive: true });
+        return path.join(dir, 'settings.json');
+    } catch (e) {
+        return LEGACY_SETTINGS_FILE;
+    }
+}
 
 function loadSettings() {
+    const settingsFile = getSettingsFilePath();
     try {
-        return JSON.parse(fs.readFileSync(SETTINGS_FILE, 'utf8'));
+        return JSON.parse(fs.readFileSync(settingsFile, 'utf8'));
     } catch (e) {
-        return {};
+        // Backward compatibility: legacy settings beside main.js
+        try {
+            const legacy = JSON.parse(fs.readFileSync(LEGACY_SETTINGS_FILE, 'utf8'));
+            try {
+                fs.writeFileSync(settingsFile, JSON.stringify(legacy, null, 2));
+            } catch (writeErr) { /* ignore migration errors */ }
+            return legacy;
+        } catch (legacyErr) {
+            return {};
+        }
     }
 }
 
 function saveSettings(settings) {
-    fs.writeFileSync(SETTINGS_FILE, JSON.stringify(settings, null, 2));
+    fs.writeFileSync(getSettingsFilePath(), JSON.stringify(settings, null, 2));
 }
 
 function getDefaultPobPath() {
@@ -145,7 +209,21 @@ let currentLevel = 1;      // Detected from game log
 let totalPassives = 0;     // Computed from level + quests
 let currentBuildConfig = null; // The loaded build overlay (for PoB XML path etc.)
 let parsedSkillSets = [];      // Gem link data parsed from PoB XML
-let levelingRegexPresets = [];  // Regex presets from route.json
+let levelingRegexPresets = [];  // Effective regex presets (settings override or route defaults)
+let routeRegexDefaults = [];    // Regex defaults from current route file
+let settingsWindow = null;
+let hotkeyBindings = sanitizeHotkeys(loadSettings().hotkeys);
+let rebindHotkeys = null;
+
+function getCustomRegexPresetsFromSettings() {
+    const settings = loadSettings();
+    return sanitizeRegexPresets(settings.regexPresets);
+}
+
+function getEffectiveRegexPresets(defaultPresets) {
+    const custom = getCustomRegexPresetsFromSettings();
+    return custom.length ? custom : (Array.isArray(defaultPresets) ? defaultPresets : []);
+}
 
 // ---------------------------------------------------------------------------
 // Quest Gem Rewards
@@ -480,10 +558,26 @@ function sanitizeCharacterForFile(charName) {
     return String(charName || '').trim().replace(/[^a-zA-Z0-9]/g, '_');
 }
 
-function progressFileForCharacter(charName) {
+function getProgressDataDir() {
+    try {
+        const dir = app.getPath('userData');
+        fs.mkdirSync(dir, { recursive: true });
+        return dir;
+    } catch (e) {
+        return __dirname;
+    }
+}
+
+function legacyProgressFileForCharacter(charName) {
     const safeName = sanitizeCharacterForFile(charName);
     const charSuffix = safeName ? '-' + safeName : '';
     return path.join(__dirname, 'progress' + charSuffix + '.json');
+}
+
+function progressFileForCharacter(charName) {
+    const safeName = sanitizeCharacterForFile(charName);
+    const charSuffix = safeName ? '-' + safeName : '';
+    return path.join(getProgressDataDir(), 'progress' + charSuffix + '.json');
 }
 
 function progressFile() {
@@ -521,7 +615,27 @@ function saveProgress() {
 function loadProgress(buildFilename, characterName = currentCharacter) {
     const genericFile = progressFileForCharacter('');
     const charFile = progressFileForCharacter(characterName);
-    const charSaved = characterName ? readSavedProgress(charFile, buildFilename) : null;
+    const legacyGenericFile = legacyProgressFileForCharacter('');
+    const legacyCharFile = legacyProgressFileForCharacter(characterName);
+
+    let charSaved = characterName ? readSavedProgress(charFile, buildFilename) : null;
+
+    // Backward compatibility: read legacy progress beside main.js if present
+    if (!charSaved && characterName) {
+        const legacy = readSavedProgress(legacyCharFile, buildFilename);
+        if (legacy) {
+            charSaved = legacy;
+            try {
+                fs.writeFileSync(charFile, JSON.stringify({
+                    build: buildFilename,
+                    step: legacy.step,
+                    lastShown: legacy.lastShown,
+                    character: characterName,
+                    level: legacy.level
+                }));
+            } catch (e) { /* ignore migration errors */ }
+        }
+    }
 
     if (charSaved) {
         return { step: charSaved.step, lastShown: charSaved.lastShown, level: charSaved.level, character: charSaved.character, source: 'character' };
@@ -533,20 +647,24 @@ function loadProgress(buildFilename, characterName = currentCharacter) {
         return { step: 0, lastShown: -1, level: 0, character: characterName, source: 'none' };
     }
 
-    const genericSaved = readSavedProgress(genericFile, buildFilename);
-    if (genericSaved) {
-        if (characterName) {
+    let genericSaved = readSavedProgress(genericFile, buildFilename);
+    if (!genericSaved) {
+        const legacy = readSavedProgress(legacyGenericFile, buildFilename);
+        if (legacy) {
+            genericSaved = legacy;
             try {
-                fs.writeFileSync(charFile, JSON.stringify({
+                fs.writeFileSync(genericFile, JSON.stringify({
                     build: buildFilename,
-                    step: genericSaved.step,
-                    lastShown: genericSaved.lastShown,
-                    character: characterName,
-                    level: genericSaved.level
+                    step: legacy.step,
+                    lastShown: legacy.lastShown,
+                    character: legacy.character || '',
+                    level: legacy.level
                 }));
-                console.log('Migrated progress to character file: ' + path.basename(charFile));
             } catch (e) { /* ignore migration errors */ }
         }
+    }
+
+    if (genericSaved) {
         return { step: genericSaved.step, lastShown: genericSaved.lastShown, level: genericSaved.level, character: genericSaved.character || '', source: 'generic' };
     }
 
@@ -595,6 +713,41 @@ function hideOverlaysToTray() {
     if (mainWindow && !mainWindow.isDestroyed()) mainWindow.hide();
 }
 
+function openSettingsWindow() {
+    if (settingsWindow && !settingsWindow.isDestroyed()) {
+        settingsWindow.show();
+        settingsWindow.focus();
+        return;
+    }
+
+    settingsWindow = new BrowserWindow({
+        width: 760,
+        height: 760,
+        resizable: true,
+        title: 'Overlay Settings',
+        webPreferences: { nodeIntegration: true, contextIsolation: false }
+    });
+
+    settingsWindow.loadFile('settings.html');
+    settingsWindow.on('closed', () => { settingsWindow = null; });
+}
+
+function rebuildTrayMenu() {
+    if (!tray) return;
+    tray.setContextMenu(Menu.buildFromTemplate([
+        { label: 'Show Overlay', click: () => showMainWindow() },
+        { label: 'Settings', click: () => openSettingsWindow() },
+        { type: 'separator' },
+        {
+            label: 'Quit',
+            click: () => {
+                isQuitting = true;
+                app.quit();
+            }
+        }
+    ]));
+}
+
 function createTray() {
     if (tray) return;
 
@@ -603,17 +756,7 @@ function createTray() {
         const trayIcon = fs.existsSync(iconPath) ? iconPath : process.execPath;
         tray = new Tray(trayIcon);
         tray.setToolTip('PoE Leveling Overlay');
-        tray.setContextMenu(Menu.buildFromTemplate([
-            { label: 'Show Overlay', click: () => showMainWindow() },
-            { type: 'separator' },
-            {
-                label: 'Quit',
-                click: () => {
-                    isQuitting = true;
-                    app.quit();
-                }
-            }
-        ]));
+        rebuildTrayMenu();
         tray.on('double-click', () => showMainWindow());
     } catch (e) {
         // Keep app usable even if tray init fails in packaged environments.
@@ -759,6 +902,41 @@ function createWindow() {
         return null;
     });
 
+    ipcMain.removeHandler('settings-load');
+    ipcMain.handle('settings-load', () => {
+        const settings = loadSettings();
+        const hotkeys = sanitizeHotkeys(settings.hotkeys);
+        const customRegexPresets = sanitizeRegexPresets(settings.regexPresets);
+        const routeFallback = routeRegexDefaults.length ? routeRegexDefaults : levelingRegexPresets;
+        return {
+            hotkeys,
+            defaultHotkeys: DEFAULT_HOTKEYS,
+            regexPresets: customRegexPresets.length ? customRegexPresets : routeFallback,
+            routeRegexDefaults: routeFallback
+        };
+    });
+
+    ipcMain.removeHandler('settings-save');
+    ipcMain.handle('settings-save', (event, payload) => {
+        const settings = loadSettings();
+        const nextHotkeys = sanitizeHotkeys(payload && payload.hotkeys);
+        const nextRegexPresets = sanitizeRegexPresets(payload && payload.regexPresets);
+
+        settings.hotkeys = nextHotkeys;
+        settings.regexPresets = nextRegexPresets;
+        saveSettings(settings);
+
+        hotkeyBindings = nextHotkeys;
+        if (typeof rebindHotkeys === 'function') rebindHotkeys();
+
+        levelingRegexPresets = getEffectiveRegexPresets(routeRegexDefaults);
+        if (mainWindow && !mainWindow.isDestroyed()) {
+            mainWindow.webContents.send('hotkeys-updated', hotkeyBindings);
+            mainWindow.webContents.send('regex-presets', levelingRegexPresets);
+        }
+
+        return { ok: true };
+    });
     // Direct PoB XML selection (no build-*.json overlay)
     ipcMain.on('pob-build-selected', (event, pobXmlPath) => {
         try {
@@ -766,7 +944,8 @@ function createWindow() {
             const routePath = path.join(__dirname, 'route.json');
             const routeFile = JSON.parse(fs.readFileSync(routePath, 'utf8'));
             guideData = routeFile.steps || routeFile;
-            levelingRegexPresets = Array.isArray(routeFile.leveling_regex) ? routeFile.leveling_regex : [];
+            routeRegexDefaults = sanitizeRegexPresets(Array.isArray(routeFile.leveling_regex) ? routeFile.leveling_regex : []);
+            levelingRegexPresets = getEffectiveRegexPresets(routeRegexDefaults);
             mainWindow.webContents.send('regex-presets', levelingRegexPresets);
 
             // Parse class info from the PoB XML
@@ -835,7 +1014,8 @@ function createWindow() {
             // Merge route + build overlay
             guideData = mergeGuide(routeSteps, currentBuildConfig);
 
-            levelingRegexPresets = Array.isArray(route.leveling_regex) ? route.leveling_regex : [];
+            routeRegexDefaults = sanitizeRegexPresets(Array.isArray(route.leveling_regex) ? route.leveling_regex : []);
+            levelingRegexPresets = getEffectiveRegexPresets(routeRegexDefaults);
             mainWindow.webContents.send('regex-presets', levelingRegexPresets);
             currentCharacter = '';
             latestEnteredZone = '';
@@ -938,58 +1118,45 @@ function createWindow() {
         mainWindow.webContents.send('focus-mode', next);
     }
 
-    globalShortcut.register('CommandOrControl+Shift+F', () => {
-        if (!currentBuildFile) return; // Build selection mode is always clickable by design
-        if (overlayHidden) return; // Do not allow enabling interaction while hidden
-        setFocusMode(!focusMode);
-    });
-
-    // Clicking outside the overlay causes the window to blur; exit interaction.
-    mainWindow.on('blur', () => {
-        if (focusMode) setFocusMode(false);
-    });
-
-    // Tree Overlay Hotkey
-    const treeShortcutOk = globalShortcut.register('CommandOrControl+Shift+T', () => {
+    function toggleTreeOverlay() {
         if (treeWindow.isVisible()) {
             treeWindow.hide();
             globalShortcut.unregister('Escape');
-        } else {
-            treeWindow.setAlwaysOnTop(true, 'screen-saver'); // Match mainWindow level
-            treeWindow.showInactive();
-            // Recalculate totalPassives fresh so it's never stale
-            if (lastShownStep >= 0 && lastShownStep < guideData.length) {
-                let qp = 0;
-                for (let i = 0; i <= lastShownStep; i++) {
-                    if (guideData[i] && guideData[i].passive_reward) qp += guideData[i].passive_reward;
-                }
-                totalPassives = Math.max(0, currentLevel - 1) + qp;
-                console.log(`[Passives] Tree opened - totalPassives=${totalPassives}`);
-            }
-            treeWindow.webContents.send('update-passives', totalPassives);
-            globalShortcut.register('Escape', () => {
-                treeWindow.hide();
-                globalShortcut.unregister('Escape');
-            });
+            return;
         }
-    });
-    if (!treeShortcutOk) console.warn('WARNING: Ctrl+Shift+T shortcut registration FAILED');
 
-    // Notes Overlay Hotkey
-    globalShortcut.register('CommandOrControl+Shift+D', () => {
+        treeWindow.setAlwaysOnTop(true, 'screen-saver');
+        treeWindow.showInactive();
+
+        // Recalculate totalPassives fresh so it's never stale
+        if (lastShownStep >= 0 && lastShownStep < guideData.length) {
+            let qp = 0;
+            for (let i = 0; i <= lastShownStep; i++) {
+                if (guideData[i] && guideData[i].passive_reward) qp += guideData[i].passive_reward;
+            }
+            totalPassives = Math.max(0, currentLevel - 1) + qp;
+            console.log(`[Passives] Tree opened - totalPassives=${totalPassives}`);
+        }
+
+        treeWindow.webContents.send('update-passives', totalPassives);
+        globalShortcut.register('Escape', () => {
+            treeWindow.hide();
+            globalShortcut.unregister('Escape');
+        });
+    }
+
+    function toggleNotesOverlay() {
         if (notesWindow.isVisible()) {
             notesWindow.hide();
-        } else {
-            notesWindow.setAlwaysOnTop(true, 'screen-saver');
-            notesWindow.center();
-            notesWindow.showInactive();
-            // Enable mouse interaction so user can scroll and click links
-            notesWindow.setIgnoreMouseEvents(false);
+            return;
         }
-    });
+        notesWindow.setAlwaysOnTop(true, 'screen-saver');
+        notesWindow.center();
+        notesWindow.showInactive();
+        notesWindow.setIgnoreMouseEvents(false);
+    }
 
-    // Reset to Build Selection Hotkey
-    globalShortcut.register('CommandOrControl+Shift+R', () => {
+    function resetToBuildSelection() {
         // Stop tailing
         if (tailInstance) {
             tailInstance.unwatch();
@@ -1011,30 +1178,23 @@ function createWindow() {
         activeMilestone = '';
         activeWeapon = '';
         totalPassives = 0;
-        // Exit focus mode if active
-        if (focusMode) {
-            setFocusMode(false);
-        }
-        // Hide other overlays
+        if (focusMode) setFocusMode(false);
         if (treeWindow && treeWindow.isVisible()) treeWindow.hide();
         if (notesWindow && notesWindow.isVisible()) notesWindow.hide();
-        // Enable mouse for build selection
         updateMainWindowMouseMode();
         mainWindow.webContents.send('reset-to-build-select');
-    });
+    }
 
-    // Hide/Show Toggle Hotkey
-    globalShortcut.register('CommandOrControl+Shift+H', () => {
+    function toggleOverlayVisibility() {
         overlayHidden = !overlayHidden;
         mainWindow.setOpacity(overlayHidden ? 0 : 1);
         if (overlayHidden && focusMode) {
             setFocusMode(false);
         }
         updateMainWindowMouseMode();
-    });
+    }
 
-    // Manual Step Forward/Backward Hotkeys
-    globalShortcut.register('Alt+Shift+Right', () => {
+    function stepForward() {
         if (!guideData.length) return;
         if (currentStep < guideData.length) {
             lastShownStep = currentStep;
@@ -1042,8 +1202,9 @@ function createWindow() {
             saveProgress();
             sendZoneData(guideData[lastShownStep].zone, guideData[lastShownStep], lastShownStep);
         }
-    });
-    globalShortcut.register('Alt+Shift+Left', () => {
+    }
+
+    function stepBackward() {
         if (!guideData.length) return;
         if (currentStep > 1) {
             currentStep = currentStep - 1;
@@ -1055,7 +1216,72 @@ function createWindow() {
             lastShownStep = -1;
             saveProgress();
         }
+    }
+
+    // Clicking outside the overlay causes the window to blur; exit interaction.
+    mainWindow.on('blur', () => {
+        if (focusMode) setFocusMode(false);
     });
+
+    let managedHotkeys = [];
+    function unregisterManagedHotkeys() {
+        for (const key of managedHotkeys) {
+            globalShortcut.unregister(key);
+        }
+        managedHotkeys = [];
+        globalShortcut.unregister('Escape');
+    }
+
+    function registerManagedHotkey(action, handler) {
+        const accelerator = String(hotkeyBindings[action] || '').trim();
+        if (!accelerator) {
+            console.warn('Hotkey missing for action:', action);
+            return;
+        }
+        const ok = globalShortcut.register(accelerator, handler);
+        if (!ok) {
+            console.warn(`Hotkey registration failed for ${action}: ${accelerator}`);
+            return;
+        }
+        managedHotkeys.push(accelerator);
+    }
+
+    function applyHotkeyBindings() {
+        unregisterManagedHotkeys();
+
+        registerManagedHotkey('toggleInteractive', () => {
+            if (!currentBuildFile) return;
+            if (overlayHidden) return;
+            setFocusMode(!focusMode);
+        });
+
+        registerManagedHotkey('toggleTree', () => {
+            toggleTreeOverlay();
+        });
+
+        registerManagedHotkey('toggleNotes', () => {
+            toggleNotesOverlay();
+        });
+
+        registerManagedHotkey('resetBuildSelection', () => {
+            resetToBuildSelection();
+        });
+
+        registerManagedHotkey('toggleOverlay', () => {
+            toggleOverlayVisibility();
+        });
+
+        registerManagedHotkey('stepForward', () => {
+            stepForward();
+        });
+
+        registerManagedHotkey('stepBackward', () => {
+            stepBackward();
+        });
+    }
+
+    rebindHotkeys = applyHotkeyBindings;
+    applyHotkeyBindings();
 
     // Copy completion flash
     ipcMain.on('copy-done', () => {
@@ -1212,9 +1438,10 @@ function startTailing() {
     if (tailInstance) return;
     if (!logPath) {
         console.error('Cannot start tailing: no log path configured');
+        const resetHotkey = formatHotkeyForDisplay(hotkeyBindings.resetBuildSelection || DEFAULT_HOTKEYS.resetBuildSelection);
         mainWindow.webContents.send('zone-change', {
             zone: 'Log File Not Found',
-            data: { tasks: ['PoE Client.txt not found. Click Ctrl+Shift+F, then set the log path on the startup screen.'] },
+            data: { tasks: ['PoE Client.txt not found. Press ' + resetHotkey + ' to return to build selection, then set the log path on the startup screen.'] },
             step: 0, totalSteps: 0
         });
         return;

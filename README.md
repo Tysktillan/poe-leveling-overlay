@@ -4,7 +4,7 @@
 
 **A transparent in-game overlay for Path of Exile that guides you through leveling**
 
-Zone-by-zone tasks, quest-aware gem rewards, and passive tree tracking - all pulled from your Path of Building XML.
+Zone-by-zone tasks, quest-aware gem rewards, and passive tree tracking - pulled from your Path of Building XML.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Platform: Windows](https://img.shields.io/badge/Platform-Windows-blue.svg)](#)
@@ -16,7 +16,7 @@ Zone-by-zone tasks, quest-aware gem rewards, and passive tree tracking - all pul
 
 ## What It Does
 
-The overlay sits on top of your game and tells you what to do in each zone. It reads your PoE log file in real time - when you enter a new area, the guide advances automatically.
+The overlay sits on top of your game and tells you what to do in each zone. It reads your PoE log file in real time and advances automatically when you enter a new area.
 
 Import a build from **Path of Building** and the overlay loads:
 
@@ -33,14 +33,15 @@ Import a build from **Path of Building** and the overlay loads:
 |---|---|
 | **Auto-advancing guide** | Detects zone changes from `Client.txt` and shows the next step |
 | **PoB build picker** | Scans your PoB Builds folder and loads `.xml` builds directly |
-| **Skill gem tracker** | Gem links grouped by PoB skill set with active/support styling |
-| **Quest-aware gem rewards** | Replaces generic "Claim quest gem reward" with specific gem names when matched |
+| **Quest-aware gem rewards** | Replaces generic quest reward text with exact gem claims when matched |
 | **Quest gem checklist** | Shows pending quest/Lilly gems and lets you mark gems collected |
 | **Passive tree overlay** | Visual tree with allocated, next, and future nodes |
-| **Build notes overlay** | Toggle PoB notes in-game (`Ctrl+Shift+D`) |
+| **Build notes overlay** | Toggle PoB notes in-game |
 | **Leveling regex helper** | Preset/custom regex shown in town and copyable to clipboard |
-| **Progress persistence** | Saves per character/build and resumes automatically |
-| **Click-through overlay** | Overlay stays pass-through unless interactive mode is enabled |
+| **Configurable hotkeys** | Change hotkeys from the Settings window |
+| **Configurable regex presets** | Edit regex presets from the Settings window |
+| **System tray support** | Close button hides to tray; tray menu supports Show, Settings, Quit |
+| **Progress persistence** | Saves per character + build and resumes automatically |
 
 ---
 
@@ -48,7 +49,7 @@ Import a build from **Path of Building** and the overlay loads:
 
 ### Download
 
-Grab `PoE-Leveling-Overlay.exe` from the **[Releases](../../releases)** page. No installation needed - just run it.
+Grab `PoE-Leveling-Overlay.exe` from the **[Releases](../../releases)** page.
 
 ### Run from Source
 
@@ -67,42 +68,41 @@ npm start
 
 ### Step 1 - Game Log Path
 
-The overlay auto-detects your PoE `Client.txt` from common install locations:
-
-```
-C:\Program Files (x86)\Steam\steamapps\common\Path of Exile\logs\Client.txt
-D:\SteamLibrary\steamapps\common\Path of Exile\logs\Client.txt
-C:\Path of Exile\logs\Client.txt
-```
+The overlay auto-detects your PoE `Client.txt` from common install locations.
 
 If needed, click **Browse** next to **Game Log** on the startup screen.
 
 ### Step 2 - Select a Build
 
-On startup, the app shows your PoB Builds folder and lists detected `.xml` files.
+On startup, the app lists detected PoB `.xml` files.
 
 - Click a PoB build to load it
 - Click **Change** to point at another PoB Builds folder
-- Optional custom `build-*.json` entries can also appear in the build list
+- Optional custom `build-*.json` entries can also appear
 
 ### Step 3 - Link Your Character
 
-After selecting a build, type anything in **Local chat** in-game (press Enter and send a message). This links your current character.
+After selecting a build, type anything in **Local chat** in-game. This links the current character so progress resumes per character/build.
 
-### Step 4 - Play
+### Step 4 - Optional Settings
 
-The overlay now:
+Right-click the tray icon and open **Settings**.
 
-- Advances on zone changes
-- Shows route tasks and quest turn-ins
-- Replaces generic quest gem tasks with exact gem names when applicable
-- Tracks passive points and tree progression
+- Change hotkeys
+- Add/remove regex presets
+- Reset to defaults or route defaults
+
+### Step 5 - Play
+
+The overlay now advances on zone changes and updates route tasks, gems, passives, and notes.
 
 ---
 
-## Keyboard Shortcuts
+## Hotkeys (Default)
 
-| Shortcut | Action |
+Hotkeys are configurable in **Tray -> Settings**.
+
+| Default | Action |
 |---|---|
 | `Ctrl+Shift+F` | Toggle interactive mode |
 | `Ctrl+Shift+H` | Hide/show main overlay |
@@ -125,35 +125,46 @@ PoB skill sets (for example `A1`, `A3`, `EarlyMaps`) appear in a dropdown.
 
 - Active gems are highlighted
 - Support gems are styled separately
-- Disabled gems are shown with reduced opacity
+- Disabled gems are dimmed
 
 ### Quest Gem Rewards
 
 `quest-gem-rewards.json` is cross-referenced with:
 
-- Your loaded class
+- Loaded class
 - Gems used in your PoB skill sets
 - Current route step `quest_reward`
 
-This allows the overlay to show exact claims, for example:
-
-- `Claim Rolling Magma from Tarkleigh`
+If a quest reward matches a build gem, the task is rewritten to the specific gem claim.
 
 ### Passive Tree
 
-The tree overlay reads PoB `<Spec>` nodes and allocates in this order:
-
-1. Earlier spec tiers first
-2. Notables/keystones prioritized within tier
-3. Travel nodes filled via shortest-path traversal
+The tree overlay reads PoB `<Spec>` nodes and allocates in order by tier, prioritizing notable/keystone nodes.
 
 Total passives are calculated as:
 
 `(character level - 1) + passive quest rewards`
 
-### Notes Overlay
+---
 
-The PoB XML `<Notes>` block is parsed and shown in a separate overlay (`Ctrl+Shift+D`).
+## Regex Presets
+
+Regex presets come from `route.json` (`leveling_regex`) and are shown in town.
+
+- You can choose a preset or use custom regex
+- If custom presets are saved in Settings, they override route defaults
+- Regex can be copied with one click
+
+---
+
+## Data Storage
+
+Settings and progress are stored in Electron `userData` (release builds are typically under `%APPDATA%\PoE Leveling Overlay`).
+
+- `settings.json` stores configured hotkeys and custom regex presets
+- `progress-<character>.json` stores progression per character/build
+
+Legacy files next to `main.js` are migrated when found.
 
 ---
 
@@ -169,15 +180,15 @@ Output: `dist/PoE-Leveling-Overlay.exe`
 
 ## Project Structure
 
-```
-main.js                  Electron main process - log tailing, route logic, IPC
+```text
+main.js                  Electron main process (log tailing, route logic, IPC, hotkeys, tray)
 index.html               Main overlay UI
+settings.html            Settings window UI (hotkeys + regex presets)
 notes.html               PoB notes overlay UI
 tree.html                Passive tree overlay window
 treeRenderer.js          Canvas tree rendering (pan/zoom)
 poe_tree.json            Path of Exile passive tree data
-route.json               Zone-by-zone route steps and quest_reward mapping
-zone-guide.json          Leveling regex preset definitions
+route.json               Zone steps and leveling regex presets
 quest-gem-rewards.json   Class-specific quest/vendor gem reward data
 ```
 
@@ -187,10 +198,9 @@ quest-gem-rewards.json   Class-specific quest/vendor gem reward data
 
 Contributions are welcome. Good areas to improve:
 
-- Build templates (`build-*.json`)
-- Regex presets (`zone-guide.json`)
 - Route/task data (`route.json`)
 - Quest reward/vendor data (`quest-gem-rewards.json`)
+- Build templates (`build-*.json`)
 - UI polish and overlay ergonomics
 
 ---

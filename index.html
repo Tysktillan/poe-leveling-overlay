@@ -406,15 +406,15 @@
             <span id="focus-msg" class="focus-hint">Ctrl+Shift+F to interact</span>
             <span id="step-counter" class="step-counter"></span>
             <span class="help-icon">?<span class="help-tooltip">
-                <kbd>Ctrl+Shift+F</kbd> Interactive mode<br>
-                <kbd>Ctrl+Shift+H</kbd> Hide / show overlay<br>
-                <kbd>Alt+Shift+&rarr;</kbd> Next step<br>
-                <kbd>Alt+Shift+&larr;</kbd> Prev step<br>
-                <kbd>Ctrl+Shift+T</kbd> Toggle tree<br>
-                <kbd>Ctrl+Shift+D</kbd> Build notes<br>
+                <kbd id="hk-toggle-interactive">Ctrl+Shift+F</kbd> Interactive mode<br>
+                <kbd id="hk-toggle-overlay">Ctrl+Shift+H</kbd> Hide / show overlay<br>
+                <kbd id="hk-step-forward">Alt+Shift+Right</kbd> Next step<br>
+                <kbd id="hk-step-backward">Alt+Shift+Left</kbd> Prev step<br>
+                <kbd id="hk-toggle-tree">Ctrl+Shift+T</kbd> Toggle tree<br>
+                <kbd id="hk-toggle-notes">Ctrl+Shift+D</kbd> Build notes<br>
                 <kbd>Shift+Scroll</kbd> Zoom tree<br>
                 <kbd>Shift+Drag</kbd> Pan tree<br>
-                <kbd>Ctrl+Shift+R</kbd> Change build<br>
+                <kbd id="hk-reset-build">Ctrl+Shift+R</kbd> Change build<br>
                 <kbd>Escape</kbd> Close overlay<br>
                 Click gem to mark collected
             </span></span>
@@ -476,7 +476,17 @@
 
     <script>
         const { ipcRenderer, clipboard } = require('electron');
+        const DEFAULT_HOTKEYS = {
+            toggleInteractive: 'CommandOrControl+Shift+F',
+            toggleTree: 'CommandOrControl+Shift+T',
+            toggleNotes: 'CommandOrControl+Shift+D',
+            resetBuildSelection: 'CommandOrControl+Shift+R',
+            toggleOverlay: 'CommandOrControl+Shift+H',
+            stepForward: 'Alt+Shift+Right',
+            stepBackward: 'Alt+Shift+Left'
+        };
 
+        let hotkeys = Object.assign({}, DEFAULT_HOTKEYS);
         let interactiveMode = false;
         let weaponCollapsed = false;
         let gemsCollapsed = true;
@@ -485,6 +495,65 @@
         let selectedRegexIndex = -1; // -1 = none, 0+ = preset index, 'custom' for custom
         let customRegex = '';
         let isInTown = false;
+
+        function formatHotkeyForDisplay(raw) {
+            const text = String(raw || '').trim();
+            if (!text) return '';
+            return text
+                .replace(/CommandOrControl/gi, 'Ctrl')
+                .replace(/CmdOrCtrl/gi, 'Ctrl')
+                .replace(/ArrowRight/gi, 'Right')
+                .replace(/ArrowLeft/gi, 'Left');
+        }
+
+        function getHotkeyText(action) {
+            return formatHotkeyForDisplay(hotkeys[action] || DEFAULT_HOTKEYS[action] || '');
+        }
+
+        function updateHotkeyHints() {
+            const set = (id, action) => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                el.textContent = getHotkeyText(action);
+            };
+
+            set('hk-toggle-interactive', 'toggleInteractive');
+            set('hk-toggle-overlay', 'toggleOverlay');
+            set('hk-step-forward', 'stepForward');
+            set('hk-step-backward', 'stepBackward');
+            set('hk-toggle-tree', 'toggleTree');
+            set('hk-toggle-notes', 'toggleNotes');
+            set('hk-reset-build', 'resetBuildSelection');
+
+            const msg = document.getElementById('focus-msg');
+            const interactiveKey = getHotkeyText('toggleInteractive');
+            if (interactiveMode) {
+                msg.textContent = `INTERACTIVE - ${interactiveKey} to exit`;
+            } else {
+                msg.textContent = `${interactiveKey} to interact`;
+            }
+        }
+
+        async function loadHotkeys() {
+            try {
+                const settings = await ipcRenderer.invoke('settings-load');
+                if (settings && settings.hotkeys && typeof settings.hotkeys === 'object') {
+                    hotkeys = Object.assign({}, hotkeys, settings.hotkeys);
+                }
+            } catch (e) {
+                // Keep defaults if settings are unavailable.
+            }
+            updateHotkeyHints();
+        }
+
+        ipcRenderer.on('hotkeys-updated', (event, nextHotkeys) => {
+            if (nextHotkeys && typeof nextHotkeys === 'object') {
+                hotkeys = Object.assign({}, hotkeys, nextHotkeys);
+            }
+            updateHotkeyHints();
+        });
+
+        loadHotkeys();
 
         // --- STARTUP LOGIC ---
 
@@ -671,12 +740,11 @@
             interactiveMode = active;
             const msg = document.getElementById('focus-msg');
             if (active) {
-                msg.textContent = 'INTERACTIVE - Ctrl+Shift+F to exit';
                 msg.classList.add('active');
             } else {
-                msg.textContent = 'Ctrl+Shift+F to interact';
                 msg.classList.remove('active');
             }
+            updateHotkeyHints();
 
             // Toggle interactive class on section headers
             document.querySelectorAll('.section-header').forEach(h => {

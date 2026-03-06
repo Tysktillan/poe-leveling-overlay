@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overlay Settings</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 16px;
+      background: #111;
+      color: #e5e5e5;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      font-size: 13px;
+    }
+    h1 {
+      margin: 0 0 12px 0;
+      font-size: 18px;
+      color: #f4c06a;
+    }
+    h2 {
+      margin: 16px 0 8px 0;
+      font-size: 14px;
+      color: #f4c06a;
+    }
+    .panel {
+      border: 1px solid #2b2b2b;
+      border-radius: 8px;
+      padding: 12px;
+      background: #171717;
+      margin-bottom: 12px;
+    }
+    .hint {
+      color: #aaa;
+      margin-bottom: 10px;
+      font-size: 12px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      text-align: left;
+      padding: 6px;
+      border-bottom: 1px solid #2a2a2a;
+      vertical-align: top;
+    }
+    th {
+      color: #bbb;
+      font-weight: 600;
+      font-size: 12px;
+    }
+    input[type="text"] {
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #333;
+      background: #0f0f0f;
+      color: #f0f0f0;
+      padding: 7px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+    .btn-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    button {
+      border: 1px solid #444;
+      border-radius: 6px;
+      background: #222;
+      color: #eee;
+      padding: 7px 10px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    button:hover {
+      background: #2a2a2a;
+    }
+    .btn-primary {
+      background: #7f5211;
+      border-color: #a87122;
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: #99641a;
+    }
+    .btn-danger {
+      background: #3b1a1a;
+      border-color: #6b2a2a;
+    }
+    .status {
+      margin-top: 10px;
+      min-height: 18px;
+      color: #9dd49d;
+      font-size: 12px;
+    }
+    .status.error {
+      color: #e58f8f;
+    }
+    .remove-btn {
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <h1>Overlay Settings</h1>
+
+  <div class="panel">
+    <h2>Keybindings</h2>
+    <div class="hint">Use Electron accelerator format, e.g. <code>CommandOrControl+Shift+F</code>, <code>Alt+Shift+Right</code>.</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 45%;">Action</th>
+          <th>Keybinding</th>
+        </tr>
+      </thead>
+      <tbody id="hotkeys-body"></tbody>
+    </table>
+    <div class="btn-row">
+      <button id="reset-hotkeys">Reset Keybindings to Default</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Regex Presets</h2>
+    <div class="hint">These presets appear in the overlay regex dropdown. Leave empty to fall back to route defaults.</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 28%;">Name</th>
+          <th>Regex</th>
+          <th style="width: 80px;">Action</th>
+        </tr>
+      </thead>
+      <tbody id="regex-body"></tbody>
+    </table>
+    <div class="btn-row">
+      <button id="add-regex">Add Regex</button>
+      <button id="reset-route-regex">Use Route Defaults</button>
+      <button id="clear-regex">Clear Custom Regex</button>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button id="save-btn" class="btn-primary">Save</button>
+    <button id="close-btn">Close</button>
+  </div>
+  <div id="status" class="status"></div>
+
+  <script>
+    const { ipcRenderer } = require('electron');
+
+    const HOTKEY_LABELS = {
+      toggleInteractive: 'Toggle interactive mode',
+      toggleTree: 'Toggle passive tree overlay',
+      toggleNotes: 'Toggle notes overlay',
+      resetBuildSelection: 'Reset to build selection',
+      toggleOverlay: 'Hide/show overlay',
+      stepForward: 'Step forward',
+      stepBackward: 'Step backward'
+    };
+
+    let defaultHotkeys = {};
+    let routeRegexDefaults = [];
+
+    function status(msg, isError = false) {
+      const el = document.getElementById('status');
+      el.textContent = msg || '';
+      el.classList.toggle('error', !!isError);
+    }
+
+    function createRegexRow(name = '', regex = '') {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><input type="text" class="regex-name" value="${escapeHtml(name)}" /></td>
+        <td><input type="text" class="regex-value" value="${escapeHtml(regex)}" /></td>
+        <td><button class="remove-btn btn-danger">Remove</button></td>
+      `;
+      tr.querySelector('.remove-btn').addEventListener('click', () => {
+        tr.remove();
+      });
+      document.getElementById('regex-body').appendChild(tr);
+    }
+
+    function escapeHtml(v) {
+      return String(v || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function renderHotkeys(hotkeys) {
+      const body = document.getElementById('hotkeys-body');
+      body.innerHTML = '';
+      for (const [action, label] of Object.entries(HOTKEY_LABELS)) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${escapeHtml(label)}</td>
+          <td><input type="text" data-action="${action}" value="${escapeHtml(hotkeys[action] || '')}" /></td>
+        `;
+        body.appendChild(tr);
+      }
+    }
+
+    function renderRegexRows(rows) {
+      const body = document.getElementById('regex-body');
+      body.innerHTML = '';
+      for (const row of rows || []) {
+        createRegexRow(row.name || '', row.regex || '');
+      }
+    }
+
+    function readHotkeysFromUI() {
+      const hotkeys = {};
+      document.querySelectorAll('#hotkeys-body input[data-action]').forEach((el) => {
+        hotkeys[el.dataset.action] = String(el.value || '').trim();
+      });
+      return hotkeys;
+    }
+
+    function readRegexRowsFromUI() {
+      const rows = [];
+      document.querySelectorAll('#regex-body tr').forEach((tr) => {
+        const name = String(tr.querySelector('.regex-name')?.value || '').trim();
+        const regex = String(tr.querySelector('.regex-value')?.value || '').trim();
+        if (name && regex) {
+          rows.push({ name, regex });
+        }
+      });
+      return rows;
+    }
+
+    async function init() {
+      const data = await ipcRenderer.invoke('settings-load');
+      defaultHotkeys = data.defaultHotkeys || {};
+      routeRegexDefaults = Array.isArray(data.routeRegexDefaults) ? data.routeRegexDefaults : [];
+      renderHotkeys(data.hotkeys || defaultHotkeys);
+      renderRegexRows(data.regexPresets || routeRegexDefaults);
+    }
+
+    document.getElementById('add-regex').addEventListener('click', () => {
+      createRegexRow('', '');
+    });
+
+    document.getElementById('reset-hotkeys').addEventListener('click', () => {
+      renderHotkeys(defaultHotkeys);
+      status('Reset keybindings to defaults.');
+    });
+
+    document.getElementById('reset-route-regex').addEventListener('click', () => {
+      renderRegexRows(routeRegexDefaults);
+      status('Loaded route default regex presets.');
+    });
+
+    document.getElementById('clear-regex').addEventListener('click', () => {
+      renderRegexRows([]);
+      status('Cleared custom regex presets (fallback to route defaults on save).');
+    });
+
+    document.getElementById('save-btn').addEventListener('click', async () => {
+      try {
+        const payload = {
+          hotkeys: readHotkeysFromUI(),
+          regexPresets: readRegexRowsFromUI()
+        };
+        await ipcRenderer.invoke('settings-save', payload);
+        status('Settings saved.');
+      } catch (err) {
+        status('Failed to save settings: ' + (err?.message || err), true);
+      }
+    });
+
+    document.getElementById('close-btn').addEventListener('click', () => {
+      window.close();
+    });
+
+    init().catch((err) => {
+      status('Failed to load settings: ' + (err?.message || err), true);
+    });
+  </script>
+</body>
+</html>
