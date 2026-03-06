@@ -545,21 +545,28 @@ function hideOverlaysToTray() {
 function createTray() {
     if (tray) return;
 
-    const iconPath = path.join(__dirname, 'build', 'icon.ico');
-    tray = new Tray(iconPath);
-    tray.setToolTip('PoE Leveling Overlay');
-    tray.setContextMenu(Menu.buildFromTemplate([
-        { label: 'Show Overlay', click: () => showMainWindow() },
-        { type: 'separator' },
-        {
-            label: 'Quit',
-            click: () => {
-                isQuitting = true;
-                app.quit();
+    try {
+        const iconPath = path.join(__dirname, 'build', 'icon.ico');
+        const trayIcon = fs.existsSync(iconPath) ? iconPath : process.execPath;
+        tray = new Tray(trayIcon);
+        tray.setToolTip('PoE Leveling Overlay');
+        tray.setContextMenu(Menu.buildFromTemplate([
+            { label: 'Show Overlay', click: () => showMainWindow() },
+            { type: 'separator' },
+            {
+                label: 'Quit',
+                click: () => {
+                    isQuitting = true;
+                    app.quit();
+                }
             }
-        }
-    ]));
-    tray.on('double-click', () => showMainWindow());
+        ]));
+        tray.on('double-click', () => showMainWindow());
+    } catch (e) {
+        // Keep app usable even if tray init fails in packaged environments.
+        console.warn('Tray init failed:', e.message);
+        tray = null;
+    }
 }
 
 function createWindow() {
@@ -865,10 +872,23 @@ function createWindow() {
 
     // Interactive / Focus Mode Toggle
     let focusMode = false;
+    let overlayHidden = false;
+
+    function setFocusMode(enabled) {
+        const next = !overlayHidden && !!enabled;
+        focusMode = next;
+        mainWindow.setIgnoreMouseEvents(!next);
+        mainWindow.webContents.send('focus-mode', next);
+    }
+
     globalShortcut.register('CommandOrControl+Shift+F', () => {
-        focusMode = !focusMode;
-        mainWindow.setIgnoreMouseEvents(!focusMode);
-        mainWindow.webContents.send('focus-mode', focusMode);
+        if (overlayHidden) return; // Do not allow enabling interaction while hidden
+        setFocusMode(!focusMode);
+    });
+
+    // Clicking outside the overlay causes the window to blur; exit interaction.
+    mainWindow.on('blur', () => {
+        if (focusMode) setFocusMode(false);
     });
 
     // Tree Overlay Hotkey
@@ -935,9 +955,7 @@ function createWindow() {
         totalPassives = 0;
         // Exit focus mode if active
         if (focusMode) {
-            focusMode = false;
-            mainWindow.setIgnoreMouseEvents(true);
-            mainWindow.webContents.send('focus-mode', false);
+            setFocusMode(false);
         }
         // Hide other overlays
         if (treeWindow && treeWindow.isVisible()) treeWindow.hide();
@@ -948,10 +966,12 @@ function createWindow() {
     });
 
     // Hide/Show Toggle Hotkey
-    let overlayHidden = false;
     globalShortcut.register('CommandOrControl+Shift+H', () => {
         overlayHidden = !overlayHidden;
         mainWindow.setOpacity(overlayHidden ? 0 : 1);
+        if (overlayHidden && focusMode) {
+            setFocusMode(false);
+        }
     });
 
     // Manual Step Forward/Backward Hotkeys
