@@ -1,20 +1,36 @@
 {
   "leveling_regex": [
     {
-      "name": "2H Melee (RRG links)",
+      "name": "2H Melee (RRG + MS boots)",
       "regex": "-\\w-.-|r-r-|-r-r|r-.-r|g-g-|-g-g|g-.-g|Runn|rint"
     },
     {
-      "name": "Caster (BBB links)",
+      "name": "Caster (BBB + MS boots)",
       "regex": "-\\w-.-|b-b-|-b-b|b-.-b|Runn|rint"
     },
     {
-      "name": "Bow / Dex (GGG links)",
+      "name": "Bow / Dex (GGG + MS boots)",
       "regex": "-\\w-.-|g-g-|-g-g|g-.-g|Runn|rint"
     },
     {
-      "name": "Spellcaster (BBG links)",
+      "name": "Spellcaster (BBG + MS boots)",
       "regex": "-\\w-.-|b-b-|-b-b|b-.-b|g-g-|-g-g|g-.-g|Runn|rint"
+    },
+    {
+      "name": "Chromatic Recipe (RGB linked)",
+      "regex": ":.*(?=\\S*r)(?=\\S*g)(?=\\S*b)"
+    },
+    {
+      "name": "+1 Spell Wand (vendor)",
+      "regex": "ll g"
+    },
+    {
+      "name": "Templar Early (2B/RB/RR + RG + MS + +1 Wand)",
+      "regex": ":.*(?=\\S*r)(?=\\S*g)(?=\\S*b)|r-r|b-b|g-r|r-g|Runn|ll g"
+    },
+    {
+      "name": "Caster Mid (BBB + 4L + RGB + MS + +1 Wand)",
+      "regex": "-\\w-.-|b-b-b|:.*(?=\\S*r)(?=\\S*g)(?=\\S*b)|Runn|rint|ll g"
     }
   ],
   "steps": [
@@ -996,7 +1012,7 @@
       "act": 5,
       "tasks": [
         "Kill High Templar Avarius / Innocence",
-        "TIP: This zone has many guaranteed Magic Monster packs — farm them for extra XP!"
+        "TIP: This zone has many guaranteed Magic Monster packs - farm them for extra XP!"
       ],
       "important": true
     },
@@ -1191,7 +1207,7 @@
       "act": 6,
       "tasks": [
         "Escort the payload, light the beacon, sail away.",
-        "TIP: Place a Safety Portal — the fuel pylon enemies can be very dangerous!"
+        "TIP: Place a Safety Portal - the fuel pylon enemies can be very dangerous!"
       ],
       "important": true
     },

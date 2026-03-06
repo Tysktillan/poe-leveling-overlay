@@ -671,7 +671,7 @@
             interactiveMode = active;
             const msg = document.getElementById('focus-msg');
             if (active) {
-                msg.textContent = 'INTERACTIVE — Ctrl+Shift+F to exit';
+                msg.textContent = 'INTERACTIVE - Ctrl+Shift+F to exit';
                 msg.classList.add('active');
             } else {
                 msg.textContent = 'Ctrl+Shift+F to interact';
@@ -686,6 +686,8 @@
 
             // Refresh quest gem items to show/hide click-to-collect affordance
             if (questGemReminders.length > 0) updateQuestGemsUI();
+            // Hide custom regex input row outside interactive mode
+            updateRegexDisplay();
         });
 
         // --- COLLAPSIBLE SECTIONS ---
@@ -788,7 +790,6 @@
                 select.value = saved;
                 selectedRegexIndex = saved;
                 if (saved === 'custom') {
-                    document.getElementById('regex-custom-row').style.display = 'block';
                     document.getElementById('regex-custom-input').value = customRegex;
                 }
             }
@@ -798,7 +799,6 @@
         document.getElementById('regex-preset-select').addEventListener('change', (e) => {
             selectedRegexIndex = e.target.value;
             localStorage.setItem('regex-selection', selectedRegexIndex);
-            document.getElementById('regex-custom-row').style.display = selectedRegexIndex === 'custom' ? 'block' : 'none';
             updateRegexDisplay();
         });
 
@@ -835,7 +835,7 @@
             if (isInTown) {
                 regexUI.style.display = 'block';
                 document.getElementById('regex-preset-select').parentElement.style.display = 'flex';
-                document.getElementById('regex-custom-row').style.display = selectedRegexIndex === 'custom' ? 'block' : 'none';
+                document.getElementById('regex-custom-row').style.display = (selectedRegexIndex === 'custom' && interactiveMode) ? 'block' : 'none';
                 const regex = getActiveRegex();
                 regexText.innerText = regex || '';
                 document.querySelector('.regex-container').style.display = regex ? 'flex' : 'none';
@@ -863,7 +863,7 @@
             lillyRothGems = lillyGems || [];
             currentBuildKey = buildKey || '';
             loadCollectedGems();
-            // Don't show the panel yet — will appear when entering a town
+            // Don't show the panel yet - will appear when entering a town
         });
 
         ipcRenderer.on('character-linked', (event, characterName) => {
