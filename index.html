@@ -305,6 +305,10 @@
             gap: 5px;
         }
 
+        .quest-gem-item.collected {
+            opacity: 0.45;
+        }
+
         .quest-gem-item:last-child {
             border-bottom: none;
         }
@@ -638,6 +642,7 @@
             questGemReminders = [];
             lillyRothGems = [];
             collectedGems.clear();
+            currentCharacterKey = '';
             currentAct = 1;
             // Refresh PoB builds list in case new ones were added
             loadPobBuilds();
@@ -848,6 +853,7 @@
         let lillyRothGems = [];       // Gem names not covered by any class quest reward
         let collectedGems = new Set(); // Gem names the player has already picked up
         let currentBuildKey = '';      // Unique key for localStorage scoping
+        let currentCharacterKey = '';  // Character-scoped key for gem collection state
         let questGemsCollapsed = true;
         let currentAct = 1;           // Updated per zone-change
         const LILLY_ROTH_ACT = 6;     // Lilly Roth unlocks after "Fallen from Grace" in Act 6
@@ -860,16 +866,28 @@
             // Don't show the panel yet — will appear when entering a town
         });
 
+        ipcRenderer.on('character-linked', (event, characterName) => {
+            currentCharacterKey = characterName || '';
+            loadCollectedGems();
+            updateQuestGemsUI();
+            updateGemBadges();
+        });
+
+        function questCollectedStorageKey() {
+            const charPart = currentCharacterKey || '_unlinked';
+            return 'quest-collected:' + currentBuildKey + ':' + charPart;
+        }
+
         function loadCollectedGems() {
             try {
-                const stored = localStorage.getItem('quest-collected:' + currentBuildKey);
+                const stored = localStorage.getItem(questCollectedStorageKey());
                 collectedGems = stored ? new Set(JSON.parse(stored)) : new Set();
             } catch (e) { collectedGems = new Set(); }
         }
 
         function saveCollectedGems() {
             try {
-                localStorage.setItem('quest-collected:' + currentBuildKey, JSON.stringify([...collectedGems]));
+                localStorage.setItem(questCollectedStorageKey(), JSON.stringify([...collectedGems]));
             } catch (e) {}
         }
 
@@ -897,9 +915,9 @@
             const ui = document.getElementById('quest-gems-ui');
             const list = document.getElementById('quest-gems-list');
 
-            // Only show uncollected gems available in the current act
-            const available = questGemReminders.filter(g => !collectedGems.has(g.gem) && g.act <= currentAct);
-            const lillyAvailable = currentAct >= LILLY_ROTH_ACT ? lillyRothGems.filter(g => !collectedGems.has(g)) : [];
+            // Show gems available in the current act (collected gems stay visible but dimmed)
+            const available = questGemReminders.filter(g => g.act <= currentAct);
+            const lillyAvailable = currentAct >= LILLY_ROTH_ACT ? lillyRothGems : [];
 
             if (!available.length && !lillyAvailable.length) {
                 ui.style.display = 'none';
@@ -913,8 +931,12 @@
             if (available.length > 0) {
                 html += available.map(g => {
                     const optionalNote = g.optional ? ' <span class="quest-gem-optional">(optional)</span>' : '';
-                    return `<div class="quest-gem-item interactive-item" data-gem="${escHtml(g.gem)}" title="Click to mark collected">
-                        <span class="quest-gem-check">&#9723;</span>
+                    const collected = collectedGems.has(g.gem);
+                    const check = collected ? '&#10003;' : '&#9723;';
+                    const stateClass = collected ? ' collected' : '';
+                    const title = collected ? 'Click to unmark collected' : 'Click to mark collected';
+                    return `<div class="quest-gem-item interactive-item${stateClass}" data-gem="${escHtml(g.gem)}" title="${title}">
+                        <span class="quest-gem-check">${check}</span>
                         <span class="quest-gem-name">${escHtml(g.gem)}</span>
                         <span class="quest-gem-act-badge">A${g.act}</span>
                         <span class="quest-gem-source">${escHtml(g.npc)}${optionalNote}</span>
@@ -925,8 +947,12 @@
             // Lilly Roth gems (only shown once in Act 6+)
             if (lillyAvailable.length > 0) {
                 html += lillyAvailable.map(g => {
-                    return `<div class="quest-gem-item interactive-item" data-gem="${escHtml(g)}" title="Buy from Lilly Roth">
-                        <span class="quest-gem-check" style="color:#44aa88;">&#9723;</span>
+                    const collected = collectedGems.has(g);
+                    const check = collected ? '&#10003;' : '&#9723;';
+                    const stateClass = collected ? ' collected' : '';
+                    const title = collected ? 'Click to unmark collected' : 'Buy from Lilly Roth';
+                    return `<div class="quest-gem-item interactive-item${stateClass}" data-gem="${escHtml(g)}" title="${title}">
+                        <span class="quest-gem-check" style="color:#44aa88;">${check}</span>
                         <span class="quest-gem-name" style="color:#a8dcc8;">${escHtml(g)}</span>
                         <span class="quest-gem-act-badge" style="background:rgba(68,170,136,0.12);border-color:rgba(68,170,136,0.25);color:#44aa88;">LR</span>
                         <span class="quest-gem-source" style="color:#44aa88;">Lilly Roth</span>

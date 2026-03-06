@@ -160,9 +160,8 @@
     {
       "quest": "Breaking Some Eggs",
       "act": 1,
-      "npc": "Nessa",
-      "note": "Completed by placing Jade Amulet from The Fetid Pool on the Altar. Often skipped in speedruns.",
-      "optional": true,
+      "npc": "Tarkleigh",
+      "note": "Completed by collecting the 3 glyphs in The Mud Flats and opening the passage to The Submerged Passage.",
       "rewards": {
         "Marauder": [
           "Decoy Totem",

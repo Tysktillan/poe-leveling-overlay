@@ -104,6 +104,17 @@
       ]
     },
     {
+      "step_id": "act1_lioneye_s_watch_2b",
+      "zone": "Lioneye's Watch",
+      "act": 1,
+      "tasks": [
+        "Claim quest gem reward from Tarkleigh",
+        "Grab your portal back to The Flooded Depths"
+      ],
+      "isTown": true,
+      "quest_reward": "Breaking Some Eggs"
+    },
+    {
       "step_id": "act1_the_flooded_depths",
       "zone": "The Flooded Depths",
       "act": 1,
