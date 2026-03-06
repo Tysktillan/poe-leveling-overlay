@@ -1,4 +1,4 @@
-const { app, BrowserWindow, globalShortcut, ipcMain, dialog, Tray, Menu } = require('electron');
+const { app, BrowserWindow, globalShortcut, ipcMain, dialog, Tray, Menu, screen } = require('electron');
 const { Tail } = require('tail');
 const fs = require('fs');
 const path = require('path');
@@ -1096,6 +1096,8 @@ function createWindow() {
     // Interactive / Focus Mode Toggle
     let focusMode = false;
     let overlayHidden = false;
+    let focusClickMonitor = null;
+    let wasLeftMouseDown = false;
 
     function updateMainWindowMouseMode() {
         // In build selection mode, overlay must be clickable when visible.
@@ -1111,10 +1113,46 @@ function createWindow() {
         mainWindow.setIgnoreMouseEvents(!focusMode);
     }
 
+    function stopFocusClickMonitor() {
+        if (focusClickMonitor) {
+            clearInterval(focusClickMonitor);
+            focusClickMonitor = null;
+        }
+        wasLeftMouseDown = false;
+    }
+
+    function startFocusClickMonitor() {
+        if (focusClickMonitor) return;
+
+        // Fallback for cases where blur doesn't fire immediately from fullscreen game clicks.
+        focusClickMonitor = setInterval(() => {
+            if (!focusMode || overlayHidden || !mainWindow || mainWindow.isDestroyed()) return;
+
+            const leftDown = !!(GetAsyncKeyState(0x01) & 0x8000);
+            if (leftDown && !wasLeftMouseDown) {
+                const point = screen.getCursorScreenPoint();
+                const bounds = mainWindow.getBounds();
+                const inside = point.x >= bounds.x
+                    && point.x < (bounds.x + bounds.width)
+                    && point.y >= bounds.y
+                    && point.y < (bounds.y + bounds.height);
+
+                if (!inside) {
+                    setFocusMode(false);
+                    return;
+                }
+            }
+
+            wasLeftMouseDown = leftDown;
+        }, 25);
+    }
+
     function setFocusMode(enabled) {
         const next = !overlayHidden && !!enabled;
         focusMode = next;
         updateMainWindowMouseMode();
+        if (next) startFocusClickMonitor();
+        else stopFocusClickMonitor();
         mainWindow.webContents.send('focus-mode', next);
     }
 
@@ -1311,6 +1349,27 @@ function createWindow() {
 const LOOKAHEAD = 10;      // Steps ahead to scan for non-town zones
 const TOWN_LOOKAHEAD = 2;  // Tighter lookahead for town zones (avoid false advances)
 
+function isStepMarkedSkippable(step) {
+    if (!step || typeof step !== 'object') return false;
+    if (step.optional === true) return true;
+    if (step.important === true) return false;
+
+    const tasks = Array.isArray(step.tasks) ? step.tasks : [];
+    const text = tasks.join(' ').toLowerCase();
+    return /\bskip\b/.test(text) || /\boptional\b/.test(text);
+}
+
+function hasBlockingUnfinishedSteps(fromIndex, toIndexExclusive) {
+    for (let i = fromIndex; i < toIndexExclusive; i++) {
+        const step = guideData[i];
+        if (!step) continue;
+        if (step.isTown) continue;
+        if (isStepMarkedSkippable(step)) continue;
+        return true;
+    }
+    return false;
+}
+
 function findMatchingStepIndexForZone(zone) {
     // Re-entering the last matched zone: keep showing current step.
     if (lastShownStep >= 0 && lastShownStep < guideData.length && guideData[lastShownStep].zone === zone) {
@@ -1324,6 +1383,12 @@ function findMatchingStepIndexForZone(zone) {
             if (guideData[i].isTown && (i - currentStep) >= TOWN_LOOKAHEAD) {
                 continue;
             }
+
+            // Do not jump over unresolved required non-town steps.
+            if (i > currentStep && hasBlockingUnfinishedSteps(currentStep, i)) {
+                continue;
+            }
+
             return i;
         }
     }
