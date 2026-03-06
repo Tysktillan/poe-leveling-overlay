@@ -1,4 +1,4 @@
-const { app, BrowserWindow, globalShortcut, ipcMain, dialog, Tray, Menu, screen } = require('electron');
+const { app, BrowserWindow, globalShortcut, ipcMain, dialog, Tray, Menu } = require('electron');
 const { Tail } = require('tail');
 const fs = require('fs');
 const path = require('path');
@@ -1096,8 +1096,6 @@ function createWindow() {
     // Interactive / Focus Mode Toggle
     let focusMode = false;
     let overlayHidden = false;
-    let focusClickMonitor = null;
-    let wasLeftMouseDown = false;
 
     function updateMainWindowMouseMode() {
         // In build selection mode, overlay must be clickable when visible.
@@ -1113,46 +1111,17 @@ function createWindow() {
         mainWindow.setIgnoreMouseEvents(!focusMode);
     }
 
-    function stopFocusClickMonitor() {
-        if (focusClickMonitor) {
-            clearInterval(focusClickMonitor);
-            focusClickMonitor = null;
-        }
-        wasLeftMouseDown = false;
-    }
-
-    function startFocusClickMonitor() {
-        if (focusClickMonitor) return;
-
-        // Fallback for cases where blur doesn't fire immediately from fullscreen game clicks.
-        focusClickMonitor = setInterval(() => {
-            if (!focusMode || overlayHidden || !mainWindow || mainWindow.isDestroyed()) return;
-
-            const leftDown = !!(GetAsyncKeyState(0x01) & 0x8000);
-            if (leftDown && !wasLeftMouseDown) {
-                const point = screen.getCursorScreenPoint();
-                const bounds = mainWindow.getBounds();
-                const inside = point.x >= bounds.x
-                    && point.x < (bounds.x + bounds.width)
-                    && point.y >= bounds.y
-                    && point.y < (bounds.y + bounds.height);
-
-                if (!inside) {
-                    setFocusMode(false);
-                    return;
-                }
-            }
-
-            wasLeftMouseDown = leftDown;
-        }, 25);
-    }
-
     function setFocusMode(enabled) {
         const next = !overlayHidden && !!enabled;
         focusMode = next;
         updateMainWindowMouseMode();
-        if (next) startFocusClickMonitor();
-        else stopFocusClickMonitor();
+
+        if (next && mainWindow && !mainWindow.isDestroyed()) {
+            // Ensure blur triggers on the first outside click after enabling interaction.
+            mainWindow.focus();
+            mainWindow.webContents.focus();
+        }
+
         mainWindow.webContents.send('focus-mode', next);
     }
 
