@@ -874,14 +874,29 @@ function createWindow() {
     let focusMode = false;
     let overlayHidden = false;
 
+    function updateMainWindowMouseMode() {
+        // In build selection mode, overlay must be clickable when visible.
+        const inBuildSelection = !currentBuildFile;
+        if (overlayHidden) {
+            mainWindow.setIgnoreMouseEvents(true);
+            return;
+        }
+        if (inBuildSelection) {
+            mainWindow.setIgnoreMouseEvents(false);
+            return;
+        }
+        mainWindow.setIgnoreMouseEvents(!focusMode);
+    }
+
     function setFocusMode(enabled) {
         const next = !overlayHidden && !!enabled;
         focusMode = next;
-        mainWindow.setIgnoreMouseEvents(!next);
+        updateMainWindowMouseMode();
         mainWindow.webContents.send('focus-mode', next);
     }
 
     globalShortcut.register('CommandOrControl+Shift+F', () => {
+        if (!currentBuildFile) return; // Build selection mode is always clickable by design
         if (overlayHidden) return; // Do not allow enabling interaction while hidden
         setFocusMode(!focusMode);
     });
@@ -961,7 +976,7 @@ function createWindow() {
         if (treeWindow && treeWindow.isVisible()) treeWindow.hide();
         if (notesWindow && notesWindow.isVisible()) notesWindow.hide();
         // Enable mouse for build selection
-        mainWindow.setIgnoreMouseEvents(false);
+        updateMainWindowMouseMode();
         mainWindow.webContents.send('reset-to-build-select');
     });
 
@@ -972,6 +987,7 @@ function createWindow() {
         if (overlayHidden && focusMode) {
             setFocusMode(false);
         }
+        updateMainWindowMouseMode();
     });
 
     // Manual Step Forward/Backward Hotkeys
