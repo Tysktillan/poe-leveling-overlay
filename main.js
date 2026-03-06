@@ -1,4 +1,9 @@
 const { app, BrowserWindow, globalShortcut, ipcMain, dialog, Tray, Menu } = require('electron');
+
+const hasSingleInstanceLock = app.requestSingleInstanceLock();
+if (!hasSingleInstanceLock) {
+    app.quit();
+}
 const { Tail } = require('tail');
 const fs = require('fs');
 const path = require('path');
@@ -7,6 +12,21 @@ const koffi = require('koffi');
 // Windows API: check if a key/button is currently pressed
 const user32 = koffi.load('user32.dll');
 const GetAsyncKeyState = user32.func('short __stdcall GetAsyncKeyState(int vKey)');
+const GetForegroundWindow = user32.func('void* __stdcall GetForegroundWindow()');
+const GetWindowTextA = user32.func('int __stdcall GetWindowTextA(void* hWnd, void* lpString, int nMaxCount)');
+
+function getForegroundWindowTitle() {
+    try {
+        const hwnd = GetForegroundWindow();
+        if (!hwnd) return '';
+        const buf = Buffer.alloc(512);
+        const len = GetWindowTextA(hwnd, buf, buf.length);
+        if (!len || len <= 0) return '';
+        return buf.toString('utf8', 0, len).trim();
+    } catch (e) {
+        return '';
+    }
+}
 
 // ---------------------------------------------------------------------------
 // Persistent settings
@@ -214,6 +234,7 @@ let routeRegexDefaults = [];    // Regex defaults from current route file
 let settingsWindow = null;
 let hotkeyBindings = sanitizeHotkeys(loadSettings().hotkeys);
 let rebindHotkeys = null;
+let hotkeyScopeInterval = null;
 
 function getCustomRegexPresetsFromSettings() {
     const settings = loadSettings();
@@ -1231,11 +1252,16 @@ function createWindow() {
     });
 
     let managedHotkeys = [];
+    let hotkeysRegistered = false;
+    let nextHotkeyRetryAt = 0;
+
     function unregisterManagedHotkeys() {
         for (const key of managedHotkeys) {
             globalShortcut.unregister(key);
         }
         managedHotkeys = [];
+        hotkeysRegistered = false;
+        nextHotkeyRetryAt = 0;
         globalShortcut.unregister('Escape');
     }
 
@@ -1285,10 +1311,44 @@ function createWindow() {
         registerManagedHotkey('stepBackward', () => {
             stepBackward();
         });
+
+        hotkeysRegistered = managedHotkeys.length > 0;
+        nextHotkeyRetryAt = hotkeysRegistered ? 0 : (Date.now() + 5000);
     }
 
-    rebindHotkeys = applyHotkeyBindings;
-    applyHotkeyBindings();
+    function shouldHotkeysBeActiveForCurrentWindow() {
+        if (isQuitting) return false;
+
+        const focused = BrowserWindow.getFocusedWindow();
+        if (focused && !focused.isDestroyed()) return true;
+
+        const title = getForegroundWindowTitle();
+        return /path of exile/i.test(title);
+    }
+
+    function syncHotkeyScope() {
+        const shouldBeActive = shouldHotkeysBeActiveForCurrentWindow();
+        const now = Date.now();
+
+        if (shouldBeActive) {
+            if (!hotkeysRegistered && now >= nextHotkeyRetryAt) {
+                applyHotkeyBindings();
+            }
+            return;
+        }
+
+        if (hotkeysRegistered) {
+            unregisterManagedHotkeys();
+        }
+    }
+
+    rebindHotkeys = () => {
+        syncHotkeyScope();
+    };
+
+    syncHotkeyScope();
+    if (hotkeyScopeInterval) clearInterval(hotkeyScopeInterval);
+    hotkeyScopeInterval = setInterval(syncHotkeyScope, 300);
 
     // Copy completion flash
     ipcMain.on('copy-done', () => {
@@ -1607,7 +1667,15 @@ function startTailing() {
     });
 }
 
-app.whenReady().then(createWindow);
+app.on('second-instance', () => {
+    if (mainWindow && !mainWindow.isDestroyed()) {
+        showMainWindow();
+    }
+});
+
+if (hasSingleInstanceLock) {
+    app.whenReady().then(createWindow);
+}
 
 app.on('before-quit', () => {
     isQuitting = true;
@@ -1620,6 +1688,10 @@ app.on('activate', () => {
 });
 
 app.on('will-quit', () => {
+    if (hotkeyScopeInterval) {
+        clearInterval(hotkeyScopeInterval);
+        hotkeyScopeInterval = null;
+    }
     globalShortcut.unregisterAll();
     if (tray) {
         tray.destroy();
