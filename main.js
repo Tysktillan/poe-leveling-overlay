@@ -1,4 +1,4 @@
-const { app, BrowserWindow, globalShortcut, ipcMain, dialog, Tray, Menu } = require('electron');
+const { app, BrowserWindow, globalShortcut, ipcMain, dialog, Tray, Menu, screen } = require('electron');
 
 const hasSingleInstanceLock = app.requestSingleInstanceLock();
 if (!hasSingleInstanceLock) {
@@ -235,6 +235,7 @@ let settingsWindow = null;
 let hotkeyBindings = sanitizeHotkeys(loadSettings().hotkeys);
 let rebindHotkeys = null;
 let hotkeyScopeInterval = null;
+let overlayDisplayId = Number(loadSettings().overlayDisplayId) || null;
 
 function getCustomRegexPresetsFromSettings() {
     const settings = loadSettings();
@@ -734,6 +735,77 @@ function hideOverlaysToTray() {
     if (mainWindow && !mainWindow.isDestroyed()) mainWindow.hide();
 }
 
+function persistOverlayDisplayId(displayId) {
+    const settings = loadSettings();
+    if (displayId == null) {
+        delete settings.overlayDisplayId;
+    } else {
+        settings.overlayDisplayId = displayId;
+    }
+    saveSettings(settings);
+}
+
+function getSelectedOverlayDisplay() {
+    const displays = screen.getAllDisplays();
+    if (!displays.length) return null;
+
+    if (overlayDisplayId != null) {
+        const match = displays.find(d => d.id === overlayDisplayId);
+        if (match) return match;
+        overlayDisplayId = null;
+        persistOverlayDisplayId(null);
+    }
+
+    if (mainWindow && !mainWindow.isDestroyed()) {
+        return screen.getDisplayMatching(mainWindow.getBounds());
+    }
+
+    return screen.getPrimaryDisplay();
+}
+
+function placeTreeWindowOnDisplay(display) {
+    if (!display || !treeWindow || treeWindow.isDestroyed()) return;
+    const bounds = display.bounds;
+    treeWindow.setBounds({ x: bounds.x, y: bounds.y, width: bounds.width, height: bounds.height });
+}
+
+function placeNotesWindowOnDisplay(display) {
+    if (!display || !notesWindow || notesWindow.isDestroyed()) return;
+
+    const [width, height] = notesWindow.getSize();
+    const area = display.workArea;
+    const x = Math.round(area.x + (area.width - width) / 2);
+    const y = Math.round(area.y + (area.height - height) / 2);
+
+    notesWindow.setBounds({ x, y, width, height });
+}
+
+function moveOverlayToDisplay(display, persist = true) {
+    if (!display || !mainWindow || mainWindow.isDestroyed()) return;
+
+    const [width, height] = mainWindow.getSize();
+    const x = display.workArea.x + 30;
+    const y = display.workArea.y + 30;
+    mainWindow.setBounds({ x, y, width, height });
+
+    placeTreeWindowOnDisplay(display);
+    placeNotesWindowOnDisplay(display);
+
+    overlayDisplayId = display.id;
+    if (persist) persistOverlayDisplayId(overlayDisplayId);
+    rebuildTrayMenu();
+}
+
+function moveOverlayToNextDisplay() {
+    const displays = screen.getAllDisplays();
+    if (!displays.length) return;
+
+    const current = getSelectedOverlayDisplay();
+    const currentIndex = Math.max(0, displays.findIndex(d => current && d.id === current.id));
+    const next = displays[(currentIndex + 1) % displays.length];
+    moveOverlayToDisplay(next, true);
+}
+
 function openSettingsWindow() {
     if (settingsWindow && !settingsWindow.isDestroyed()) {
         settingsWindow.show();
@@ -755,8 +827,25 @@ function openSettingsWindow() {
 
 function rebuildTrayMenu() {
     if (!tray) return;
+
+    const displays = screen.getAllDisplays();
+    const activeDisplay = getSelectedOverlayDisplay();
+
+    const monitorItems = displays.map((display, idx) => {
+        const primary = display.id === screen.getPrimaryDisplay().id ? ' - Primary' : '';
+        const label = 'Monitor ' + (idx + 1) + ' (' + display.workArea.width + 'x' + display.workArea.height + ')' + primary;
+        return {
+            label,
+            type: 'radio',
+            checked: !!activeDisplay && display.id === activeDisplay.id,
+            click: () => moveOverlayToDisplay(display, true)
+        };
+    });
+
     tray.setContextMenu(Menu.buildFromTemplate([
         { label: 'Show Overlay', click: () => showMainWindow() },
+        { label: 'Move Overlay to Next Monitor', click: () => moveOverlayToNextDisplay() },
+        { label: 'Move Overlay to Monitor', submenu: monitorItems.length ? monitorItems : [{ label: 'No monitors detected', enabled: false }] },
         { label: 'Settings', click: () => openSettingsWindow() },
         { type: 'separator' },
         {
@@ -779,6 +868,25 @@ function createTray() {
         tray.setToolTip('PoE Leveling Overlay');
         rebuildTrayMenu();
         tray.on('double-click', () => showMainWindow());
+
+        const refreshMonitorMenus = () => {
+            if (!mainWindow || mainWindow.isDestroyed()) {
+                rebuildTrayMenu();
+                return;
+            }
+
+            const currentDisplay = screen.getDisplayMatching(mainWindow.getBounds());
+            const currentStillExists = screen.getAllDisplays().some(d => d.id === currentDisplay.id);
+            if (!currentStillExists) {
+                const fallback = getSelectedOverlayDisplay();
+                if (fallback) moveOverlayToDisplay(fallback, false);
+            }
+            rebuildTrayMenu();
+        };
+
+        screen.on('display-added', refreshMonitorMenus);
+        screen.on('display-removed', refreshMonitorMenus);
+        screen.on('display-metrics-changed', refreshMonitorMenus);
     } catch (e) {
         // Keep app usable even if tray init fails in packaged environments.
         console.warn('Tray init failed:', e.message);
@@ -795,6 +903,11 @@ function createWindow() {
         webPreferences: { nodeIntegration: true, contextIsolation: false }
     });
 
+    const startupDisplay = getSelectedOverlayDisplay();
+    if (startupDisplay) {
+        moveOverlayToDisplay(startupDisplay, false);
+    }
+
     createTray();
 
     // Closing the main window hides to tray; use tray menu to quit.
@@ -806,7 +919,7 @@ function createWindow() {
 
     treeWindow = new BrowserWindow({
         width: 800, height: 600, show: false,
-        fullscreen: true, frame: false, transparent: true, alwaysOnTop: true,
+        frame: false, transparent: true, alwaysOnTop: true,
         focusable: false,
         webPreferences: { nodeIntegration: true, contextIsolation: false }
     });
@@ -822,6 +935,12 @@ function createWindow() {
     notesWindow.loadFile('notes.html');
     notesWindow.setIgnoreMouseEvents(true, { forward: true });
 
+    const overlayDisplay = getSelectedOverlayDisplay();
+    if (overlayDisplay) {
+        placeTreeWindowOnDisplay(overlayDisplay);
+        placeNotesWindowOnDisplay(overlayDisplay);
+    }
+
     // Notes window mouse focus: enable when hovering over content
     ipcMain.on('notes-ignore-mouse', (event, ignore, options) => {
         if (notesWindow) notesWindow.setIgnoreMouseEvents(ignore, options);
@@ -836,7 +955,8 @@ function createWindow() {
         const width = 700;
         const height = Math.min(Math.max(contentHeight + 2, 80), 600); // clamp 80-600
         notesWindow.setSize(width, height);
-        notesWindow.center();
+        const display = getSelectedOverlayDisplay();
+        if (display) placeNotesWindowOnDisplay(display);
     });
 
     // Ignore all mouse events by default (click-through to game)
@@ -1153,6 +1273,9 @@ function createWindow() {
             return;
         }
 
+        const display = getSelectedOverlayDisplay();
+        if (display) placeTreeWindowOnDisplay(display);
+
         treeWindow.setAlwaysOnTop(true, 'screen-saver');
         treeWindow.showInactive();
 
@@ -1178,8 +1301,11 @@ function createWindow() {
             notesWindow.hide();
             return;
         }
+
+        const display = getSelectedOverlayDisplay();
+        if (display) placeNotesWindowOnDisplay(display);
+
         notesWindow.setAlwaysOnTop(true, 'screen-saver');
-        notesWindow.center();
         notesWindow.showInactive();
         notesWindow.setIgnoreMouseEvents(false);
     }
@@ -1365,7 +1491,8 @@ function createWindow() {
     ipcMain.on('resize-window', (event, height) => {
         const roundedHeight = Math.min(Math.round(height + 24), 600);
         if (Math.abs(lastHeight - roundedHeight) > 5) {
-            mainWindow.setBounds({ x: 30, y: 30, width: 350, height: roundedHeight });
+            const bounds = mainWindow.getBounds();
+            mainWindow.setBounds({ x: bounds.x, y: bounds.y, width: 350, height: roundedHeight });
             lastHeight = roundedHeight;
         }
     });
